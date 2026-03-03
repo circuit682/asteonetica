@@ -1,9 +1,13 @@
 import OrbitalMark from "@/components/OrbitalMark";
 import MethodologyDiagram from "@/components/MethodologyDiagram";
+import FooterSection from "@/components/FooterSection";
 
 export default function Home() {
   return (
     <main className="bg-[var(--space-black)] text-white">
+    
+    
+
 
       {/* HERO SECTION */}
       <section className="min-h-screen flex flex-col items-center justify-center gap-10 px-6 text-center">
@@ -84,10 +88,9 @@ export default function Home() {
 
   </div>
 
-  
-
 </section>
-
+<FooterSection />
     </main>
+   
   );
 }
