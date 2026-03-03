@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import NavLink from "@/components/NavLink";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { motionTimings, motionEase } from "@/lib/motion";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,7 +32,7 @@ export default function Navbar() {
         {/* Logo */}
         <motion.div
           whileHover={{ y: -2 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: motionTimings.hover, ease: motionEase }}
         >
           <Link
             href="/"

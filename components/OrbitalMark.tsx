@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useSparkle } from "@/lib/SparkleContext";
+import { motionTimings } from "@/lib/motion";
+
 
 const center = 100;
 const outerOrbitRadius = 70;
@@ -46,7 +48,7 @@ export default function OrbitalMark() {
             ? { scale: 1.04 }
             : { scale: 1 }
         }
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: motionTimings.ambient, ease: "linear" }}
       >
         <motion.circle
           cx={center}

@@ -2,6 +2,8 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import { motionTimings, motionEase } from "@/lib/motion";
+
 
 const steps = 4;
 const center = 100;
@@ -28,7 +30,7 @@ export default function MethodologyDiagram() {
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: motionTimings.reveal, ease: motionEase }}
       className="relative w-48 md:w-56 lg:w-64 aspect-square"
     >
       <motion.svg
@@ -61,7 +63,7 @@ export default function MethodologyDiagram() {
                 scale: isActive ? 1.3 : 1,
                 opacity: isActive ? 1 : 0.5,
               }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: motionTimings.reveal, ease: motionEase }}
             />
           );
         })}
