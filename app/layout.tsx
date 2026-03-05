@@ -59,16 +59,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SparkleProvider>
-          <Navbar />
-          {children}
-        </SparkleProvider>
+     <body
+  className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
+>
+  <SparkleProvider>
+    
+    {/* Global Background */}
+    <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(0,20,40,0.9),black_70%)]" />
 
-        <ScrollUp />
-      </body>
+    <Navbar />
+
+    <main className="min-h-screen">
+      {children}
+    </main>
+
+    <ScrollUp />
+
+  </SparkleProvider>
+</body>
     </html>
   );
 }
