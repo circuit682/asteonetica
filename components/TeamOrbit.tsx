@@ -78,7 +78,7 @@ export default function TeamOrbit() {
   const depths = crew.map((_, i) => {
     const angle = degreePerMember * i;
 
-    const relativeAngle = (angle - currentRotation + 360) % 360;
+    const relativeAngle = (angle + currentRotation) % 360;
     const normalizedAngle = relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
 
     return Math.cos((normalizedAngle * Math.PI) / 180);
@@ -106,7 +106,7 @@ export default function TeamOrbit() {
           {crew.map((member, i) => {
             const angle = degreePerMember * i;
 
-            const relativeAngle = (angle - currentRotation + 360) % 360;
+            const relativeAngle = (angle + currentRotation) % 360;
             const normalizedAngle = relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
 
             const depth = depths[i];
