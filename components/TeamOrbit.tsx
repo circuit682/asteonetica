@@ -79,12 +79,13 @@ export default function TeamOrbit() {
     const angle = degreePerMember * i;
 
     const relativeAngle = (angle + currentRotation) % 360;
-    const normalizedAngle = relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
+    const normalizedAngle =
+      relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
 
     return Math.cos((normalizedAngle * Math.PI) / 180);
   });
 
-  const maxDepth = Math.max(...depths);
+  const frontIndex = depths.indexOf(Math.max(...depths));
 
   return (
     <div
@@ -98,8 +99,8 @@ export default function TeamOrbit() {
         <div className="absolute inset-0 rounded-full border border-transparent" />
 
         <motion.div
-          animate={{ rotateY: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          animate={{ rotateY: currentRotation }}
+          transition={{ duration: 0 }}
           className="absolute inset-0"
           style={{ transformStyle: "preserve-3d" }}
         >
@@ -107,7 +108,8 @@ export default function TeamOrbit() {
             const angle = degreePerMember * i;
 
             const relativeAngle = (angle + currentRotation) % 360;
-            const normalizedAngle = relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
+            const normalizedAngle =
+              relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
 
             const depth = depths[i];
 
@@ -125,7 +127,7 @@ export default function TeamOrbit() {
               }
             }
 
-            const isFrontMost = depth === maxDepth && isFacingForward;
+            const isFrontMost = i === frontIndex && isFacingForward;
 
             const scale = isFrontMost ? 1.18 : 0.75 + depth * 0.25;
 
@@ -135,7 +137,7 @@ export default function TeamOrbit() {
                 className="absolute top-1/2 left-1/2"
                 style={{
                   transformStyle: "preserve-3d",
-                  transform: `rotateY(${angle}deg) translateZ(245px) rotateY(-${angle}deg) translate(-50%, -50%)`,
+                  transform: `rotateY(${angle}deg) translateZ(350px) rotateY(-${angle}deg) translate(-50%, -50%)`,
                 }}
               >
                 <motion.div
