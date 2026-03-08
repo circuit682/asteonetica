@@ -16,9 +16,13 @@ const innerAngles = [90, 270];
 
 function polarToCartesian(angle: number, radius: number) {
   const radians = (angle * Math.PI) / 180;
+
+  const x = center + radius * Math.cos(radians);
+  const y = center + radius * Math.sin(radians);
+
   return {
-    x: center + radius * Math.cos(radians),
-    y: center + radius * Math.sin(radians),
+    x: Number(x.toFixed(2)),
+    y: Number(y.toFixed(2)),
   };
 }
 

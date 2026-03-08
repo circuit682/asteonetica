@@ -2,19 +2,38 @@
 
 import { motion } from "framer-motion";
 import FooterSection from "@/components/FooterSection";
+import TeamOrbit from "@/components/TeamOrbit";
 
 export default function AfronautsPage() {
   return (
     <main className="min-h-screen">
 
+
+            {/* TEAM ORBIT */}
+{/* <section className="py-30 ">
+  <h2 className="text-3xl md:text-4xl font-light text-center mb-20 tracking-wide">
+    The Crew
+  </h2>
+</section>
+ <TeamOrbit /> */}
+  <section className="relative flex flex-col items-center justify-center w-full min-h-screen py-16">
+
+      <h1 className="text-4xl md:text-5xl font-light mb-8 text-white/80 z-30 relative">
+        THE CREW
+      </h1>
+
+      <TeamOrbit />
+
+    </section>
+
       {/* HERO */}
-      <section className="h-[60vh] flex items-center justify-center text-center px-6">
+      <section className="min-h-[60vh] flex items-center justify-center text-center px-6 py-20">
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-light tracking-wide mb-6">
-            Afronauts
+          <h1 className="text-5xl md:text-6xl font-light tracking-wide mb-8">
+            The Afronauts
           </h1>
 
-          <p className="text-white/70 text-lg leading-relaxed">
+          <p className="text-white/70 text-lg md:text-xl leading-relaxed">
             Volunteers participating in asteroid search campaigns through
             the International Astronomical Search Collaboration (IASC),
             analyzing astronomical survey data to identify potential
@@ -23,10 +42,9 @@ export default function AfronautsPage() {
         </div>
       </section>
 
-
       {/* MISSION */}
-      <section className="py-24 px-6 md:px-12 max-w-5xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-light mb-8 tracking-wide">
+      <section className="py-20 px-6 md:px-12 max-w-5xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-light mb-8 tracking-wide text-center">
           The Mission
         </h2>
 
@@ -48,8 +66,8 @@ export default function AfronautsPage() {
 
 
       {/* TEAM CARDS */}
-      <section className="py-24 px-6 md:px-12 max-w-6xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-light mb-12 text-center tracking-wide">
+      <section className="py-20 px-6 md:px-12 max-w-6xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-light mb-12 text-center tracking-wide">
           Research Team
         </h2>
 
@@ -72,8 +90,7 @@ export default function AfronautsPage() {
 
         </div>
       </section>
-        <FooterSection />
-
+      <FooterSection />
     </main>
   );
 }
