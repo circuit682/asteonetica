@@ -148,7 +148,12 @@ export default function TeamOrbit() {
                     y: isFrontMost ? -6 : 0,
                   }}
                   initial={{ rotateY: 0 }}
-                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                  transition={{
+                    rotateY: { duration: 30, repeat: Infinity, ease: "linear" },
+                    opacity: { duration: 0.15 },
+                    scale: { duration: 0.15 },
+                    y: { duration: 0.15 },
+                  }}
                   style={{
                     transformStyle: "preserve-3d",
                   }}
@@ -172,7 +177,7 @@ export default function TeamOrbit() {
                     <img
                       src={member.avatar}
                       alt={member.name}
-                      className="mx-auto mb-2 h-100 w-100 sm:h-32 sm:w-32 md:h-36 md:w-36 rounded-full object-cover"
+                      className="mx-auto mb-2 h-24 w-24 sm:h-32 sm:w-32 md:h-36 md:w-36 rounded-full object-cover"
                     />
 
                     <p className="text-[10px] sm:text-[12px] md:text-[13px] font-medium text-white/90 leading-tight">
