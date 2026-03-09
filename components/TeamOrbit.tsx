@@ -74,10 +74,8 @@ export default function TeamOrbit() {
     return () => clearInterval(interval);
   }, []);
 
-  // Calculate depth for every card
   const depths = crew.map((_, i) => {
     const angle = degreePerMember * i;
-
     const relativeAngle = (angle + currentRotation) % 360;
     const normalizedAngle =
       relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
@@ -92,6 +90,23 @@ export default function TeamOrbit() {
       className="relative w-full min-h-[560px] md:min-h-[620px] flex items-center justify-center overflow-hidden px-4"
       style={{ perspective: "1200px" }}
     >
+
+      {/* STARFIELD BACKGROUND */}
+      <motion.div
+        className="absolute inset-0 opacity-30 pointer-events-none"
+        animate={{ backgroundPosition: ["0px 0px", "1000px 500px"] }}
+        transition={{
+          duration: 120,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{
+          backgroundImage:
+            "radial-gradient(2px 2px at 20px 30px, white, transparent), radial-gradient(1px 1px at 40px 70px, white, transparent), radial-gradient(1px 1px at 130px 40px, white, transparent), radial-gradient(2px 2px at 200px 120px, white, transparent)",
+          backgroundSize: "300px 300px",
+        }}
+      />
+
       <div
         className="relative w-[min(90vw,620px)] h-[min(90vw,620px)]"
         style={{ transformStyle: "preserve-3d" }}
@@ -112,9 +127,7 @@ export default function TeamOrbit() {
               relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
 
             const depth = depths[i];
-
             const isFacingForward = Math.abs(normalizedAngle) <= 90;
-
             const distanceFromFront = Math.abs(normalizedAngle);
 
             let opacity = 0;
@@ -128,7 +141,6 @@ export default function TeamOrbit() {
             }
 
             const isFrontMost = i === frontIndex && isFacingForward;
-
             const scale = isFrontMost ? 1.18 : 0.75 + depth * 0.25;
 
             return (
