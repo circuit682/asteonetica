@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { SparkleProvider } from "@/lib/SparkleContext";
 import ScrollUp from "@/components/ScrollUp";
+import CosmicEnvironment from "@/components/cosmic/CosmicEnvironment";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -80,7 +81,7 @@ export default function RootLayout({
         <SparkleProvider>
 
           {/* Global Space Background */}
-          <div className="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(0,20,40,0.9),black_70%)]" />
+          <CosmicEnvironment />
 
           <Navbar />
 
