@@ -137,7 +137,7 @@ export default function TeamOrbit() {
                 className="absolute top-1/2 left-1/2"
                 style={{
                   transformStyle: "preserve-3d",
-                  transform: `rotateY(${angle}deg) translateZ(350px) rotateY(-${angle}deg) translate(-50%, -50%)`,
+                  transform: `rotateY(${angle}deg) translateZ(250px) rotateY(-${angle}deg) translate(-50%, -50%)`,
                 }}
               >
                 <motion.div
