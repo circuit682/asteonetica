@@ -154,14 +154,13 @@ export default function TeamOrbit() {
               >
                 <motion.div
                   animate={{
-                    rotateY: -360,
+                    rotateY: -currentRotation,
                     opacity,
                     scale,
                     y: isFrontMost ? -6 : 0,
                   }}
-                  initial={{ rotateY: 0 }}
                   transition={{
-                    rotateY: { duration: 30, repeat: Infinity, ease: "linear" },
+                    rotateY: { duration: 0 },
                     opacity: { duration: 0.15 },
                     scale: { duration: 0.15 },
                     y: { duration: 0.15 },
