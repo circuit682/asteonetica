@@ -2,119 +2,148 @@
 
 import { useState } from "react";
 
-export default function MissionControlPage() {
+export default function MissionControl() {
 
-  const [password, setPassword] = useState("");
-  const [authorized, setAuthorized] = useState(false);
-
-  const handleLogin = async () => {
-
-    const res = await fetch("/api/auth-mission", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ password }),
-    });
-
-    const data = await res.json();
-
-    if (data.authorized) {
-      setAuthorized(true);
-    } else {
-      alert("Access denied");
-    }
-
-  };
-
-  if (!authorized) {
-    return (
-
-      <main className="min-h-screen flex items-center justify-center">
-
-        <div className="glass-card p-8 w-full max-w-sm">
-
-          <h1 className="text-xl mb-6">Mission Control Access</h1>
-
-          <input
-            type="password"
-            placeholder="Enter admin password"
-            className="w-full p-3 bg-black/40 border border-white/20 rounded mb-4"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button
-            onClick={handleLogin}
-            className="w-full py-3 bg-white/10 hover:bg-white/20 rounded"
-          >
-            Enter
-          </button>
-
-        </div>
-
-      </main>
-
-    );
-  }
-
-  return <ObservationForm />;
-}
-
-function ObservationForm() {
+  const [uploading, setUploading] = useState(false);
 
   const [form, setForm] = useState({
     id: "",
-    object: "",
     observers: "",
     team: "",
     country: "",
     status: "",
-    imageSet: "",
     date: "",
-    campaign: "",
+    imageSet: "",
+    campaign: ""
   });
 
   const updateField = (key: string, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const submitObservation = async () => {
+  async function uploadPDF(file: File) {
+
+    setUploading(true);
+
+    const data = new FormData();
+    data.append("file", file);
+
+    const res = await fetch("/api/process-campaign", {
+      method: "POST",
+      body: data
+    });
+
+    const result = await res.json();
+
+    setUploading(false);
+
+    alert(`Processed ${result.records} observations`);
+  }
+
+  async function submitObservation() {
+
+    const requiredFields = [
+      "id",
+      "observers",
+      "team",
+      "country",
+      "status",
+      "date",
+      "imageSet",
+      "campaign"
+    ];
+
+    for (const field of requiredFields) {
+
+      if (!(form as any)[field] || (form as any)[field].trim() === "") {
+        alert(`${field} is required`);
+        return;
+      }
+
+    }
 
     const res = await fetch("/api/observations", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify(form)
     });
 
-    if (res.ok) {
-      alert("Observation saved");
-    } else {
-      alert("Error saving observation");
+    if (!res.ok) {
+      alert("Failed to save observation");
+      return;
     }
 
-  };
+    alert("Observation saved");
+
+    setForm({
+      id: "",
+      observers: "",
+      team: "",
+      country: "",
+      status: "",
+      date: "",
+      imageSet: "",
+      campaign: ""
+    });
+
+  }
 
   return (
 
-    <main className="min-h-screen px-8 py-24 max-w-3xl mx-auto">
+    <main className="min-h-screen max-w-3xl mx-auto py-20 px-6 space-y-12">
 
-      <h1 className="text-4xl font-light mb-10">
+      <h1 className="text-4xl font-light">
         Mission Control
       </h1>
 
-      <div className="glass-card p-8 space-y-4">
+      {/* Upload Campaign PDF */}
 
-        {Object.keys(form).map((field) => (
+      <div className="glass-card p-6 space-y-4">
+
+        <h2 className="text-xl">
+          Upload Campaign PDF
+        </h2>
+
+        <input
+          type="file"
+          accept=".pdf"
+          onChange={(e) => {
+
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            uploadPDF(file);
+
+          }}
+        />
+
+        {uploading && (
+          <p className="text-sm text-white/60">
+            Processing campaign file...
+          </p>
+        )}
+
+      </div>
+
+      {/* Manual Observation Entry */}
+
+      <div className="glass-card p-6 space-y-4">
+
+        <h2 className="text-xl">
+          Manual Observation Entry
+        </h2>
+
+        {Object.entries(form).map(([key, value]) => (
 
           <input
-            key={field}
-            placeholder={field}
-            value={(form as any)[field]}
-            onChange={(e) => updateField(field, e.target.value)}
-            className="w-full p-3 bg-black/40 border border-white/20 rounded"
+            key={key}
+            value={value}
+            placeholder={key}
+            required
+            onChange={(e) => updateField(key, e.target.value)}
+            className="w-full p-3 rounded bg-black/40 border border-white/20"
           />
 
         ))}
