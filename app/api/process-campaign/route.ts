@@ -34,20 +34,33 @@ export async function POST(req: Request) {
     fs.mkdirSync(observationsDir, { recursive: true })
   }
 
+  const eastAfrica = ["Kenya", "Uganda", "Tanzania", "Rwanda", "Ethiopia"]
+
+  const africa = [
+    "Kenya", "Uganda", "Tanzania", "Rwanda", "Ethiopia",
+    "Nigeria", "Ghana", "South Africa", "Morocco",
+    "Egypt", "Namibia", "Botswana", "Senegal"
+  ]
+
+  console.log("Total spreadsheet rows:", rawRows.length)
+
   let count = 0
 
   for (const cells of rawRows) {
 
-    const combined = String(cells[1] ?? "").trim()
+    const rowText = cells.join(" ").trim()
 
-    if (!combined.startsWith("IU")) continue
+    // Find IU asteroid ID anywhere in the row
+    const idMatch = rowText.match(/IU[a-zA-Z0-9]+/)
+    if (!idMatch) continue
 
-    // combined cell looks like:
-    // IUe8032   D. MacWilliams, D. Drago
+    const id = idMatch[0].replace(/\./g, "")
+    console.log("Detected asteroid:", id)
 
-    const parts = combined.split(/\s{2,}/)
+    // Extract observers from combined column
+    const combined = cells.find(c => String(c).includes(id)) ?? ""
 
-    const id = parts[0]?.replace(/\./g, "") ?? ""
+    const parts = String(combined).split(/\s{2,}/)
 
     const observers = parts[1]
       ? parts[1].split(",").map((o: string) => o.trim())
@@ -57,20 +70,20 @@ export async function POST(req: Request) {
 
     const country = String(cells[4] ?? "").trim()
 
-    const status = String(cells[5] ?? "").replace(/^F/, "").trim()
+    const status = String(cells[5] ?? "")
+      .replace(/^F/, "")
+      .trim()
 
-    const excelDate = Number(cells[6] ?? "")
+    const excelDate = Number(cells[6])
 
     let date = ""
 
     if (!isNaN(excelDate)) {
       const jsDate = new Date((excelDate - 25569) * 86400 * 1000)
-      date = jsDate.toISOString().slice(0,10)
+      date = jsDate.toISOString().slice(0, 10)
     }
 
     const imageSet = String(cells[7] ?? "").trim()
-
-    if (!id) continue
 
     const observation = {
       id,
