@@ -21,7 +21,7 @@ export default function MissionControl() {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  async function uploadPDF(file: File) {
+  async function uploadSpreadsheet(file: File) {
 
     setUploading(true);
 
@@ -37,7 +37,13 @@ export default function MissionControl() {
 
     setUploading(false);
 
-    alert(`Processed ${result.records} observations`);
+    if (!res.ok) {
+      alert(result.error || "Failed to process campaign file");
+      return;
+    }
+
+    const processed = typeof result.records === "number" ? result.records : 0;
+    alert(`Processed ${processed} observations`);
   }
 
   async function submitObservation() {
@@ -98,23 +104,23 @@ export default function MissionControl() {
         Mission Control
       </h1>
 
-      {/* Upload Campaign PDF */}
+      {/* Upload Campaign Excel */}
 
       <div className="glass-card p-6 space-y-4">
 
         <h2 className="text-xl">
-          Upload Campaign PDF
+          Upload Campaign Excel
         </h2>
 
         <input
           type="file"
-          accept=".pdf"
+          accept=".xlsx,.xls,.csv"
           onChange={(e) => {
 
             const file = e.target.files?.[0];
             if (!file) return;
 
-            uploadPDF(file);
+            uploadSpreadsheet(file);
 
           }}
         />
