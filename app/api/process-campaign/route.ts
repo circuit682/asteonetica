@@ -58,12 +58,23 @@ export async function POST(req: Request) {
     console.log("Detected asteroid:", id)
 
     // Extract observers from combined column
-    const combined = cells.find(c => String(c).includes(id)) ?? ""
+    const combinedCell = cells.find(c => String(c).includes(id)) ?? ""
 
-    const parts = String(combined).split(/\s{2,}/)
+    let observerText = String(combinedCell)
+      .replace(id, "")
+      .trim()
 
-    const observers = parts[1]
-      ? parts[1].split(",").map((o: string) => o.trim())
+    // If observers were not attached to the ID cell,
+    // check the next column instead
+    if (!observerText && cells[2]) {
+      observerText = String(cells[2]).trim()
+    }
+
+    const observers = observerText
+      ? observerText
+        .split(",")
+        .map((o: string) => o.trim())
+        .filter(Boolean)
       : []
 
     const team = String(cells[3] ?? "").trim()
