@@ -48,34 +48,33 @@ export async function POST(req: Request) {
 
   for (const cells of rawRows) {
 
-    const rowText = cells.join(" ").trim()
+    const rowText = cells
+      .map(c => String(c ?? "").trim())
+      .filter(Boolean)
+      .join(" ")
 
-    // Find IU asteroid ID anywhere in the row
+    // detect asteroid ID
     const idMatch = rowText.match(/IU[a-zA-Z0-9]+/)
     if (!idMatch) continue
 
-    const id = idMatch[0].replace(/\./g, "")
-    console.log("Detected asteroid:", id)
+    const id = idMatch[0]
 
-    // Extract observers from combined column
-    const combinedCell = cells.find(c => String(c).includes(id)) ?? ""
+    // remove ID from the row to isolate names
+    let remainder = rowText.replace(id, "").trim()
 
-    let observerText = String(combinedCell)
-      .replace(id, "")
-      .trim()
+    // observers appear before the team name
+    const observerMatch = remainder.match(/^([A-Z]\.\s?[A-Za-z]+(?:,\s*[A-Z]\.\s?[A-Za-z]+)*)/)
 
-    // If observers were not attached to the ID cell,
-    // check the next column instead
-    if (!observerText && cells[2]) {
-      observerText = String(cells[2]).trim()
-    }
+    let observers: string[] = []
 
-    const observers = observerText
-      ? observerText
+    if (observerMatch) {
+      observers = observerMatch[1]
         .split(",")
-        .map((o: string) => o.trim())
+        .map(o => o.trim())
         .filter(Boolean)
-      : []
+
+      remainder = remainder.replace(observerMatch[1], "").trim()
+    }
 
     const team = String(cells[3] ?? "").trim()
 
