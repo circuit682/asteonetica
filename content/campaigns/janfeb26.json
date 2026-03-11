@@ -1,0 +1,1494 @@
+{
+  "campaign": "JanFeb26",
+  "start": "2026-01-11",
+  "end": "2026-01-17",
+  "totalObservations": 112,
+  "observations": [
+    {
+      "id": "IUe8032",
+      "observers": [
+        "D. MacWilliams",
+        "D. Drago"
+      ],
+      "team": "Estrella Roja y Blanca",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "ERB0001"
+    },
+    {
+      "id": "IUe8033",
+      "observers": [
+        "D. MacWilliams",
+        "D. Drago"
+      ],
+      "team": "Estrella Roja y Blanca",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "ERB0003"
+    },
+    {
+      "id": "IUe8037",
+      "observers": [
+        "M. Albarr"
+      ],
+      "team": "Observatorio “Omega Centauri”",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "OOC0216"
+    },
+    {
+      "id": "IUe8038",
+      "observers": [
+        "B. Ara"
+      ],
+      "team": "Aster",
+      "country": "Brazil",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "BEG1605"
+    },
+    {
+      "id": "IUe8030",
+      "observers": [
+        "S. Wang"
+      ],
+      "team": "Taurus",
+      "country": "China",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "WSM0400"
+    },
+    {
+      "id": "IUe8025",
+      "observers": [
+        "L. Hern"
+      ],
+      "team": "Near-Earth Objects NEO",
+      "country": "Colombia",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "NEO0004"
+    },
+    {
+      "id": "IUe8026",
+      "observers": [
+        "L. Hern"
+      ],
+      "team": "Potentially Hazardous Asteroid PHA",
+      "country": "Colombia",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "PHA0005"
+    },
+    {
+      "id": "IUe8029",
+      "observers": [
+        "Z. Orbanic",
+        "N. Ruocco"
+      ],
+      "team": "Celestial Stone Hunters",
+      "country": "Croatia/Italy",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "CSH0002"
+    },
+    {
+      "id": "IUe8039",
+      "observers": [
+        "D. Lacour",
+        "D. Lamirel"
+      ],
+      "team": "Observatoire Astronomique Amateur d'Argelliers 2",
+      "country": "France",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "DLA0047"
+    },
+    {
+      "id": "IUe8018",
+      "observers": [
+        "M. Ludwig",
+        "J.Falk"
+      ],
+      "team": "BBZ am Nordostseekanal",
+      "country": "Germany",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "NOK2301"
+    },
+    {
+      "id": "IUe8050",
+      "observers": [
+        "I. Shukla",
+        "S. Mishra",
+        "P. Ranjan"
+      ],
+      "team": "CosmicBoom",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "ORF5648"
+    },
+    {
+      "id": "IUe8053",
+      "observers": [
+        "A. Podder"
+      ],
+      "team": "Propagation Citizen Science Group",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "JKL7890"
+    },
+    {
+      "id": "IUe8047",
+      "observers": [
+        "V. Kurmude",
+        "H. Luca"
+      ],
+      "team": "SA Citizen Science Lab",
+      "country": "India/Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "SAC6306"
+    },
+    {
+      "id": "IUe8014",
+      "observers": [
+        "A. Rhandour"
+      ],
+      "team": "Atlas Asteroid Hunters",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "AAH0402"
+    },
+    {
+      "id": "IUe8012",
+      "observers": [
+        "S. Henrique",
+        "I. Moreira",
+        "G. Carvalho"
+      ],
+      "team": "Escola Secundária Carolina Michaëlis",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "ECM0001"
+    },
+    {
+      "id": "IUe8031",
+      "observers": [
+        "P. Francisco"
+      ],
+      "team": "Torres Vedras - Estudo de Asteroides",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "TVD0005"
+    },
+    {
+      "id": "IUe8019",
+      "observers": [
+        "N. G"
+      ],
+      "team": "CIFP Majada Marcial",
+      "country": "Spain",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "MAJ0102"
+    },
+    {
+      "id": "IUe8041",
+      "observers": [
+        "I. Monz"
+      ],
+      "team": "IES José Frugoni Pérez",
+      "country": "Spain",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "ROC2602"
+    },
+    {
+      "id": "IUe8034",
+      "observers": [
+        "Y. Cheng",
+        "C. Yan"
+      ],
+      "team": "Asteroid Squad",
+      "country": "Taiwan",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "ASA0001"
+    },
+    {
+      "id": "IUe8035",
+      "observers": [
+        "Y. Cheng",
+        "C. Yan"
+      ],
+      "team": "Asteroid Squad",
+      "country": "Taiwan",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "ASA0002"
+    },
+    {
+      "id": "IUe8015",
+      "observers": [
+        "B. Young",
+        "M. Hotka"
+      ],
+      "team": "Route 66 Rocks",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "MAH2209"
+    },
+    {
+      "id": "IUe8016",
+      "observers": [
+        "B. Young",
+        "M. Hotka"
+      ],
+      "team": "Route 66 Rocks",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "MAH2212"
+    },
+    {
+      "id": "IUe8017",
+      "observers": [
+        "J. Philpot",
+        "D. Crowson"
+      ],
+      "team": "Space Rock Hounds",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-11",
+      "imageSet": "SRH1097"
+    },
+    {
+      "id": "IUe8077",
+      "observers": [
+        "J. Ruiz"
+      ],
+      "team": "Asociación Argentina “Amigos de la Astronomía” 1",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "AAA0002"
+    },
+    {
+      "id": "IUe8147",
+      "observers": [
+        "D. MacWilliams",
+        "D. Drago"
+      ],
+      "team": "Estrella Roja y Blanca",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "ERB0004"
+    },
+    {
+      "id": "IUe8071",
+      "observers": [
+        "M. Albarr"
+      ],
+      "team": "Observatorio “Omega Centauri”",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "OOC0218"
+    },
+    {
+      "id": "IUe8137",
+      "observers": [
+        "R. Wiman",
+        "M. Siscar",
+        "I. Wiman"
+      ],
+      "team": "OCSI (Observatorio Cielos de San Isidro)",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "OCS0005"
+    },
+    {
+      "id": "IUe8145",
+      "observers": [
+        "B. Ara"
+      ],
+      "team": "Aster",
+      "country": "Brazil",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "BEG2758"
+    },
+    {
+      "id": "IUe8109",
+      "observers": [
+        "T. Ara"
+      ],
+      "team": "Interstellar BR",
+      "country": "Brazil",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "TRS0002"
+    },
+    {
+      "id": "IUe8113",
+      "observers": [
+        "W. Huang"
+      ],
+      "team": "CSASC Team 1",
+      "country": "China",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "CSA0201"
+    },
+    {
+      "id": "IUe8110",
+      "observers": [
+        "S. Ma",
+        "Y. Li",
+        "Y. Dong",
+        "X. Zhang",
+        "C. Deng"
+      ],
+      "team": "Hunting Team From WUT",
+      "country": "China",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "HRS0008"
+    },
+    {
+      "id": "IUe8120",
+      "observers": [
+        "J. Zhou",
+        "E. Guo",
+        "T. Zhou"
+      ],
+      "team": "SSSSAU Team 1",
+      "country": "China",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "SAU0007"
+    },
+    {
+      "id": "IUe8099",
+      "observers": [
+        "L. Hern"
+      ],
+      "team": "Near-Earth Objects NEO",
+      "country": "Colombia",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "NEO0009"
+    },
+    {
+      "id": "IUe8151",
+      "observers": [
+        "L. Hern"
+      ],
+      "team": "Near-Earth Objects NEO",
+      "country": "Colombia",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "NEO0008"
+    },
+    {
+      "id": "IUe8152",
+      "observers": [
+        "L. Hern"
+      ],
+      "team": "Potentially Hazardous Asteroid PHA",
+      "country": "Colombia",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "PHA0007"
+    },
+    {
+      "id": "IUe8078",
+      "observers": [
+        "L. Hern"
+      ],
+      "team": "Semillero de Astronomía y Astrofísica SAA",
+      "country": "Colombia",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "SAA0005"
+    },
+    {
+      "id": "IUe8089",
+      "observers": [
+        "Y. Ogmen",
+        "A. Yakar"
+      ],
+      "team": "Astro Cypriots",
+      "country": "Cyprus",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "ACY0307"
+    },
+    {
+      "id": "IUe8098",
+      "observers": [
+        "A.Sameh"
+      ],
+      "team": "Team Cassiopeia 4",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "AST1111"
+    },
+    {
+      "id": "IUe8097",
+      "observers": [
+        "A.Sameh"
+      ],
+      "team": "Team Cassiopeia 4",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "AST2222"
+    },
+    {
+      "id": "IUe8069",
+      "observers": [
+        "D. Lamirel",
+        "M. Lamirel"
+      ],
+      "team": "Observatoire Astronomique Amateur d'Argelliers 1",
+      "country": "France",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "LDM0001"
+    },
+    {
+      "id": "IUe8079",
+      "observers": [
+        "M.Demuth",
+        "A.Demuth"
+      ],
+      "team": "Family Astro",
+      "country": "Germany",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "MRD0141"
+    },
+    {
+      "id": "IUe8130",
+      "observers": [
+        "Y. G"
+      ],
+      "team": "Johann-Christian-Reinhart-Gymnasium Hof",
+      "country": "Germany",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "JCR6001"
+    },
+    {
+      "id": "IUe8123",
+      "observers": [
+        "N. Orthen",
+        "A. Heinlein"
+      ],
+      "team": "Max-Born-Gymnasium Neckargemünd",
+      "country": "Germany",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "NGD3002"
+    },
+    {
+      "id": "IUe8156",
+      "observers": [
+        "N. Orthen",
+        "A. Heinlein"
+      ],
+      "team": "Max-Born-Gymnasium Neckargemünd",
+      "country": "Germany",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "NGD3001"
+    },
+    {
+      "id": "IUe8157",
+      "observers": [
+        "J.Holschier",
+        "E.Fischer"
+      ],
+      "team": "Schülerforschungszentrum Hamburg",
+      "country": "Germany",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "KRA9090"
+    },
+    {
+      "id": "IUe8133",
+      "observers": [
+        "D. Praban",
+        "R. Saravanan",
+        "S. Rushitha"
+      ],
+      "team": "Incisive pente",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "INP0231"
+    },
+    {
+      "id": "IUe8134",
+      "observers": [
+        "D. Praban",
+        "R. Saravanan",
+        "S. Rushitha"
+      ],
+      "team": "Incisive pente",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "INP0234"
+    },
+    {
+      "id": "IUe8088",
+      "observers": [
+        "A. Kakkar",
+        "A. Das",
+        "A. Deshmukh",
+        "K. Kochhar",
+        "A. Gupta"
+      ],
+      "team": "Mars India Observatory",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "SAC6273"
+    },
+    {
+      "id": "IUe8118",
+      "observers": [
+        "M. PradipNarayan",
+        "S. Raghunandan",
+        "M. Shivam",
+        "M. Akanksha",
+        "S. Swarnima",
+        "P. AryaSingh",
+        "S. AnujKumar"
+      ],
+      "team": "P.B.R. Amateur Astronomers",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "PBR9101"
+    },
+    {
+      "id": "IUe8115",
+      "observers": [
+        "S. Dhrupad"
+      ],
+      "team": "Prometheus",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "DHS0066"
+    },
+    {
+      "id": "IUe8116",
+      "observers": [
+        "S. Dhrupad"
+      ],
+      "team": "Prometheus",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "DHS0067"
+    },
+    {
+      "id": "IUe8129",
+      "observers": [
+        "J. Rathod",
+        "A. Pawar",
+        "S. Anand",
+        "K. Vora",
+        "A. Holkar"
+      ],
+      "team": "SA Citizen Science Academy",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "ACA0043"
+    },
+    {
+      "id": "IUe8128",
+      "observers": [
+        "J. Rathod",
+        "A. Pawar",
+        "S. Anand",
+        "K. Vora",
+        "A. Holkar"
+      ],
+      "team": "SA Citizen Science Academy",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "ACA0052"
+    },
+    {
+      "id": "IUe8127",
+      "observers": [
+        "R. Shah",
+        "V. Keerthi",
+        "S. Jamadar",
+        "A. Reji"
+      ],
+      "team": "SA Citizen Science Lab - Cosmic Cruisers",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "CSC0564"
+    },
+    {
+      "id": "IUe8065",
+      "observers": [
+        "A. De",
+        "A. Manu"
+      ],
+      "team": "STEM & Space - Team Metis",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "SUM1972"
+    },
+    {
+      "id": "IUe8108",
+      "observers": [
+        "B. Shelke",
+        "R. Wagh",
+        "N. Mada",
+        "Y. Bhogarajula"
+      ],
+      "team": "The Beyonders",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "JSS2104"
+    },
+    {
+      "id": "IUe8094",
+      "observers": [
+        "S. Keswani"
+      ],
+      "team": "The Shriram Millennium School Gurgaon- Team 6",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "KES0001"
+    },
+    {
+      "id": "IUe8125",
+      "observers": [
+        "A. Kakkar",
+        "R. Dastidar",
+        "P. Miskin",
+        "D. Saidi",
+        "G. Gopan"
+      ],
+      "team": "SA Citizen - Team Arundhuti",
+      "country": "India/Tunisia",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "SAC6226"
+    },
+    {
+      "id": "IUe8068",
+      "observers": [
+        "H. Azougagh"
+      ],
+      "team": "Atlas Asteroid Hunters",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "AAH0419"
+    },
+    {
+      "id": "IUe8142",
+      "observers": [
+        "H. Azougagh"
+      ],
+      "team": "Atlas Asteroid Hunters",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "AAH0420"
+    },
+    {
+      "id": "IUe8067",
+      "observers": [
+        "T. Halabi"
+      ],
+      "team": "Andromeda",
+      "country": "Palestine",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "ATH2026"
+    },
+    {
+      "id": "IUe8054",
+      "observers": [
+        "F. Oliveira"
+      ],
+      "team": "Colégio Internato dos Carvalhos",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "CIC0001"
+    },
+    {
+      "id": "IUe8055",
+      "observers": [
+        "F. Oliveira"
+      ],
+      "team": "Colégio Internato dos Carvalhos",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "CIC0018"
+    },
+    {
+      "id": "IUe8059",
+      "observers": [
+        "P. Martins",
+        "J. Vieira",
+        "R. Bruno",
+        "S. Moreira",
+        "R. Rocha",
+        "R. Oliveira",
+        "M. Ferreira",
+        "L. Sousa",
+        "G. Soares",
+        "F. Ferreira"
+      ],
+      "team": "Escola Básica e Secundária de Pinheiro",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "PIN0017"
+    },
+    {
+      "id": "IUe8076",
+      "observers": [
+        "J. Jooste"
+      ],
+      "team": "WRAC - RSA",
+      "country": "South Africa",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "WRC0002"
+    },
+    {
+      "id": "IUe8155",
+      "observers": [
+        "D. Delgado",
+        "R. L"
+      ],
+      "team": "IES Politécnico Las Palmas",
+      "country": "Spain",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "PLP9001"
+    },
+    {
+      "id": "IUe8153",
+      "observers": [
+        "Y. Cheng",
+        "C. Yan"
+      ],
+      "team": "Asteroid Squad",
+      "country": "Taiwan",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "ASA0003"
+    },
+    {
+      "id": "IUe8081",
+      "observers": [
+        "K.Ersay",
+        "Y.Kitis"
+      ],
+      "team": "karabkbilsemspace",
+      "country": "Türkiye",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "KRB7861"
+    },
+    {
+      "id": "IUe8148",
+      "observers": [
+        "K.Ersay",
+        "Y.Kitis",
+        "Y.Ayr"
+      ],
+      "team": "karabkbilsemspace",
+      "country": "Türkiye",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "KRB7863"
+    },
+    {
+      "id": "IUe8144",
+      "observers": [
+        "P. Devine",
+        "R. Stano",
+        "R. McIver",
+        "A. Pickup",
+        "L. Stano",
+        "P. Stano"
+      ],
+      "team": "Astronomical Society of Edinburgh",
+      "country": "UK",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "ASE0551"
+    },
+    {
+      "id": "IUe8084",
+      "observers": [
+        "R. Skillman"
+      ],
+      "team": "Rocks in the Sky",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "RIS0824"
+    },
+    {
+      "id": "IUe8085",
+      "observers": [
+        "R. Skillman"
+      ],
+      "team": "Rocks in the Sky",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "RIS0825"
+    },
+    {
+      "id": "IUe8086",
+      "observers": [
+        "R. Skillman"
+      ],
+      "team": "Rocks in the Sky",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "RIS0826"
+    },
+    {
+      "id": "IUe8087",
+      "observers": [
+        "R. Skillman"
+      ],
+      "team": "Rocks in the Sky",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "RIS0827"
+    },
+    {
+      "id": "IUe8074",
+      "observers": [
+        "F. Smith",
+        "D. Smith"
+      ],
+      "team": "SmithFamilyOregon",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "ZYZ4422"
+    },
+    {
+      "id": "IUe8091",
+      "observers": [
+        "J. Philpot",
+        "D. Crowson"
+      ],
+      "team": "Space Rock Hounds",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "SRH1098"
+    },
+    {
+      "id": "IUe8149",
+      "observers": [
+        "J. Philpot",
+        "D. Crowson"
+      ],
+      "team": "Space Rock Hounds",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-13",
+      "imageSet": "SRH1099"
+    },
+    {
+      "id": "IUe8224",
+      "observers": [
+        "G. Rodriguez"
+      ],
+      "team": "Asociación Argentina “Amigos de la Astronomía” 2",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "AAA0252"
+    },
+    {
+      "id": "IUe8214",
+      "observers": [
+        "M. Albarr"
+      ],
+      "team": "Observatorio “Omega Centauri”",
+      "country": "Argentina",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "OOC0219"
+    },
+    {
+      "id": "IUe8223",
+      "observers": [
+        "A. Silva"
+      ],
+      "team": "Petro Astro Hunters II",
+      "country": "Brazil",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "AGA0005"
+    },
+    {
+      "id": "IUe8228",
+      "observers": [
+        "J. Sousa"
+      ],
+      "team": "Twilight Sparkle & Rainbow Dash",
+      "country": "Brazil",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "JFR4400"
+    },
+    {
+      "id": "IUe8163",
+      "observers": [
+        "A. China"
+      ],
+      "team": "China West Normal University team 2",
+      "country": "China",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "XSY0001"
+    },
+    {
+      "id": "IUe8227",
+      "observers": [
+        "S. Wang"
+      ],
+      "team": "Taurus",
+      "country": "China",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "WSM0403"
+    },
+    {
+      "id": "IUe8177",
+      "observers": [
+        "A.Sameh"
+      ],
+      "team": "Team Cassiopeia 2",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "AST0003"
+    },
+    {
+      "id": "IUe8218",
+      "observers": [
+        "D. Lamirel",
+        "J. Meyer"
+      ],
+      "team": "Astrosud",
+      "country": "France",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "OAA0050"
+    },
+    {
+      "id": "IUe8221",
+      "observers": [
+        "D. Lacour",
+        "D. Lamirel"
+      ],
+      "team": "Observatoire Astronomique Amateur d'Argelliers 2",
+      "country": "France",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "DLA0052"
+    },
+    {
+      "id": "IUe8185",
+      "observers": [
+        "H. G"
+      ],
+      "team": "Hainberg-Gymnasium Göttingen",
+      "country": "Germany",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "HGJ1001"
+    },
+    {
+      "id": "IUe8180",
+      "observers": [
+        "F. Awuni",
+        "W. Sewavi"
+      ],
+      "team": "Ghana Astronomical Science",
+      "country": "Ghana",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "GHA2000"
+    },
+    {
+      "id": "IUe8179",
+      "observers": [
+        "G. Justpa",
+        "E. Dzidzomu"
+      ],
+      "team": "Ghana Astronomical Science",
+      "country": "Ghana",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "LAW1002"
+    },
+    {
+      "id": "IUe8160",
+      "observers": [
+        "S. Bose",
+        "S. Nath",
+        "D. Barman",
+        "C. Amphi",
+        "L. Pradhan",
+        "S. Singha",
+        "P. Dhar",
+        "S. Behera",
+        "S. Barman"
+      ],
+      "team": "Asymmetric Stellar Hunters",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "ASH0106"
+    },
+    {
+      "id": "IUe8203",
+      "observers": [
+        "A. Podder"
+      ],
+      "team": "Propagation Citizen Science Group",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "BNM8888"
+    },
+    {
+      "id": "IUe8202",
+      "observers": [
+        "A. Podder"
+      ],
+      "team": "Propagation Citizen Science Group",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "ERT4444"
+    },
+    {
+      "id": "IUe8201",
+      "observers": [
+        "A. Podder"
+      ],
+      "team": "Propagation Citizen Science Group",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "FGH0000"
+    },
+    {
+      "id": "IUe8184",
+      "observers": [
+        "R. Logeshwaran",
+        "P. Krishna",
+        "B. Nandita",
+        "P. Dharanesh"
+      ],
+      "team": "SA Citizen Science Group - Libraries",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "SAL0042"
+    },
+    {
+      "id": "IUe8166",
+      "observers": [
+        "T. Damini",
+        "T. Daksha",
+        "S. Laksha",
+        "K. Vishnumurthi"
+      ],
+      "team": "The Geminian Stars",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "TGS2026"
+    },
+    {
+      "id": "IUe8164",
+      "observers": [
+        "S. Paul"
+      ],
+      "team": "The Pentagon",
+      "country": "India",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "SRI0001"
+    },
+    {
+      "id": "IUe8168",
+      "observers": [
+        "A. Kakkar",
+        "R. Dastidar",
+        "P. Miskin",
+        "D. Saidi",
+        "G. Gopan"
+      ],
+      "team": "SA Citizen - Team Arundhuti",
+      "country": "India/Tunisia",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "SAC6227"
+    },
+    {
+      "id": "IUe8190",
+      "observers": [
+        "V. Kihagi",
+        "L. Mwai"
+      ],
+      "team": "Asteroid Afronauts",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "AAK0003"
+    },
+    {
+      "id": "IUe8233",
+      "observers": [
+        "P. Ram",
+        "R. Sharma",
+        "S. Mahawar",
+        "S. Bhattarai"
+      ],
+      "team": "RASO",
+      "country": "Nepal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "UMC1005"
+    },
+    {
+      "id": "IUe8176",
+      "observers": [
+        "D. Yahaya",
+        "D. Ngounou",
+        "S. Salha",
+        "S. Yahaya",
+        "Y. Yahaya",
+        "W. Yahaya",
+        "N. Ngoulou"
+      ],
+      "team": "Niger Sky Surfers",
+      "country": "Niger",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "NSS8802"
+    },
+    {
+      "id": "IUe8169",
+      "observers": [
+        "C. Azevedo",
+        "R. Costa",
+        "F. Noversa"
+      ],
+      "team": "Colégio Luso Francês",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "CLF0004"
+    },
+    {
+      "id": "IUe8230",
+      "observers": [
+        "J. Carneiro",
+        "D. Oliveira",
+        "M. Ferreira",
+        "L. Vale",
+        "L. Cardoso",
+        "M. Santos",
+        "F. Silva"
+      ],
+      "team": "EB2.3 de Celeirós",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "AEC0011"
+    },
+    {
+      "id": "IUe8231",
+      "observers": [
+        "J. Carneiro",
+        "D. Oliveira",
+        "M. Ferreira",
+        "L. Vale",
+        "L. Cardoso",
+        "M. Santos",
+        "F. Silva"
+      ],
+      "team": "EB2.3 de Celeirós",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "AEC0019"
+    },
+    {
+      "id": "IUe8232",
+      "observers": [
+        "J. Carneiro",
+        "D. Oliveira",
+        "M. Ferreira",
+        "L. Vale",
+        "L. Cardoso",
+        "M. Santos",
+        "F. Silva"
+      ],
+      "team": "EB2.3 de Celeirós",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "AEC0022"
+    },
+    {
+      "id": "IUe8171",
+      "observers": [
+        "P. Martins"
+      ],
+      "team": "Escola Básica e Secundária de Pinheiro",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "PIN0016"
+    },
+    {
+      "id": "IUe8191",
+      "observers": [
+        "G. Martins"
+      ],
+      "team": "NUCLIO Space Hunters #2",
+      "country": "Portugal",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "GFM0186"
+    },
+    {
+      "id": "IUe8178",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "MNV0002"
+    },
+    {
+      "id": "IUe8206",
+      "observers": [
+        "V. Lazanu",
+        "I. Adam"
+      ],
+      "team": "Sirius Astronomical Association",
+      "country": "Romania",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "SAA0005"
+    },
+    {
+      "id": "IUe8229",
+      "observers": [
+        "L. Acuyo",
+        "K. Castellano",
+        "O. Gonz"
+      ],
+      "team": "CEIP Príncipe Felipe",
+      "country": "Spain",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "CPF0004"
+    },
+    {
+      "id": "IUe8207",
+      "observers": [
+        "R. Skillman"
+      ],
+      "team": "Rocks in the Sky",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "RIS0829"
+    },
+    {
+      "id": "IUe8219",
+      "observers": [
+        "F. Smith",
+        "D. Smith"
+      ],
+      "team": "SmithFamilyOregon",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "SMD1119"
+    },
+    {
+      "id": "IUe8226",
+      "observers": [
+        "D. Fairweather"
+      ],
+      "team": "VCHS Astronomy",
+      "country": "USA",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2026-01-17",
+      "imageSet": "VCS0001"
+    }
+  ]
+}

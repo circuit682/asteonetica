@@ -25,13 +25,13 @@ export async function POST(req: Request) {
     defval: ""
   })
 
-  const observationsDir = path.join(
+  const campaignsDir = path.join(
     process.cwd(),
-    "content/observations"
+    "content/campaigns"
   )
 
-  if (!fs.existsSync(observationsDir)) {
-    fs.mkdirSync(observationsDir, { recursive: true })
+  if (!fs.existsSync(campaignsDir)) {
+    fs.mkdirSync(campaignsDir, { recursive: true })
   }
 
   const eastAfrica = ["Kenya", "Uganda", "Tanzania", "Rwanda", "Ethiopia"]
@@ -42,25 +42,37 @@ export async function POST(req: Request) {
     "Egypt", "Namibia", "Botswana", "Senegal"
   ]
 
+  const campaign = "JanFeb26"
+  const campaignFileName = "janfeb26.json"
+  const defaultStart = "2026-01-12"
+  const defaultEnd = "2026-02-06"
+
   console.log("Total spreadsheet rows:", rawRows.length)
 
-  let count = 0
+  const observations: Array<{
+    id: string
+    observers: string[]
+    team: string
+    country: string
+    status: string
+    date: string
+    imageSet: string
+    region: string
+  }> = []
 
   for (const cells of rawRows) {
 
-    const rowText = cells
-      .map(c => String(c ?? "").trim())
-      .filter(Boolean)
-      .join(" ")
+    const rowText = cells.join(" ")
 
-    // detect asteroid ID
     const idMatch = rowText.match(/IU[a-zA-Z0-9]+/)
-    if (!idMatch) continue
+    const imageMatch = rowText.match(/[A-Z]{3}[0-9]{4}/)
+
+    if (!idMatch || !imageMatch) continue
 
     const id = idMatch[0]
 
     // remove ID from the row to isolate names
-    let remainder = rowText.replace(id, "").trim()
+    const remainder = rowText.replace(id, "").trim()
 
     // observers appear before the team name
     const observerMatch = remainder.match(/^([A-Z]\.\s?[A-Za-z]+(?:,\s*[A-Z]\.\s?[A-Za-z]+)*)/)
@@ -72,8 +84,6 @@ export async function POST(req: Request) {
         .split(",")
         .map(o => o.trim())
         .filter(Boolean)
-
-      remainder = remainder.replace(observerMatch[1], "").trim()
     }
 
     const team = String(cells[3] ?? "").trim()
@@ -95,34 +105,45 @@ export async function POST(req: Request) {
 
     const imageSet = String(cells[7] ?? "").trim()
 
+    let region = "global"
+    if (africa.includes(country)) region = "africa"
+    if (eastAfrica.includes(country)) region = "east_africa"
+
     const observation = {
       id,
       observers,
       team,
       country,
+      region,
       status,
       date,
-      imageSet,
-      campaign: "JanFeb26"
+      imageSet
     }
 
-    const filePath = path.join(
-      observationsDir,
-      `${id}.json`
-    )
-
-    fs.writeFileSync(
-      filePath,
-      JSON.stringify(observation, null, 2)
-    )
-
-    count++
+    observations.push(observation)
 
   }
 
+  const dates = observations
+    .map((item) => item.date)
+    .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value))
+    .sort()
+
+  const dataset = {
+    campaign,
+    start: dates[0] ?? defaultStart,
+    end: dates[dates.length - 1] ?? defaultEnd,
+    totalObservations: observations.length,
+    observations
+  }
+
+  const datasetPath = path.join(campaignsDir, campaignFileName)
+  fs.writeFileSync(datasetPath, JSON.stringify(dataset, null, 2))
+
   return NextResponse.json({
     success: true,
-    records: count
+    records: observations.length,
+    file: campaignFileName
   })
 
 }
