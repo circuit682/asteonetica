@@ -13,6 +13,14 @@ type ImportSummary = {
   importedAt: string;
 };
 
+type CampaignPreview = {
+  fileName: string;
+  totalObservations: number;
+  afronautDetections: number;
+  panAfricanDetections: number;
+  uniqueTeams: number;
+};
+
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default function MissionControl() {
@@ -22,6 +30,9 @@ export default function MissionControl() {
   const [status, setStatus] = useState("Idle");
   const [notice, setNotice] = useState<Notice | null>(null);
   const [lastImport, setLastImport] = useState<ImportSummary | null>(null);
+  const [preview, setPreview] = useState<CampaignPreview | null>(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
 
   const [form, setForm] = useState({
     id: "",
@@ -38,7 +49,52 @@ export default function MissionControl() {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  async function uploadSpreadsheet(file: File) {
+  async function previewCampaign(file: File) {
+    try {
+      setPreviewLoading(true);
+      setNotice(null);
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/campaign-preview", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        setNotice({
+          type: "error",
+          message: result.error || "Failed to preview campaign file."
+        });
+        setPreview(null);
+        return;
+      }
+
+      setPreview({
+        fileName: file.name,
+        totalObservations: result.totalObservations,
+        afronautDetections: result.afronautDetections,
+        panAfricanDetections: result.panAfricanDetections,
+        uniqueTeams: result.uniqueTeams
+      });
+
+      setPendingFile(file);
+    } catch {
+      setNotice({
+        type: "error",
+        message: "Failed to preview campaign file due to a network error."
+      });
+      setPreview(null);
+    } finally {
+      setPreviewLoading(false);
+    }
+  }
+
+  async function confirmImportCampaign() {
+    if (!pendingFile) return;
 
     try {
       setNotice(null);
@@ -48,7 +104,7 @@ export default function MissionControl() {
       await wait(220);
 
       const data = new FormData();
-      data.append("file", file);
+      data.append("file", pendingFile);
 
       setStatus("Sending campaign file to parser...");
       setProgress(30);
@@ -70,6 +126,8 @@ export default function MissionControl() {
         setStatus(message);
         setProgress(0);
         setNotice({ type: "error", message });
+        setPreview(null);
+        setPendingFile(null);
         return;
       }
 
@@ -81,10 +139,13 @@ export default function MissionControl() {
         message: `Campaign import complete: ${processed} observations processed.`
       });
       setLastImport({
-        fileName: file.name,
+        fileName: pendingFile.name,
         records: processed,
         importedAt: new Date().toLocaleString()
       });
+
+      setPreview(null);
+      setPendingFile(null);
     } catch {
       setProgress(0);
       setStatus("Upload failed.");
@@ -92,9 +153,16 @@ export default function MissionControl() {
         type: "error",
         message: "Upload failed due to a network or server error."
       });
+      setPreview(null);
+      setPendingFile(null);
     } finally {
       setUploading(false);
     }
+  }
+
+  function cancelPreview() {
+    setPreview(null);
+    setPendingFile(null);
   }
 
   async function submitObservation() {
@@ -183,7 +251,7 @@ export default function MissionControl() {
             const file = e.target.files?.[0];
             if (!file) return;
 
-            await uploadSpreadsheet(file);
+            await previewCampaign(file);
             e.target.value = "";
 
           }}
@@ -195,37 +263,84 @@ export default function MissionControl() {
             Status
           </p>
 
-          <p className="text-sm text-white/80 min-h-6">
-            {status}
-          </p>
+          {preview ? (
+            <div className="space-y-3">
+              <div className="rounded-lg border border-[rgba(0,255,156,0.25)] bg-[rgba(0,255,156,0.08)] p-4 space-y-2">
+                <p className="text-xs uppercase tracking-[0.18em] text-[var(--radar-green)] mb-3">
+                  Campaign Preview
+                </p>
+                <div className="grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <p className="text-white/50 text-xs">Total Observations</p>
+                    <p className="text-white text-lg font-light">{preview.totalObservations}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/50 text-xs">Afronaut Detections</p>
+                    <p className="text-white text-lg font-light">{preview.afronautDetections}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/50 text-xs">Pan-African Detections</p>
+                    <p className="text-white text-lg font-light">{preview.panAfricanDetections}</p>
+                  </div>
+                  <div>
+                    <p className="text-white/50 text-xs">Unique Teams</p>
+                    <p className="text-white text-lg font-light">{preview.uniqueTeams}</p>
+                  </div>
+                </div>
+              </div>
 
-          <div className="w-full h-3 rounded-full bg-black/45 border border-white/10 overflow-hidden">
-            <div
-              className="h-full bg-[linear-gradient(90deg,var(--radar-green),#59f2b7)] transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          <div className="text-xs text-white/45 space-y-1">
-            <p>{progress >= 10 ? "[x]" : "[ ]"} Uploading file...</p>
-            <p>{progress >= 30 ? "[x]" : "[ ]"} Parsing observations...</p>
-            <p>{progress >= 70 ? "[x]" : "[ ]"} Generating dataset...</p>
-            <p>{progress >= 100 ? "[x]" : "[ ]"} Campaign dataset created</p>
-          </div>
-
-          {uploading && (
-            <p className="text-xs text-[var(--radar-green)]/80 animate-pulse">
-              Import console active...
-            </p>
-          )}
-
-          {lastImport && (
-            <div className="mt-3 rounded-lg border border-white/10 bg-black/25 p-3 text-xs text-white/65 space-y-1">
-              <p className="uppercase tracking-widest text-white/45">Last Import Summary</p>
-              <p>File: {lastImport.fileName}</p>
-              <p>Records: {lastImport.records}</p>
-              <p>Imported: {lastImport.importedAt}</p>
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={confirmImportCampaign}
+                  disabled={uploading}
+                  className="flex-1 px-4 py-2 rounded bg-[var(--radar-green)]/20 border border-[var(--radar-green)] text-[var(--radar-green)] hover:bg-[var(--radar-green)]/30 disabled:opacity-50 text-sm font-light"
+                >
+                  {uploading ? "Importing..." : "Confirm Import"}
+                </button>
+                <button
+                  onClick={cancelPreview}
+                  disabled={uploading}
+                  className="flex-1 px-4 py-2 rounded bg-white/10 border border-white/20 text-white/70 hover:bg-white/20 disabled:opacity-50 text-sm font-light"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
+          ) : (
+            <>
+              <p className="text-sm text-white/80 min-h-6">
+                {status}
+              </p>
+
+              <div className="w-full h-3 rounded-full bg-black/45 border border-white/10 overflow-hidden">
+                <div
+                  className="h-full bg-[linear-gradient(90deg,var(--radar-green),#59f2b7)] transition-all duration-500"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+
+              <div className="text-xs text-white/45 space-y-1">
+                <p>{progress >= 10 ? "[x]" : "[ ]"} Uploading file...</p>
+                <p>{progress >= 30 ? "[x]" : "[ ]"} Parsing observations...</p>
+                <p>{progress >= 70 ? "[x]" : "[ ]"} Generating dataset...</p>
+                <p>{progress >= 100 ? "[x]" : "[ ]"} Campaign dataset created</p>
+              </div>
+
+              {uploading && (
+                <p className="text-xs text-[var(--radar-green)]/80 animate-pulse">
+                  Import console active...
+                </p>
+              )}
+
+              {lastImport && (
+                <div className="mt-3 rounded-lg border border-white/10 bg-black/25 p-3 text-xs text-white/65 space-y-1">
+                  <p className="uppercase tracking-widest text-white/45">Last Import Summary</p>
+                  <p>File: {lastImport.fileName}</p>
+                  <p>Records: {lastImport.records}</p>
+                  <p>Imported: {lastImport.importedAt}</p>
+                </div>
+              )}
+            </>
           )}
         </div>
 
