@@ -23,7 +23,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         scrolled
-          ? "backdrop-blur-xl bg-white/5 border border-white/10 border-t-0 shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
+          ? "dashboard-nav-shell"
           : "bg-transparent"
       }`}
     >
@@ -67,7 +67,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden px-6 pb-4 flex flex-col gap-4 text-sm tracking-wide bg-white/10 backdrop-blur-xl"
+            className="md:hidden px-6 pb-4 flex flex-col gap-4 text-sm tracking-wide dashboard-nav-panel"
           >
             <NavLink href="/afronauts">Afronauts</NavLink>
             <NavLink href="/observatory">Observatory</NavLink>

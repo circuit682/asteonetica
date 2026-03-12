@@ -136,8 +136,8 @@ className="relative max-w-3xl"
           delay: i * 0.08
         }}
         viewport={{ once: true }}
-        whileHover={{ y: -6 }}
-        className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 text-center shadow-[0_0_18px_rgba(0,255,170,0.06)]"
+        whileHover={{ y: -6, scale: 1.01 }}
+        className="dashboard-card p-6 text-center"
       >
 
         <h3 className="text-white/90 text-sm md:text-base mb-3 tracking-wide">

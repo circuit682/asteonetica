@@ -37,9 +37,10 @@ function StatCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -3, scale: 1.01 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-1"
+      className="dashboard-card p-6 flex flex-col gap-1"
     >
       <span className="text-white/40 text-xs uppercase tracking-widest">{label}</span>
       <span className="text-3xl font-light text-white">{value}</span>
@@ -66,9 +67,10 @@ function LeaderRow({
     <motion.div
       initial={{ opacity: 0, x: -16 }}
       whileInView={{ opacity: 1, x: 0 }}
+      whileHover={{ x: 2 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: delay ?? 0 }}
-      className="flex flex-col gap-1"
+      className="flex flex-col gap-1 transition-colors duration-200 hover:text-[var(--radar-green)]"
     >
       <div className="flex justify-between text-sm">
         <span className="text-white/70">
@@ -139,7 +141,7 @@ export default function ObservatoryPage() {
             <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
               Detections by Region
             </h2>
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex-1">
+            <div className="dashboard-card p-6 flex-1">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 h-full content-start">
                 {Object.entries(byRegion)
                   .sort((a, b) => b[1] - a[1])
@@ -159,7 +161,7 @@ export default function ObservatoryPage() {
             <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
               Detection Timeline
             </h2>
-              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-4 flex-1">
+              <div className="dashboard-card p-6 flex flex-col gap-4 flex-1">
               {byDate.map(({ date, count }, i) => (
                 <LeaderRow
                   key={date}
@@ -187,7 +189,7 @@ export default function ObservatoryPage() {
                 African teams data
               </p>
             </div>
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-5 flex-1">
+            <div className="dashboard-card p-6 flex flex-col gap-5 flex-1">
               {teams.map(({ team, country, count }, i) => (
                 <LeaderRow
                   key={team}
@@ -205,7 +207,7 @@ export default function ObservatoryPage() {
             <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
               African Countries
             </h2>
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-5 flex-1">
+            <div className="dashboard-card p-6 flex flex-col gap-5 flex-1">
               {countries.map(({ country, count }, i) => (
                 <LeaderRow
                   key={country}
@@ -229,7 +231,7 @@ export default function ObservatoryPage() {
         <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
           African team Roaster.
         </p>
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6">
+        <div className="dashboard-card p-6">
           <div className="flex flex-wrap gap-3">
             {observers.map((name) => (
               <motion.span

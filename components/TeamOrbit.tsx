@@ -173,16 +173,16 @@ export default function TeamOrbit() {
                     type="button"
                     onMouseEnter={() => isFacingForward && setHoveredIndex(i)}
                     onMouseLeave={() => setHoveredIndex(null)}
-                    className="w-36 sm:w-44 md:w-52 rounded-2xl border bg-black/35 backdrop-blur-md p-3 sm:p-4 text-center flex flex-col items-center justify-center pointer-events-auto"
+                    className="dashboard-card-soft w-36 sm:w-44 md:w-52 rounded-2xl backdrop-blur-md p-3 sm:p-4 text-center flex flex-col items-center justify-center pointer-events-auto"
                     style={{
                       borderColor:
                         (hoveredIndex === i || isFrontMost) && isFacingForward
-                          ? `rgba(${member.color},0.95)`
-                          : "rgba(255,255,255,0.14)",
+                          ? `rgba(${member.color},0.72)`
+                          : "rgba(0,255,156,0.14)",
                       boxShadow:
                         (hoveredIndex === i || isFrontMost) && isFacingForward
-                          ? `0 0 26px rgba(${member.color},0.75), 0 0 40px rgba(${member.color},0.4)`
-                          : "0 8px 22px rgba(0,0,0,0.28)",
+                          ? `0 0 16px rgba(${member.color},0.38), 0 0 26px rgba(${member.color},0.18), 0 8px 22px rgba(0,0,0,0.26)`
+                          : "0 7px 20px rgba(0,0,0,0.26)",
                     }}
                   >
                     <img
