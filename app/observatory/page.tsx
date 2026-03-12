@@ -5,10 +5,10 @@ import FooterSection from "@/components/FooterSection"
 import data from "@/content/campaigns/janfeb26.json"
 import {
   afronautDetections,
-  africanDetections,
-  teamLeaderboard,
-  countryLeaderboard,
-  uniqueObservers,
+  africanOnlyObservations,
+  africaTeamLeaderboard,
+  africaCountryLeaderboard,
+  uniqueAfricanObservers,
   detectionsByRegion,
   detectionsByDate,
   type CampaignDataset
@@ -17,10 +17,10 @@ import {
 const campaign = data as CampaignDataset
 
 const afronauts  = afronautDetections(campaign)
-const african    = africanDetections(campaign)
-const teams      = teamLeaderboard(campaign)
-const countries  = countryLeaderboard(campaign)
-const observers  = uniqueObservers(campaign)
+const african    = africanOnlyObservations(campaign)
+const teams      = africaTeamLeaderboard(campaign)
+const countries  = africaCountryLeaderboard(campaign)
+const observers  = uniqueAfricanObservers(campaign)
 const byRegion   = detectionsByRegion(campaign)
 const byDate     = detectionsByDate(campaign)
 
@@ -92,6 +92,7 @@ function LeaderRow({
 
 export default function ObservatoryPage() {
   const total = campaign.totalObservations
+  const africanTotal = Math.max(african.length, 1)
 
   return (
     <main className="min-h-screen">
@@ -131,79 +132,92 @@ export default function ObservatoryPage() {
         </div>
       </section>
 
-      {/* REGION BREAKDOWN */}
-      <section className="px-6 md:px-12 max-w-5xl mx-auto py-10">
-        <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
-          Detections by Region
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {Object.entries(byRegion)
-            .sort((a, b) => b[1] - a[1])
-            .map(([region, count]) => (
-              <StatCard
-                key={region}
-                label={region.replace("_", " ")}
-                value={count}
-                sub={`${Math.round((count / total) * 100)}%`}
-              />
-            ))}
+      {/* REGION + TIMELINE */}
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-10">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
+          <div className="h-full flex flex-col">
+            <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
+              Detections by Region
+            </h2>
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex-1">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 h-full content-start">
+                {Object.entries(byRegion)
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([region, count]) => (
+                    <StatCard
+                      key={region}
+                      label={region.replace("_", " ")}
+                      value={count}
+                      sub={`${Math.round((count / total) * 100)}%`}
+                    />
+                  ))}
+              </div>
+            </div>
+          </div>
+
+            <div className="h-full flex flex-col">
+            <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
+              Detection Timeline
+            </h2>
+              <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-4 flex-1">
+              {byDate.map(({ date, count }, i) => (
+                <LeaderRow
+                  key={date}
+                  rank={i + 1}
+                  label={date}
+                  count={count}
+                  total={total}
+                  delay={i * 0.05}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* TEAM LEADERBOARD */}
-      <section className="px-6 md:px-12 max-w-5xl mx-auto py-10">
-        <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
-          Team Leaderboard
-        </h2>
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-5">
-          {teams.map(({ team, count }, i) => (
-            <LeaderRow
-              key={team}
-              rank={i + 1}
-              label={team}
-              count={count}
-              total={total}
-              delay={i * 0.06}
-            />
-          ))}
-        </div>
-      </section>
+      {/* TEAM + COUNTRY LEADERBOARDS */}
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-10">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
+          <div className="h-full flex flex-col">
+            <div className="flex items-baseline justify-between gap-4 mb-6">
+              <h2 className="text-xl font-light tracking-wide text-white/60 uppercase">
+                Team Leaderboard
+              </h2>
+              <p className="text-white/40 text-xs uppercase tracking-wider whitespace-nowrap">
+                African teams data
+              </p>
+            </div>
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-5 flex-1">
+              {teams.map(({ team, country, count }, i) => (
+                <LeaderRow
+                  key={team}
+                  rank={i + 1}
+                  label={`${team} (${country})`}
+                  count={count}
+                  total={africanTotal}
+                  delay={i * 0.06}
+                />
+              ))}
+            </div>
+          </div>
 
-      {/* COUNTRY LEADERBOARD */}
-      <section className="px-6 md:px-12 max-w-5xl mx-auto py-10">
-        <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
-          Countries
-        </h2>
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-5">
-          {countries.map(({ country, count }, i) => (
-            <LeaderRow
-              key={country}
-              rank={i + 1}
-              label={country}
-              count={count}
-              total={total}
-              delay={i * 0.05}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* DETECTIONS TIMELINE */}
-      <section className="px-6 md:px-12 max-w-5xl mx-auto py-10">
-        <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
-          Detection Timeline
-        </h2>
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-4">
-          {byDate.map(({ date, count }, i) => (
-            <LeaderRow
-              key={date}
-              rank={i + 1}
-              label={date}
-              count={count}
-              total={total}
-              delay={i * 0.05}
-            />
-          ))}
+          <div className="h-full flex flex-col">
+            <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
+              African Countries
+            </h2>
+            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6 flex flex-col gap-5 flex-1">
+              {countries.map(({ country, count }, i) => (
+                <LeaderRow
+                  key={country}
+                  rank={i + 1}
+                  label={country}
+                  count={count}
+                  total={africanTotal}
+                  delay={i * 0.05}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -212,6 +226,9 @@ export default function ObservatoryPage() {
         <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
           Observer Roster &mdash; {observers.length} participants
         </h2>
+        <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
+          African team Roaster.
+        </p>
         <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl p-6">
           <div className="flex flex-wrap gap-3">
             {observers.map((name) => (
