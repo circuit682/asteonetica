@@ -1,8 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useEffect, useMemo, useState } from "react"
 import FooterSection from "@/components/FooterSection"
-import data from "@/content/campaigns/janfeb26.json"
 import {
   afronautDetections,
   africanOnlyObservations,
@@ -14,15 +14,12 @@ import {
   type CampaignDataset
 } from "@/lib/analytics"
 
-const campaign = data as CampaignDataset
-
-const afronauts  = afronautDetections(campaign)
-const african    = africanOnlyObservations(campaign)
-const teams      = africaTeamLeaderboard(campaign)
-const countries  = africaCountryLeaderboard(campaign)
-const observers  = uniqueAfricanObservers(campaign)
-const byRegion   = detectionsByRegion(campaign)
-const byDate     = detectionsByDate(campaign)
+type LatestCampaignResponse = {
+  success: boolean
+  file?: string
+  campaign?: CampaignDataset
+  error?: string
+}
 
 function StatCard({
   label,
@@ -93,8 +90,96 @@ function LeaderRow({
 }
 
 export default function ObservatoryPage() {
-  const total = campaign.totalObservations
+  const [campaign, setCampaign] = useState<CampaignDataset | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [loadMessage, setLoadMessage] = useState("Loading latest campaign dataset...")
+
+  useEffect(() => {
+    let active = true
+
+    async function loadCampaign() {
+      setLoading(true)
+
+      try {
+        const response = await fetch("/api/campaign-latest", { cache: "no-store" })
+
+        if (!active) return
+
+        if (response.status === 404) {
+          setCampaign(null)
+          setLoadMessage("Observatory is under construction. Upload a campaign file in Mission Control to populate live metrics.")
+          return
+        }
+
+        if (!response.ok) {
+          setCampaign(null)
+          setLoadMessage("Unable to load the latest campaign right now.")
+          return
+        }
+
+        const payload = (await response.json()) as LatestCampaignResponse
+
+        if (!payload.campaign) {
+          setCampaign(null)
+          setLoadMessage("No active campaign dataset found.")
+          return
+        }
+
+        setCampaign(payload.campaign)
+      } catch {
+        if (!active) return
+
+        setCampaign(null)
+        setLoadMessage("Unable to load the latest campaign right now.")
+      } finally {
+        if (active) setLoading(false)
+      }
+    }
+
+    loadCampaign()
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const total = campaign?.totalObservations ?? 0
+  const safeTotal = Math.max(total, 1)
+
+  const afronauts = useMemo(() => {
+    return campaign ? afronautDetections(campaign) : []
+  }, [campaign])
+
+  const african = useMemo(() => {
+    return campaign ? africanOnlyObservations(campaign) : []
+  }, [campaign])
+
+  const teams = useMemo(() => {
+    return campaign ? africaTeamLeaderboard(campaign) : []
+  }, [campaign])
+
+  const countries = useMemo(() => {
+    return campaign ? africaCountryLeaderboard(campaign) : []
+  }, [campaign])
+
+  const observers = useMemo(() => {
+    return campaign ? uniqueAfricanObservers(campaign) : []
+  }, [campaign])
+
+  const byRegion = useMemo(() => {
+    return campaign ? detectionsByRegion(campaign) : {}
+  }, [campaign])
+
+  const byDate = useMemo(() => {
+    return campaign ? detectionsByDate(campaign) : []
+  }, [campaign])
+
+  const regionEntries = useMemo(() => {
+    return Object.entries(byRegion).sort((a, b) => b[1] - a[1])
+  }, [byRegion])
+
   const africanTotal = Math.max(african.length, 1)
+  const underConstruction = !campaign
 
   return (
     <main className="min-h-screen">
@@ -118,19 +203,32 @@ export default function ObservatoryPage() {
           </h1>
           <p className="text-white/60 text-base md:text-lg leading-relaxed">
             Research metrics for the{" "}
-            <span className="text-white/90">{campaign.campaign}</span> campaign
-            &mdash; {campaign.start} to {campaign.end}
+            <span className="text-white/90">{campaign?.campaign ?? "No Active Campaign"}</span> campaign
+            {campaign ? ` — ${campaign.start} to ${campaign.end}` : " — Awaiting dataset"}
           </p>
         </motion.div>
       </section>
 
+      {underConstruction && (
+        <section className="px-6 md:px-12 max-w-6xl mx-auto pb-2">
+          <div className="dashboard-card p-5">
+            <p className="text-xs uppercase tracking-[0.18em] text-[var(--radar-green)] mb-2">
+              Under Construction
+            </p>
+            <p className="text-white/65 text-sm">
+              {loading ? "Loading latest campaign dataset..." : loadMessage}
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* HEADLINE STATS */}
       <section className="px-6 md:px-12 max-w-5xl mx-auto py-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard label="Total Detections" value={total} />
-          <StatCard label="Afronaut Detections" value={afronauts.length} sub={`${Math.round((afronauts.length / total) * 100)}% of campaign`} />
-          <StatCard label="Pan-African Detections" value={african.length} sub={`${Math.round((african.length / total) * 100)}% of campaign`} />
-          <StatCard label="Unique Observers" value={observers.length} />
+          <StatCard label="Total Detections" value={underConstruction ? "--" : total} />
+          <StatCard label="Afronaut Detections" value={underConstruction ? "--" : afronauts.length} sub={underConstruction ? "Awaiting import" : `${Math.round((afronauts.length / safeTotal) * 100)}% of campaign`} />
+          <StatCard label="Pan-African Detections" value={underConstruction ? "--" : african.length} sub={underConstruction ? "Awaiting import" : `${Math.round((african.length / safeTotal) * 100)}% of campaign`} />
+          <StatCard label="Unique Observers" value={underConstruction ? "--" : observers.length} />
         </div>
       </section>
 
@@ -143,35 +241,39 @@ export default function ObservatoryPage() {
             </h2>
             <div className="dashboard-card p-6 flex-1">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 h-full content-start">
-                {Object.entries(byRegion)
-                  .sort((a, b) => b[1] - a[1])
-                  .map(([region, count]) => (
+                {regionEntries.length > 0 ? regionEntries.map(([region, count]) => (
                     <StatCard
                       key={region}
                       label={region.replace("_", " ")}
                       value={count}
-                      sub={`${Math.round((count / total) * 100)}%`}
+                      sub={`${Math.round((count / safeTotal) * 100)}%`}
                     />
-                  ))}
+                  )) : (
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <div key={`region-skeleton-${i}`} className="rounded-xl border border-white/10 bg-white/[0.03] h-[108px] animate-pulse" />
+                  ))
+                )}
               </div>
             </div>
           </div>
 
-            <div className="h-full flex flex-col">
+          <div className="h-full flex flex-col">
             <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
               Detection Timeline
             </h2>
-              <div className="dashboard-card p-6 flex flex-col gap-4 flex-1">
-              {byDate.map(({ date, count }, i) => (
-                <LeaderRow
-                  key={date}
-                  rank={i + 1}
-                  label={date}
-                  count={count}
-                  total={total}
-                  delay={i * 0.05}
-                />
-              ))}
+            <div className="dashboard-card p-6 flex flex-col gap-4 flex-1">
+              {byDate.length > 0 ? byDate.map(({ date, count }, i) => (
+                  <LeaderRow
+                    key={date}
+                    rank={i + 1}
+                    label={date}
+                    count={count}
+                    total={safeTotal}
+                    delay={i * 0.05}
+                  />
+                )) : (
+                <p className="text-sm text-white/50">No timeline data yet.</p>
+              )}
             </div>
           </div>
         </div>
@@ -190,7 +292,7 @@ export default function ObservatoryPage() {
               </p>
             </div>
             <div className="dashboard-card p-6 flex flex-col gap-5 flex-1">
-              {teams.map(({ team, country, count }, i) => (
+              {teams.length > 0 ? teams.map(({ team, country, count }, i) => (
                 <LeaderRow
                   key={team}
                   rank={i + 1}
@@ -199,7 +301,9 @@ export default function ObservatoryPage() {
                   total={africanTotal}
                   delay={i * 0.06}
                 />
-              ))}
+              )) : (
+                <p className="text-sm text-white/50">No African team data available yet.</p>
+              )}
             </div>
           </div>
 
@@ -208,7 +312,7 @@ export default function ObservatoryPage() {
               African Countries
             </h2>
             <div className="dashboard-card p-6 flex flex-col gap-5 flex-1">
-              {countries.map(({ country, count }, i) => (
+              {countries.length > 0 ? countries.map(({ country, count }, i) => (
                 <LeaderRow
                   key={country}
                   rank={i + 1}
@@ -217,7 +321,9 @@ export default function ObservatoryPage() {
                   total={africanTotal}
                   delay={i * 0.05}
                 />
-              ))}
+              )) : (
+                <p className="text-sm text-white/50">No African country data available yet.</p>
+              )}
             </div>
           </div>
         </div>
@@ -232,20 +338,24 @@ export default function ObservatoryPage() {
           African team Roaster.
         </p>
         <div className="dashboard-card p-6">
-          <div className="flex flex-wrap gap-3">
-            {observers.map((name) => (
-              <motion.span
-                key={name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3 }}
-                className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/60 text-xs"
-              >
-                {name}
-              </motion.span>
-            ))}
-          </div>
+          {observers.length > 0 ? (
+            <div className="flex flex-wrap gap-3">
+              {observers.map((name) => (
+                <motion.span
+                  key={name}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3 }}
+                  className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/60 text-xs"
+                >
+                  {name}
+                </motion.span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-white/50">Observer roster will appear after campaign import.</p>
+          )}
         </div>
       </section>
 

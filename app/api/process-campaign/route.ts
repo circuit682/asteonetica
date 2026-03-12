@@ -5,6 +5,20 @@ import * as XLSX from "xlsx"
 
 export const dynamic = "force-dynamic"
 
+type LatestCampaignPointer = {
+  file: string
+  campaign: string
+  updatedAt: string
+}
+
+function sanitizeCampaignName(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+}
+
 export async function POST(req: Request) {
 
   const formData = await req.formData()
@@ -42,8 +56,12 @@ export async function POST(req: Request) {
     "Egypt", "Namibia", "Botswana", "Senegal"
   ]
 
-  const campaign = "JanFeb26"
-  const campaignFileName = "janfeb26.json"
+  const campaign = path.parse(file.name).name || "Campaign"
+  const campaignSlug = sanitizeCampaignName(campaign) || "campaign"
+  const now = new Date().toISOString()
+  const timestamp = now.replace(/[:.]/g, "-")
+  const campaignFileName = `${campaignSlug}-${timestamp}.json`
+  const latestPointerFileName = "latest.json"
   const defaultStart = "2026-01-12"
   const defaultEnd = "2026-02-06"
 
@@ -138,7 +156,16 @@ export async function POST(req: Request) {
   }
 
   const datasetPath = path.join(campaignsDir, campaignFileName)
+  const latestPointerPath = path.join(campaignsDir, latestPointerFileName)
   fs.writeFileSync(datasetPath, JSON.stringify(dataset, null, 2))
+
+  const pointer: LatestCampaignPointer = {
+    file: campaignFileName,
+    campaign,
+    updatedAt: now
+  }
+
+  fs.writeFileSync(latestPointerPath, JSON.stringify(pointer, null, 2))
 
   return NextResponse.json({
     success: true,
