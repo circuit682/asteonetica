@@ -73,7 +73,7 @@ className="relative max-w-3xl"
 
 
 <h1 className="text-5xl md:text-6xl font-light tracking-wide mb-8">
-  The Afronauts
+  Asteroid Afronauts
 </h1>
 
 <p className="text-white/70 text-lg md:text-xl leading-relaxed">

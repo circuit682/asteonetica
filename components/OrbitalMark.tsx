@@ -42,14 +42,16 @@ export default function OrbitalMark() {
       animate={{ rotate: 360 }}
       transition={{ repeat: Infinity, duration: 90, ease: "linear" }}
       whileHover={{ rotate: 15 }}
-      className="w-40 h-40"
+      className="relative w-52 h-52 md:w-64 md:h-64"
     >
+      <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(0,255,156,0.22),rgba(0,255,156,0.08)_38%,transparent_68%)] blur-2xl opacity-90" />
+
       <motion.svg
         viewBox="0 0 200 200"
-        className="w-full h-full"
+        className="relative z-10 w-full h-full drop-shadow-[0_0_14px_rgba(0,255,156,0.34)]"
         animate={
           react
-            ? { scale: 1.04 }
+            ? { scale: 1.05 }
             : { scale: 1 }
         }
         transition={{ duration: motionTimings.ambient, ease: "linear" }}
@@ -58,27 +60,27 @@ export default function OrbitalMark() {
           cx={center}
           cy={center}
           r={outerOrbitRadius}
-          stroke="white"
+          stroke="rgba(130,255,210,0.95)"
           strokeWidth="2"
           fill="none"
-          opacity={react ? 0.9 : 0.6}
+          opacity={react ? 1 : 0.78}
         />
 
         <circle
           cx={center}
           cy={center}
           r={innerOrbitRadius}
-          stroke="white"
+          stroke="rgba(120,255,202,0.82)"
           strokeWidth="1.5"
           fill="none"
-          opacity="0.35"
+          opacity="0.55"
         />
 
         <motion.circle
           cx={center}
           cy={center}
           r="5"
-          fill="white"
+          fill="rgba(204,255,236,1)"
           animate={{ opacity: [0.8, 1, 0.8] }}
           transition={{ duration: 4, repeat: Infinity }}
         />
@@ -91,8 +93,8 @@ export default function OrbitalMark() {
               cx={x}
               cy={y}
               r={nodeRadius}
-              fill="white"
-              opacity="0.75"
+              fill="rgba(180,255,228,0.96)"
+              opacity="0.95"
             />
           );
         })}
@@ -105,8 +107,8 @@ export default function OrbitalMark() {
               cx={x}
               cy={y}
               r={nodeRadius - 1}
-              fill="white"
-              opacity="0.95"
+              fill="rgba(223,255,242,1)"
+              opacity="1"
             />
           );
         })}

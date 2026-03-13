@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import fs from "fs"
 import path from "path"
 import { parseSpreadsheetFile } from "@/lib/campaign-parser"
+import { loadOrRebuildCampaignSummary } from "@/lib/campaign-store"
 
 export const dynamic = "force-dynamic"
 
@@ -72,9 +73,12 @@ export async function POST(req: Request) {
   const latestPointerPath = path.join(campaignsDir, latestPointerFileName)
   fs.writeFileSync(datasetPath, JSON.stringify(dataset, null, 2))
 
+  const summary = loadOrRebuildCampaignSummary(campaignsDir)
+  const latestCampaignEntry = summary.campaigns.find((item) => item.file === summary.latestFile)
+
   const pointer: LatestCampaignPointer = {
-    file: campaignFileName,
-    campaign,
+    file: summary.latestFile ?? campaignFileName,
+    campaign: latestCampaignEntry?.campaign ?? campaign,
     updatedAt: now
   }
 

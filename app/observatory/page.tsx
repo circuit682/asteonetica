@@ -21,6 +21,54 @@ type LatestCampaignResponse = {
   error?: string
 }
 
+type TeamMilestonesResponse = {
+  success: boolean
+  summary: {
+    totalDetections: number
+    campaignsParticipated: number
+    activeYears: number
+    uniqueObservers: number
+  }
+  yearly: Array<{
+    year: string
+    detections: number
+    campaigns: number
+  }>
+  badges: Array<{
+    label: string
+    value: string
+    description: string
+  }>
+  kenya: {
+    totalDetections: number
+    uniqueObservers: number
+    teams: Array<{
+      team: string
+      detections: number
+      uniqueObservers: number
+    }>
+    observerNames: string[]
+  }
+}
+
+type CampaignHistoryItem = {
+  file: string
+  campaign: string
+  start: string
+  end: string
+  year: string
+  totalObservations: number
+  afronautDetections: number
+  uniqueAfronautObservers: number
+  sortDate: string
+  isLatest: boolean
+}
+
+type CampaignHistoryResponse = {
+  success: boolean
+  campaigns: CampaignHistoryItem[]
+}
+
 function StatCard({
   label,
   value,
@@ -69,7 +117,7 @@ function LeaderRow({
       transition={{ duration: 0.4, delay: delay ?? 0 }}
       className="flex flex-col gap-1 transition-colors duration-200 hover:text-[var(--radar-green)]"
     >
-      <div className="flex justify-between text-sm">
+      <div className="flex justify-between text-sm gap-3">
         <span className="text-white/70">
           <span className="text-white/30 mr-2">#{rank}</span>
           {label}
@@ -91,57 +139,103 @@ function LeaderRow({
 
 export default function ObservatoryPage() {
   const [campaign, setCampaign] = useState<CampaignDataset | null>(null)
+  const [milestones, setMilestones] = useState<TeamMilestonesResponse | null>(null)
+  const [history, setHistory] = useState<CampaignHistoryItem[]>([])
+  const [selectedYear, setSelectedYear] = useState("All years")
+  const [selectedCampaignFile, setSelectedCampaignFile] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
-  const [loadMessage, setLoadMessage] = useState("Loading latest campaign dataset...")
+  const [loadMessage, setLoadMessage] = useState("Loading campaign analytics...")
 
   useEffect(() => {
     let active = true
 
-    async function loadCampaign() {
+    async function loadData() {
       setLoading(true)
 
       try {
-        const response = await fetch("/api/campaign-latest", { cache: "no-store" })
+        let hasTeamData = false
+
+        const [latestResponse, milestonesResponse, historyResponse] = await Promise.all([
+          fetch("/api/campaign-latest", { cache: "no-store" }),
+          fetch("/api/afronauts-milestones", { cache: "no-store" }),
+          fetch("/api/campaign-history", { cache: "no-store" })
+        ])
 
         if (!active) return
 
-        if (response.status === 404) {
+        if (latestResponse.ok) {
+          const latestPayload = (await latestResponse.json()) as LatestCampaignResponse
+          setCampaign(latestPayload.campaign ?? null)
+        } else {
           setCampaign(null)
-          setLoadMessage("Observatory is under construction. Upload a campaign file in Mission Control to populate live metrics.")
-          return
         }
 
-        if (!response.ok) {
-          setCampaign(null)
-          setLoadMessage("Unable to load the latest campaign right now.")
-          return
+        if (milestonesResponse.ok) {
+          const milestonesPayload = (await milestonesResponse.json()) as TeamMilestonesResponse
+          setMilestones(milestonesPayload)
+          hasTeamData = milestonesPayload.summary.totalDetections > 0
+        } else {
+          setMilestones(null)
         }
 
-        const payload = (await response.json()) as LatestCampaignResponse
-
-        if (!payload.campaign) {
-          setCampaign(null)
-          setLoadMessage("No active campaign dataset found.")
-          return
+        if (historyResponse.ok) {
+          const historyPayload = (await historyResponse.json()) as CampaignHistoryResponse
+          setHistory(historyPayload.campaigns ?? [])
+        } else {
+          setHistory([])
         }
 
-        setCampaign(payload.campaign)
+        const hasLatestData = latestResponse.ok
+        if (!hasTeamData && !hasLatestData) {
+          setLoadMessage("No campaign data yet. Upload campaign Excel files in Mission Control to build annual milestones.")
+        }
       } catch {
         if (!active) return
 
         setCampaign(null)
-        setLoadMessage("Unable to load the latest campaign right now.")
+        setMilestones(null)
+        setHistory([])
+        setLoadMessage("Unable to load campaign analytics right now.")
       } finally {
         if (active) setLoading(false)
       }
     }
 
-    loadCampaign()
+    loadData()
 
     return () => {
       active = false
     }
   }, [])
+
+  const historyYears = useMemo(() => {
+    return [
+      "All years",
+      ...Array.from(new Set(history.map((item) => item.year))).filter((year) => year !== "Unknown")
+    ]
+  }, [history])
+
+  const filteredHistory = useMemo(() => {
+    if (selectedYear === "All years") return history
+    return history.filter((item) => item.year === selectedYear)
+  }, [history, selectedYear])
+
+  useEffect(() => {
+    if (filteredHistory.length === 0) {
+      setSelectedCampaignFile(null)
+      return
+    }
+
+    const currentStillVisible = filteredHistory.some((item) => item.file === selectedCampaignFile)
+    if (!currentStillVisible) {
+      const latestVisible = filteredHistory.find((item) => item.isLatest)
+      setSelectedCampaignFile(latestVisible?.file ?? filteredHistory[0].file)
+    }
+  }, [filteredHistory, selectedCampaignFile])
+
+  const selectedCampaign = useMemo(() => {
+    return filteredHistory.find((item) => item.file === selectedCampaignFile) ?? null
+  }, [filteredHistory, selectedCampaignFile])
 
   const total = campaign?.totalObservations ?? 0
   const safeTotal = Math.max(total, 1)
@@ -179,12 +273,31 @@ export default function ObservatoryPage() {
   }, [byRegion])
 
   const africanTotal = Math.max(african.length, 1)
-  const underConstruction = !campaign
+  const annualSeries = milestones?.yearly ?? []
+  const filteredAnnualSeries = selectedYear === "All years"
+    ? annualSeries
+    : annualSeries.filter((entry) => entry.year === selectedYear)
+  const annualMax = Math.max(1, ...filteredAnnualSeries.map((item) => item.detections))
+  const teamSummary = milestones?.summary
+  const milestoneBadges = milestones?.badges ?? []
+  const kenyaSummary = milestones?.kenya
+  const kenyaTeams = kenyaSummary?.teams ?? []
+  const kenyaObserverNames = kenyaSummary?.observerNames ?? []
+  const kenyaTeamCardClassName = (teamName: string) => {
+    const normalized = teamName.toLowerCase()
+    if (normalized.includes("asteroid afronauts")) {
+      return "dashboard-card kenya-team-card-primary p-6 flex flex-col gap-2"
+    }
+    if (normalized.includes("space society of kenya")) {
+      return "dashboard-card kenya-team-card-secondary p-6 flex flex-col gap-2"
+    }
+    return "dashboard-card p-6 flex flex-col gap-2"
+  }
+  const teamDataReady = Boolean(teamSummary && teamSummary.totalDetections > 0)
+  const latestHistoryCampaign = history.find((item) => item.isLatest) ?? null
 
   return (
     <main className="min-h-screen">
-
-      {/* HERO */}
       <section className="relative flex flex-col items-center justify-center min-h-[45vh] text-center px-6 pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
           <div className="w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(0,255,170,0.12),transparent_70%)] blur-3xl opacity-30" />
@@ -193,62 +306,260 @@ export default function ObservatoryPage() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative max-w-2xl"
+          className="relative max-w-3xl"
         >
           <p className="text-[var(--radar-green)] text-xs tracking-[0.3em] uppercase mb-4">
-            Analytics Engine
+            Asteroid Afronauts (Kenya) Milestones
           </p>
           <h1 className="text-5xl md:text-6xl font-light tracking-wide mb-6">
             Observatory
           </h1>
           <p className="text-white/60 text-base md:text-lg leading-relaxed">
-            Research metrics for the{" "}
-            <span className="text-white/90">{campaign?.campaign ?? "No Active Campaign"}</span> campaign
-            {campaign ? ` — ${campaign.start} to ${campaign.end}` : " — Awaiting dataset"}
+            Annual detections and campaign progress for Asteroid Afronauts (Kenya), aggregated across every uploaded campaign dataset.
           </p>
+          {latestHistoryCampaign && (
+            <p className="text-white/45 text-sm mt-5">
+              Latest campaign in view: <span className="text-white/75">{latestHistoryCampaign.campaign}</span> · {latestHistoryCampaign.end || latestHistoryCampaign.start}
+            </p>
+          )}
         </motion.div>
       </section>
 
-      {underConstruction && (
+      {!teamDataReady && (
         <section className="px-6 md:px-12 max-w-6xl mx-auto pb-2">
           <div className="dashboard-card p-5">
             <p className="text-xs uppercase tracking-[0.18em] text-[var(--radar-green)] mb-2">
-              Under Construction
+              Team Dashboard Status
             </p>
             <p className="text-white/65 text-sm">
-              {loading ? "Loading latest campaign dataset..." : loadMessage}
+              {loading ? "Loading campaign analytics..." : loadMessage}
             </p>
           </div>
         </section>
       )}
 
-      {/* HEADLINE STATS */}
       <section className="px-6 md:px-12 max-w-5xl mx-auto py-10">
+        <h2 className="text-xl font-light tracking-wide text-white/70 uppercase mb-6">
+          Asteroid Afronauts (Kenya) Summary
+        </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <StatCard label="Total Detections" value={underConstruction ? "--" : total} />
-          <StatCard label="Afronaut Detections" value={underConstruction ? "--" : afronauts.length} sub={underConstruction ? "Awaiting import" : `${Math.round((afronauts.length / safeTotal) * 100)}% of campaign`} />
-          <StatCard label="Pan-African Detections" value={underConstruction ? "--" : african.length} sub={underConstruction ? "Awaiting import" : `${Math.round((african.length / safeTotal) * 100)}% of campaign`} />
-          <StatCard label="Unique Observers" value={underConstruction ? "--" : observers.length} />
+          <StatCard label="Total Detections" value={teamSummary?.totalDetections ?? "--"} />
+          <StatCard label="Campaigns Participated" value={teamSummary?.campaignsParticipated ?? "--"} />
+          <StatCard label="Active Years" value={teamSummary?.activeYears ?? "--"} />
+          <StatCard label="Unique Team Observers" value={teamSummary?.uniqueObservers ?? "--"} />
         </div>
       </section>
 
-      {/* REGION + TIMELINE */}
-      <section className="px-6 md:px-12 max-w-6xl mx-auto py-10">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
-          <div className="h-full flex flex-col">
-            <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
-              Detections by Region
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-4">
+        <div className="dashboard-card p-6">
+          <div className="flex items-center justify-between gap-4 flex-wrap mb-5">
+            <h2 className="text-xl font-light tracking-wide text-white/70 uppercase">
+              Milestone Badges
             </h2>
+          </div>
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+            {milestoneBadges.length > 0 ? milestoneBadges.map((badge) => (
+              <div key={`${badge.label}-${badge.value}`} className="rounded-xl border border-[rgba(0,255,156,0.18)] bg-[rgba(255,255,255,0.03)] px-4 py-4">
+                <p className="text-[var(--radar-green)] text-xs uppercase tracking-[0.2em] mb-2">{badge.label}</p>
+                <p className="text-white text-lg font-light mb-2">{badge.value}</p>
+                <p className="text-white/45 text-xs leading-relaxed">{badge.description}</p>
+              </div>
+            )) : (
+              <p className="text-sm text-white/50">Milestone badges will appear after team detections are available.</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-8">
+        <div className="dashboard-card p-6">
+          <div className="flex items-center justify-between gap-4 flex-wrap mb-6">
+            <h2 className="text-xl font-light tracking-wide text-white/70 uppercase">
+              Kenyan Teams Pulse
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <StatCard
+              label="Kenya Combined Detections"
+              value={kenyaSummary?.totalDetections ?? "--"}
+              sub="Asteroid Afronauts + Space Society of Kenya"
+            />
+
+            {kenyaTeams.map((team) => (
+              <motion.div
+                key={team.team}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -3, scale: 1.01 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45 }}
+                className={kenyaTeamCardClassName(team.team)}
+              >
+                <span className="text-white/40 text-xs uppercase tracking-widest">Kenyan Team</span>
+                <span className="text-white text-xl font-light">{team.team}</span>
+                <span className="text-[var(--radar-green)] text-3xl font-light">{team.detections}</span>
+                <span className="text-white/40 text-xs">{team.uniqueObservers} unique observers</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-10">
+        <div className="flex items-center justify-between gap-4 flex-wrap mb-8">
+          <h2 className="text-xl font-light tracking-wide text-white/70 uppercase">
+            Annual Trend And Drill-down
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {historyYears.map((year) => (
+              <button
+                key={year}
+                onClick={() => setSelectedYear(year)}
+                className={`rounded-full px-3 py-1.5 text-xs uppercase tracking-wider transition-colors ${
+                  selectedYear === year
+                    ? "border border-[var(--radar-green)] bg-[rgba(0,255,156,0.14)] text-[var(--radar-green)]"
+                    : "border border-white/10 bg-white/[0.03] text-white/55 hover:border-white/20 hover:text-white/75"
+                }`}
+              >
+                {year}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-[1.1fr_1fr] gap-8 items-stretch">
+          <div className="h-full flex flex-col">
+            <h3 className="text-lg font-light tracking-wide text-white/60 uppercase mb-6">
+              Annual Detections
+            </h3>
+            <div className="dashboard-card p-6 flex flex-col gap-4 flex-1">
+              {filteredAnnualSeries.length > 0 ? filteredAnnualSeries.map((entry, i) => (
+                <LeaderRow
+                  key={entry.year}
+                  rank={i + 1}
+                  label={`${entry.year} · ${entry.campaigns} campaign${entry.campaigns > 1 ? "s" : ""}`}
+                  count={entry.detections}
+                  total={annualMax}
+                  delay={i * 0.05}
+                />
+              )) : (
+                <p className="text-sm text-white/50">No annual milestones available for this filter.</p>
+              )}
+            </div>
+          </div>
+
+          <div className="h-full flex flex-col">
+            <h3 className="text-lg font-light tracking-wide text-white/60 uppercase mb-6">
+              Campaign History
+            </h3>
+            <div className="dashboard-card p-6 flex flex-col gap-3 flex-1">
+              {filteredHistory.length > 0 ? filteredHistory.map((item, i) => (
+                <motion.button
+                  key={`${item.file}-${i}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: i * 0.03 }}
+                  onClick={() => setSelectedCampaignFile(item.file)}
+                  className={`rounded-lg border px-3 py-3 text-left transition-colors ${
+                    selectedCampaignFile === item.file
+                      ? "border-[rgba(0,255,156,0.35)] bg-[rgba(0,255,156,0.08)]"
+                      : "border-white/10 bg-white/[0.02] hover:border-white/20"
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-3 text-sm">
+                    <p className="text-white/80 truncate">{item.campaign}</p>
+                    <span className="text-[var(--radar-green)] text-xs uppercase tracking-wider">{item.year}</span>
+                  </div>
+                  <p className="text-white/45 text-xs mt-1">
+                    Team detections: {item.afronautDetections} · Total observations: {item.totalObservations}
+                  </p>
+                  {item.isLatest && (
+                    <p className="text-[var(--radar-green)]/80 text-[10px] uppercase tracking-[0.2em] mt-2">
+                      Latest campaign by chronology
+                    </p>
+                  )}
+                </motion.button>
+              )) : (
+                <p className="text-sm text-white/50">No campaign history available for this filter.</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 dashboard-card p-6">
+          <div className="flex items-baseline justify-between gap-4 flex-wrap mb-4">
+            <h3 className="text-lg font-light tracking-wide text-white/65 uppercase">
+              Campaign Drill-down
+            </h3>
+            {selectedCampaign?.isLatest && (
+              <p className="text-[var(--radar-green)] text-xs uppercase tracking-[0.2em]">
+                Chronological latest campaign
+              </p>
+            )}
+          </div>
+
+          {selectedCampaign ? (
+            <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+              <div>
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Campaign</p>
+                <p className="text-white/85 text-lg font-light">{selectedCampaign.campaign}</p>
+              </div>
+              <div>
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Date Range</p>
+                <p className="text-white/75 text-sm">{selectedCampaign.start} to {selectedCampaign.end}</p>
+              </div>
+              <div>
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Team Detections</p>
+                <p className="text-white/85 text-lg font-light">{selectedCampaign.afronautDetections}</p>
+              </div>
+              <div>
+                <p className="text-white/40 text-xs uppercase tracking-widest mb-2">Team Observers</p>
+                <p className="text-white/85 text-lg font-light">{selectedCampaign.uniqueAfronautObservers}</p>
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-white/50">Select a campaign to inspect its details.</p>
+          )}
+        </div>
+      </section>
+
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-10 opacity-85">
+        <div className="flex items-baseline justify-between gap-4 mb-8 flex-wrap">
+          <h2 className="text-xl font-light tracking-wide text-white/55 uppercase">
+            Global Context (Latest Campaign)
+          </h2>
+        </div>
+
+        {!campaign && (
+          <div className="dashboard-card p-5 mb-8">
+            <p className="text-sm text-white/55">Latest campaign view unavailable right now.</p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          <StatCard label="Total Detections" value={campaign ? total : "--"} />
+          <StatCard label="Afronaut Detections" value={campaign ? afronauts.length : "--"} sub={campaign ? `${Math.round((afronauts.length / safeTotal) * 100)}% of campaign` : "Awaiting import"} />
+          <StatCard label="Pan-African Detections" value={campaign ? african.length : "--"} sub={campaign ? `${Math.round((african.length / safeTotal) * 100)}% of campaign` : "Awaiting import"} />
+          <StatCard label="Unique Observers" value={campaign ? observers.length : "--"} />
+        </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch mb-10">
+          <div className="h-full flex flex-col">
+            <h3 className="text-lg font-light tracking-wide text-white/50 uppercase mb-6">
+              Detections by Region
+            </h3>
             <div className="dashboard-card p-6 flex-1">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 h-full content-start">
                 {regionEntries.length > 0 ? regionEntries.map(([region, count]) => (
-                    <StatCard
-                      key={region}
-                      label={region.replace("_", " ")}
-                      value={count}
-                      sub={`${Math.round((count / safeTotal) * 100)}%`}
-                    />
-                  )) : (
+                  <StatCard
+                    key={region}
+                    label={region.replace("_", " ")}
+                    value={count}
+                    sub={`${Math.round((count / safeTotal) * 100)}%`}
+                  />
+                )) : (
                   Array.from({ length: 6 }).map((_, i) => (
                     <div key={`region-skeleton-${i}`} className="rounded-xl border border-white/10 bg-white/[0.03] h-[108px] animate-pulse" />
                   ))
@@ -258,39 +569,31 @@ export default function ObservatoryPage() {
           </div>
 
           <div className="h-full flex flex-col">
-            <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
+            <h3 className="text-lg font-light tracking-wide text-white/50 uppercase mb-6">
               Detection Timeline
-            </h2>
+            </h3>
             <div className="dashboard-card p-6 flex flex-col gap-4 flex-1">
               {byDate.length > 0 ? byDate.map(({ date, count }, i) => (
-                  <LeaderRow
-                    key={date}
-                    rank={i + 1}
-                    label={date}
-                    count={count}
-                    total={safeTotal}
-                    delay={i * 0.05}
-                  />
-                )) : (
+                <LeaderRow
+                  key={date}
+                  rank={i + 1}
+                  label={date}
+                  count={count}
+                  total={safeTotal}
+                  delay={i * 0.05}
+                />
+              )) : (
                 <p className="text-sm text-white/50">No timeline data yet.</p>
               )}
             </div>
           </div>
         </div>
-      </section>
 
-      {/* TEAM + COUNTRY LEADERBOARDS */}
-      <section className="px-6 md:px-12 max-w-6xl mx-auto py-10">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
           <div className="h-full flex flex-col">
-            <div className="flex items-baseline justify-between gap-4 mb-6">
-              <h2 className="text-xl font-light tracking-wide text-white/60 uppercase">
-                Team Leaderboard
-              </h2>
-              <p className="text-white/40 text-xs uppercase tracking-wider whitespace-nowrap">
-                African teams data
-              </p>
-            </div>
+            <h3 className="text-lg font-light tracking-wide text-white/50 uppercase mb-6">
+              Team Leaderboard
+            </h3>
             <div className="dashboard-card p-6 flex flex-col gap-5 flex-1">
               {teams.length > 0 ? teams.map(({ team, country, count }, i) => (
                 <LeaderRow
@@ -308,9 +611,9 @@ export default function ObservatoryPage() {
           </div>
 
           <div className="h-full flex flex-col">
-            <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
+            <h3 className="text-lg font-light tracking-wide text-white/50 uppercase mb-6">
               African Countries
-            </h2>
+            </h3>
             <div className="dashboard-card p-6 flex flex-col gap-5 flex-1">
               {countries.length > 0 ? countries.map(({ country, count }, i) => (
                 <LeaderRow
@@ -329,34 +632,33 @@ export default function ObservatoryPage() {
         </div>
       </section>
 
-      {/* OBSERVER ROSTER */}
-      <section className="px-6 md:px-12 max-w-5xl mx-auto py-10">
-        <h2 className="text-xl font-light tracking-wide text-white/60 uppercase mb-6">
-          Observer Roster &mdash; {observers.length} participants
-        </h2>
-        <p className="text-white/40 text-xs uppercase tracking-wider mb-4">
-          African team Roaster.
-        </p>
-        <div className="dashboard-card p-6">
-          {observers.length > 0 ? (
-            <div className="flex flex-wrap gap-3">
-              {observers.map((name) => (
-                <motion.span
-                  key={name}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3 }}
-                  className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/60 text-xs"
-                >
-                  {name}
-                </motion.span>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-white/50">Observer roster will appear after campaign import.</p>
-          )}
+      <section className="px-6 md:px-12 max-w-6xl mx-auto py-12">
+        <div className="flex items-baseline justify-between gap-4 flex-wrap mb-8">
+          <h2 className="text-xl font-light tracking-wide text-white/65 uppercase">
+            Kenyan Observer Registry
+          </h2>
         </div>
+
+        {kenyaObserverNames.length > 0 ? (
+          <div className="flex flex-wrap gap-3">
+            {kenyaObserverNames.map((name, index) => (
+              <motion.div
+                key={name}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.28, delay: index * 0.02 }}
+                className="emerald-tablet-chip rounded-full px-4 py-2 text-sm text-[rgba(195,255,228,0.92)]"
+              >
+                <span className="tracking-wide">{name}</span>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="dashboard-card p-5">
+            <p className="text-sm text-white/50">Observer names will appear once Kenyan team detections are available in uploaded campaigns.</p>
+          </div>
+        )}
       </section>
 
       <FooterSection />

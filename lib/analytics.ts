@@ -17,6 +17,44 @@ export interface CampaignDataset {
   observations: Observation[]
 }
 
+const AFRONAUT_TEAM_ALIASES = new Set([
+  "asteroid afronauts",
+  "asteroid afronauts kenya",
+  "asteroid afronauts (kenya)"
+])
+
+const SPACE_SOCIETY_OF_KENYA_ALIASES = new Set([
+  "space society of kenya"
+])
+
+const KENYAN_TEAM_ALIASES = new Set([
+  ...AFRONAUT_TEAM_ALIASES,
+  ...SPACE_SOCIETY_OF_KENYA_ALIASES
+])
+
+function normalizeTeamName(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[()]/g, " ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+}
+
+export function isAfronautTeam(team: string): boolean {
+  const normalized = normalizeTeamName(team)
+  return AFRONAUT_TEAM_ALIASES.has(normalized)
+}
+
+export function isSpaceSocietyOfKenya(team: string): boolean {
+  const normalized = normalizeTeamName(team)
+  return SPACE_SOCIETY_OF_KENYA_ALIASES.has(normalized)
+}
+
+export function isKenyanPriorityTeam(team: string): boolean {
+  const normalized = normalizeTeamName(team)
+  return KENYAN_TEAM_ALIASES.has(normalized)
+}
+
 const AFRICAN_COUNTRIES = new Set([
   "algeria",
   "angola",
@@ -114,6 +152,7 @@ function isAfricanObservation(observation: Observation): boolean {
   return (
     observation.region === "africa" ||
     observation.region === "east_africa" ||
+    isKenyanPriorityTeam(observation.team) ||
     fieldContainsCountryInSet(observation.country, AFRICAN_COUNTRIES)
   )
 }
@@ -125,6 +164,10 @@ function africanCountryLabels(observation: Observation): string[] {
 
   if (matches.length > 0) {
     return matches
+  }
+
+  if (isKenyanPriorityTeam(observation.team)) {
+    return ["Kenya"]
   }
 
   if (observation.region === "africa" || observation.region === "east_africa") {
@@ -151,8 +194,15 @@ function teamSortPriority(entry: { country: string; region: string }): number {
   return 2
 }
 
+function kenyaTeamSortPriority(team: string): number {
+  if (isAfronautTeam(team)) return 0
+  if (isSpaceSocietyOfKenya(team)) return 1
+  if (isKenyanPriorityTeam(team)) return 2
+  return 3
+}
+
 export function afronautDetections(data: CampaignDataset): Observation[] {
-  return data.observations.filter((o) => o.team === "Asteroid Afronauts")
+  return data.observations.filter((o) => isAfronautTeam(o.team))
 }
 
 export function africanDetections(data: CampaignDataset): Observation[] {
@@ -184,6 +234,9 @@ export function africaTeamLeaderboard(
 
   return Object.values(counts)
     .sort((a, b) => {
+      const kenyaTeamDiff = kenyaTeamSortPriority(a.team) - kenyaTeamSortPriority(b.team)
+      if (kenyaTeamDiff !== 0) return kenyaTeamDiff
+
       const priorityDiff = teamSortPriority(a) - teamSortPriority(b)
       if (priorityDiff !== 0) return priorityDiff
       if (b.count !== a.count) return b.count - a.count

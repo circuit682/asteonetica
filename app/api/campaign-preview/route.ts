@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { parseSpreadsheetFile } from "@/lib/campaign-parser"
+import { isAfronautTeam } from "@/lib/analytics"
 
 export const dynamic = "force-dynamic"
 
@@ -33,9 +34,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const afronautDetections = observations.filter(
-      (o) => o.team === "Asteroid Afronauts"
-    ).length
+    const afronautDetections = observations.filter((o) => isAfronautTeam(o.team)).length
 
     const panAfricanDetections = observations.filter(
       (o) => o.region === "africa" || o.region === "east_africa"

@@ -4,16 +4,24 @@ import Link from "next/link";
 import { Telescope, Globe, Users, Mail } from "lucide-react";
 import KenyaFlag from "@/components/KenyaFlag";
 
+type FooterSectionProps = {
+  tone?: "default" | "integrated";
+};
 
-export default function FooterSection() {
+export default function FooterSection({ tone = "default" }: FooterSectionProps) {
+  const atmosphereClassName =
+    tone === "integrated"
+      ? "absolute inset-0 bg-gradient-to-b from-transparent via-[#081018]/24 to-[#081018]/48"
+      : "absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black/90";
+
   return (
     <footer className="relative mt-40 overflow-hidden">
 
       {/* Atmospheric Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black/90" />
+      <div className={atmosphereClassName} />
 
       {/* Subtle Starfield Background */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className={`absolute inset-0 pointer-events-none ${tone === "integrated" ? "opacity-60" : "opacity-100"}`}>
         <div className="stars-layer" />
       </div>
 
@@ -23,7 +31,7 @@ export default function FooterSection() {
         {/* Identity */}
         <div className="space-y-6">
           <h4 className="text-white/90 tracking-widest font-light text-lg">
-            Asteonetica
+            Asteroid Afronauts Kenya
           </h4>
 
           <div className="flex items-start gap-3 text-white/60">
@@ -104,7 +112,7 @@ export default function FooterSection() {
 
       {/* Bottom Bar */}
       <div className="relative z-10 text-center text-white/30 text-xs pb-12">
-        © {new Date().getFullYear()} Asteonetica — Volunteer Astronomy Research Collective · Kenya
+        © {new Date().getFullYear()} Asteroid Afronauts Kenya — Volunteer Astronomy Research Collective · Kenya
       </div>
       
     </footer>

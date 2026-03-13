@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-03-13T14:01:41.190Z",
+  "latestFile": "faint-preliminaries-janfeb26-2026-03-12T11-14-59-779Z.json",
+  "campaigns": [
+    {
+      "file": "faint-preliminaries-janfeb26-2026-03-12T11-14-59-779Z.json",
+      "campaign": "Faint Preliminaries JanFeb26",
+      "start": "2026-01-11",
+      "end": "2026-01-17",
+      "year": "2026",
+      "totalObservations": 112,
+      "afronautDetections": 1,
+      "uniqueAfronautObservers": 2,
+      "sortDate": "2026-01-17",
+      "isLatest": true
+    },
+    {
+      "file": "pan-africa-preliminaries-novdec25-1-2026-03-13T13-33-13-283Z.json",
+      "campaign": "Pan-Africa Preliminaries NovDec25 (1)",
+      "start": "2025-11-15",
+      "end": "2025-11-28",
+      "year": "2025",
+      "totalObservations": 35,
+      "afronautDetections": 2,
+      "uniqueAfronautObservers": 2,
+      "sortDate": "2025-11-28",
+      "isLatest": false
+    },
+    {
+      "file": "pan-africa-preliminaries-sepoct25-2026-03-13T13-13-05-093Z.json",
+      "campaign": "Pan-Africa Preliminaries SepOct25",
+      "start": "2025-09-15",
+      "end": "2025-09-23",
+      "year": "2025",
+      "totalObservations": 45,
+      "afronautDetections": 1,
+      "uniqueAfronautObservers": 2,
+      "sortDate": "2025-09-23",
+      "isLatest": false
+    }
+  ],
+  "milestones": {
+    "summary": {
+      "totalDetections": 4,
+      "campaignsParticipated": 3,
+      "activeYears": 2,
+      "uniqueObservers": 2
+    },
+    "yearly": [
+      {
+        "year": "2025",
+        "detections": 3,
+        "campaigns": 2
+      },
+      {
+        "year": "2026",
+        "detections": 1,
+        "campaigns": 1
+      }
+    ],
+    "badges": [
+      {
+        "label": "First Year",
+        "value": "2025",
+        "description": "The first recorded year with Asteroid Afronauts detections."
+      },
+      {
+        "label": "Best Year",
+        "value": "2025 · 3",
+        "description": "Highest annual detection count recorded so far."
+      }
+    ],
+    "kenya": {
+      "totalDetections": 12,
+      "uniqueObservers": 4,
+      "teams": [
+        {
+          "team": "Asteroid Afronauts",
+          "detections": 4,
+          "uniqueObservers": 2
+        },
+        {
+          "team": "Space Society of Kenya",
+          "detections": 8,
+          "uniqueObservers": 2
+        }
+      ],
+      "observerNames": [
+        "D. Okumu",
+        "L. Mwai",
+        "M. Wachira",
+        "V. Kihagi"
+      ]
+    }
+  }
+}

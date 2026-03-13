@@ -1,0 +1,584 @@
+{
+  "campaign": "Pan-Africa Preliminaries SepOct25",
+  "start": "2025-09-15",
+  "end": "2025-09-23",
+  "totalObservations": 45,
+  "observations": [
+    {
+      "id": "Total:   45",
+      "observers": [
+        "R. Simbizi"
+      ],
+      "team": "IASC-Burundi",
+      "country": "Burundi",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "TUB0152"
+    },
+    {
+      "id": "P22eMfG",
+      "observers": [
+        "R. Simbizi"
+      ],
+      "team": "IASC-Burundi",
+      "country": "Burundi",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "TUB0153"
+    },
+    {
+      "id": "P22eMdp",
+      "observers": [
+        "E. Emad-Eldien"
+      ],
+      "team": "Paradox Team 1",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "EA2025"
+    },
+    {
+      "id": "P22eMfF",
+      "observers": [
+        "N. Dinh"
+      ],
+      "team": "Koisuru Asteroid",
+      "country": "Eswatini",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "TKA0038"
+    },
+    {
+      "id": "P22eMcw",
+      "observers": [
+        "G. Justpa"
+      ],
+      "team": "Ghana Astronomical Science",
+      "country": "Ghana",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "GAS0001"
+    },
+    {
+      "id": "P22eMdD",
+      "observers": [
+        "A. Diaby",
+        "M. Koné"
+      ],
+      "team": "Jules Verne AstroClub",
+      "country": "Ivory Coast",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "AIA0509"
+    },
+    {
+      "id": "P22eMi0",
+      "observers": [
+        "V. Kihagi",
+        "L. Mwai"
+      ],
+      "team": "Asteroid Afronauts",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "AAK0001"
+    },
+    {
+      "id": "P22eMe5",
+      "observers": [
+        "M. Wachira"
+      ],
+      "team": "Space Society of Kenya",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "MWL0002"
+    },
+    {
+      "id": "P22eMdw",
+      "observers": [
+        "M. Hamidi"
+      ],
+      "team": "Atlas Asteroid Hunters",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "AAH0208"
+    },
+    {
+      "id": "P22eMdE",
+      "observers": [
+        "H.Azougagh"
+      ],
+      "team": "Atlas Asteroid Hunters",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "AAH0205"
+    },
+    {
+      "id": "P22eMdF",
+      "observers": [
+        "Z. Asserrhine"
+      ],
+      "team": "Steps Into Space Association",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "SIS0203"
+    },
+    {
+      "id": "P22eMic",
+      "observers": [
+        "D. Yahaya",
+        "D. Yahaya",
+        "Y. Yahaya",
+        "N. Ngoulou",
+        "W. Yahaya",
+        "S. Yahaya",
+        "S. Yahaya"
+      ],
+      "team": "Niger Sky Surfers",
+      "country": "Niger",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "NSS1003"
+    },
+    {
+      "id": "P22eMhM",
+      "observers": [
+        "D. Yahaya",
+        "D. Yahaya",
+        "Y. Yahaya",
+        "N. Ngoulou",
+        "W. Yahaya",
+        "S. Yahaya",
+        "S. Yahaya"
+      ],
+      "team": "Niger Sky Surfers",
+      "country": "Niger",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "NSS1004"
+    },
+    {
+      "id": "P22ePQ2",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "EDJ0003"
+    },
+    {
+      "id": "P22eMft",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-15",
+      "imageSet": "EDJ0004"
+    },
+    {
+      "id": "P12eVjn",
+      "observers": [
+        "R. Simbizi"
+      ],
+      "team": "IASC-Burundi",
+      "country": "Burundi",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-16",
+      "imageSet": "TUB0154"
+    },
+    {
+      "id": "P12eVjc",
+      "observers": [
+        "R. Simbizi"
+      ],
+      "team": "IASC-Burundi",
+      "country": "Burundi",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-16",
+      "imageSet": "TUB0155"
+    },
+    {
+      "id": "P12eVkx",
+      "observers": [
+        "N. Dinh"
+      ],
+      "team": "Koisuru Asteroid",
+      "country": "Eswatini",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-16",
+      "imageSet": "TKA0039"
+    },
+    {
+      "id": "P12eWWN",
+      "observers": [
+        "A. Diaby"
+      ],
+      "team": "Association Ivoirienne d'Astronomie",
+      "country": "Ivory Coast",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-16",
+      "imageSet": "ISH0809"
+    },
+    {
+      "id": "P12eWU1",
+      "observers": [
+        "M. Wachira"
+      ],
+      "team": "Space Society of Kenya",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-16",
+      "imageSet": "MDL0001"
+    },
+    {
+      "id": "P12eWTV",
+      "observers": [
+        "M. Wachira"
+      ],
+      "team": "Space Society of Kenya",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-16",
+      "imageSet": "MDL0002"
+    },
+    {
+      "id": "P12eWWT",
+      "observers": [
+        "D. Yahaya",
+        "D. Yahaya",
+        "Y. Yahaya",
+        "N. Ngoulou",
+        "W. Yahaya",
+        "S. Yahaya",
+        "S. Yahaya"
+      ],
+      "team": "Niger Sky Surfers",
+      "country": "Niger",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-16",
+      "imageSet": "NSS1005"
+    },
+    {
+      "id": "P12eVjv",
+      "observers": [
+        "V. Andrukhiv"
+      ],
+      "team": "Team Ukraine",
+      "country": "Ukraine",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-16",
+      "imageSet": "UKR0101"
+    },
+    {
+      "id": "P22f5bc",
+      "observers": [
+        "J. Elsayed"
+      ],
+      "team": "Paradox Team 5",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-17",
+      "imageSet": "SYD2400"
+    },
+    {
+      "id": "P22f59z",
+      "observers": [
+        "N. Dinh"
+      ],
+      "team": "Koisuru Asteroid",
+      "country": "Eswatini",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-17",
+      "imageSet": "TKA0042"
+    },
+    {
+      "id": "P22f5cl",
+      "observers": [
+        "A.Rouchdi"
+      ],
+      "team": "Atlas Asteroid Hunters",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-17",
+      "imageSet": "AAH0210"
+    },
+    {
+      "id": "P22f5d1",
+      "observers": [
+        "D. Yahaya",
+        "D. Yahaya",
+        "Y. Yahaya",
+        "N. Ngoulou",
+        "W. Yahaya",
+        "S. Yahaya",
+        "S. Yahaya"
+      ],
+      "team": "Niger Sky Surfers",
+      "country": "Niger",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-17",
+      "imageSet": "NSS1007"
+    },
+    {
+      "id": "P22f7hc",
+      "observers": [
+        "T. Ngwane"
+      ],
+      "team": "Zimbabwe Astronomical Society",
+      "country": "Zimbabwe",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-17",
+      "imageSet": "ZAS3000"
+    },
+    {
+      "id": "P22fd9a",
+      "observers": [
+        "R. Simbizi"
+      ],
+      "team": "IASC-Burundi",
+      "country": "Burundi",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "TUB0157"
+    },
+    {
+      "id": "P22fddK",
+      "observers": [
+        "J. Elsayed"
+      ],
+      "team": "Paradox Team 5",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "AMY4444"
+    },
+    {
+      "id": "P22fddM",
+      "observers": [
+        "G. Medhat",
+        "Z. Mahrous"
+      ],
+      "team": "Paradox Team 6",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "EGY0001"
+    },
+    {
+      "id": "P22fdde",
+      "observers": [
+        "D. Okumu"
+      ],
+      "team": "Space Society of Kenya",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "SSK1001"
+    },
+    {
+      "id": "P22fd94",
+      "observers": [
+        "D. Okumu"
+      ],
+      "team": "Space Society of Kenya",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "SSK1002"
+    },
+    {
+      "id": "P22fd8Y",
+      "observers": [
+        "Z. Asserrhine"
+      ],
+      "team": "Steps Into Space Association",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "SIS0204"
+    },
+    {
+      "id": "P22fd9q",
+      "observers": [
+        "C. Rahou"
+      ],
+      "team": "Steps Into Space Association",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "SIS0205"
+    },
+    {
+      "id": "P22fd98",
+      "observers": [
+        "D. Yahaya",
+        "D. Yahaya",
+        "Y. Yahaya",
+        "N. Ngoulou",
+        "W. Yahaya",
+        "S. Yahaya",
+        "S. Yahaya"
+      ],
+      "team": "Niger Sky Surfers",
+      "country": "Niger",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "NSS1010"
+    },
+    {
+      "id": "P22fd8V",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-09-18",
+      "imageSet": "EDJ0002"
+    },
+    {
+      "id": "P12fjAd",
+      "observers": [
+        "D. Okumu"
+      ],
+      "team": "Space Society of Kenya",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-20",
+      "imageSet": "SSK1002"
+    },
+    {
+      "id": "P22fuNR",
+      "observers": [
+        "D. Maher"
+      ],
+      "team": "Paradox Team 4",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-23",
+      "imageSet": "MIN6766"
+    },
+    {
+      "id": "P22fuPk",
+      "observers": [
+        "D. Maher"
+      ],
+      "team": "Paradox Team 4",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-23",
+      "imageSet": "MRK1991"
+    },
+    {
+      "id": "P22fyWy",
+      "observers": [
+        "W. Medht"
+      ],
+      "team": "Paradox Team 5",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-23",
+      "imageSet": "WMS2222"
+    },
+    {
+      "id": "P22fuHP",
+      "observers": [
+        "J. Elsayed"
+      ],
+      "team": "Paradox Team 5",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-23",
+      "imageSet": "SYD2500"
+    },
+    {
+      "id": "P22fuNM",
+      "observers": [
+        "D. Okumu"
+      ],
+      "team": "Space Society of Kenya",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-23",
+      "imageSet": "SSK1001"
+    },
+    {
+      "id": "P22fyVZ",
+      "observers": [
+        "D. Okumu"
+      ],
+      "team": "Space Society of Kenya",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-09-23",
+      "imageSet": "SSK1003"
+    },
+    {
+      "id": "P22fyUU",
+      "observers": [
+        "C. Rahou"
+      ],
+      "team": "Steps Into Space Association",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-09-23",
+      "imageSet": "SIS0209"
+    }
+  ]
+}

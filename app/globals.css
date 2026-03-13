@@ -136,6 +136,77 @@ main {
   z-index: 1;
 }
 
+.vault-neon-card {
+  border-color: rgba(0, 255, 156, 0.3);
+  box-shadow:
+    0 0 0 1px rgba(0, 255, 156, 0.24),
+    0 14px 36px rgba(0, 255, 156, 0.16),
+    0 10px 28px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.vault-neon-card::before {
+  background: linear-gradient(130deg, rgba(0, 255, 156, 0.18), transparent 38%);
+  opacity: 0.82;
+}
+
+.vault-neon-card:hover {
+  border-color: rgba(0, 255, 156, 0.46);
+  box-shadow:
+    0 0 0 1px rgba(0, 255, 156, 0.34),
+    0 18px 44px rgba(0, 255, 156, 0.22),
+    0 12px 30px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.vault-emerald-tablet {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(0, 255, 156, 0.22), transparent 42%),
+    radial-gradient(circle at 88% 100%, rgba(0, 220, 130, 0.16), transparent 40%),
+    linear-gradient(165deg, rgba(9, 32, 24, 0.86), rgba(6, 20, 16, 0.78));
+  border: 1px solid rgba(112, 255, 197, 0.42);
+  box-shadow:
+    0 0 0 1px rgba(100, 245, 185, 0.18),
+    0 18px 40px rgba(0, 30, 20, 0.5),
+    0 0 26px rgba(0, 255, 156, 0.18),
+    inset 0 0 0 1px rgba(220, 255, 240, 0.05),
+    inset 0 12px 24px rgba(114, 255, 201, 0.06);
+  border-radius: 0.9rem;
+}
+
+.vault-emerald-tablet::before {
+  background:
+    linear-gradient(135deg, rgba(175, 255, 220, 0.2), transparent 36%),
+    repeating-linear-gradient(
+      175deg,
+      rgba(180, 255, 226, 0.04) 0px,
+      rgba(180, 255, 226, 0.04) 1px,
+      transparent 1px,
+      transparent 9px
+    );
+  opacity: 0.85;
+}
+
+.vault-emerald-tablet::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 0.62rem;
+  pointer-events: none;
+  border: 1px solid rgba(160, 255, 218, 0.14);
+  box-shadow: inset 0 0 16px rgba(0, 255, 156, 0.08);
+}
+
+.vault-emerald-tablet:hover {
+  border-color: rgba(153, 255, 215, 0.62);
+  box-shadow:
+    0 0 0 1px rgba(120, 255, 202, 0.26),
+    0 20px 48px rgba(0, 28, 20, 0.56),
+    0 0 34px rgba(0, 255, 156, 0.24),
+    inset 0 0 0 1px rgba(220, 255, 240, 0.08),
+    inset 0 14px 28px rgba(114, 255, 201, 0.09);
+}
+
 .dashboard-card-soft {
   position: relative;
   background:
@@ -165,6 +236,66 @@ main {
 .dashboard-card-soft > * {
   position: relative;
   z-index: 1;
+}
+
+.emerald-tablet-chip {
+  position: relative;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0, 255, 156, 0.12), transparent 42%),
+    linear-gradient(160deg, rgba(8, 28, 20, 0.9), rgba(5, 18, 14, 0.82));
+  border: 1px solid rgba(120, 255, 204, 0.24);
+  box-shadow:
+    0 0 0 1px rgba(0, 255, 156, 0.08),
+    0 10px 22px rgba(0, 18, 12, 0.36),
+    inset 0 1px 0 rgba(210, 255, 236, 0.08);
+}
+
+.emerald-tablet-chip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(140deg, rgba(170, 255, 220, 0.12), transparent 40%);
+  opacity: 0.8;
+}
+
+.emerald-tablet-chip > * {
+  position: relative;
+  z-index: 1;
+}
+
+.kenya-team-card-primary {
+  border-color: rgba(80, 255, 188, 0.42);
+  background:
+    radial-gradient(circle at 14% 0%, rgba(0, 255, 156, 0.22), transparent 44%),
+    linear-gradient(160deg, rgba(6, 30, 22, 0.92), rgba(5, 18, 14, 0.82));
+  box-shadow:
+    0 0 0 1px rgba(80, 255, 188, 0.2),
+    0 16px 30px rgba(0, 255, 156, 0.16),
+    0 8px 22px rgba(0, 18, 12, 0.36),
+    inset 0 1px 0 rgba(210, 255, 236, 0.1);
+}
+
+.kenya-team-card-primary::before {
+  background: linear-gradient(140deg, rgba(184, 255, 228, 0.2), transparent 42%);
+  opacity: 0.9;
+}
+
+.kenya-team-card-secondary {
+  border-color: rgba(120, 255, 204, 0.22);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0, 255, 156, 0.12), transparent 44%),
+    linear-gradient(160deg, rgba(8, 24, 20, 0.88), rgba(7, 17, 15, 0.8));
+  box-shadow:
+    0 0 0 1px rgba(120, 255, 204, 0.1),
+    0 12px 24px rgba(0, 18, 12, 0.32),
+    inset 0 1px 0 rgba(210, 255, 236, 0.07);
+}
+
+.kenya-team-card-secondary::before {
+  background: linear-gradient(140deg, rgba(170, 255, 220, 0.12), transparent 42%);
+  opacity: 0.76;
 }
 
 .dashboard-nav-shell {

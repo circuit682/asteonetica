@@ -1,6 +1,7 @@
 import OrbitalMark from "@/components/OrbitalMark";
 import MethodologyDiagram from "@/components/MethodologyDiagram";
 import FooterSection from "@/components/FooterSection";
+import CosmicHeroBackdrop from "@/components/cosmic/CosmicHeroBackdrop";
 
 export default function Home() {
   return (
@@ -10,10 +11,12 @@ export default function Home() {
 
 
       {/* HERO SECTION */}
-      <section className="min-h-screen flex flex-col items-center justify-center gap-10 px-6 text-center">
+      <section className="relative min-h-screen flex flex-col items-center justify-center gap-10 px-6 text-center overflow-hidden">
+        <CosmicHeroBackdrop />
+
         <OrbitalMark />
 
-        <h1 className="text-4xl md:text-6xl font-extralight leading-tight tracking-tight">
+        <h1 className="relative z-10 text-4xl md:text-6xl font-extralight leading-tight tracking-tight">
           From Nairobi’s Night Sky <br />
           <span className="opacity-70">
             To Near-Earth Orbit.
@@ -35,7 +38,7 @@ export default function Home() {
   <div className="space-y-8 text-lg leading-relaxed">
 
     <p className="text-white/70">
-      Asteonetica is a volunteer research team participating in the
+      Asteroid Afronauts is a volunteer research team participating in the
       <span className="text-white/90"> International Astronomical Search Collaboration (IASC)</span>,
       a global citizen-science initiative focused on the detection of near-Earth objects (NEOs).
     </p>

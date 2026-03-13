@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://asteonetica.org"),
 
   title: {
-    default: "Asteonetica | Volunteer Astronomy Research – Kenya",
-    template: "%s | Asteonetica",
+    default: "Asteroid Afronauts Kenya | Volunteer Astronomy Research – Kenya",
+    template: "%s | Asteroid Afronauts Kenya",
   },
 
   description:
@@ -40,24 +40,24 @@ export const metadata: Metadata = {
     "Afronaut astronomy initiative",
   ],
 
-  authors: [{ name: "Asteonetica Research Collective" }],
-  creator: "Asteonetica",
-  publisher: "Asteonetica",
+  authors: [{ name: "Asteroid Afronauts Kenya Research Collective" }],
+  creator: "Asteroid Afronauts Kenya",
+  publisher: "Asteroid Afronauts Kenya",
 
   openGraph: {
-    title: "Asteonetica – Volunteer Astronomy Research | Kenya",
+    title: "Asteroid Afronauts Kenya – Volunteer Astronomy Research | Kenya",
     description:
       "Kenyan volunteer research collective participating in IASC asteroid detection campaigns.",
     url: "https://asteonetica.org",
     type: "website",
     locale: "en_KE",
-    siteName: "Asteonetica",
+    siteName: "Asteroid Afronauts Kenya",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Asteonetica Astronomy Research Collective",
+        alt: "Asteroid Afronauts Kenya Astronomy Research Collective",
       },
     ],
   },

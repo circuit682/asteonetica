@@ -87,9 +87,14 @@ export default function TeamOrbit() {
 
   return (
     <div
-      className="relative w-full min-h-[560px] md:min-h-[620px] flex items-center justify-center overflow-hidden px-4"
+      className="relative w-full min-h-[620px] md:min-h-[700px] flex items-center justify-center overflow-hidden px-4"
       style={{ perspective: "1200px" }}
     >
+
+      {/* EMERALD COSMIC GLOW */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+        <div className="w-[760px] h-[760px] rounded-full bg-[radial-gradient(circle,rgba(0,255,156,0.24),rgba(0,255,156,0.08)_36%,transparent_72%)] blur-3xl opacity-70" />
+      </div>
 
       {/* STARFIELD BACKGROUND */}
       <motion.div
@@ -108,10 +113,51 @@ export default function TeamOrbit() {
       />
 
       <div
-        className="relative w-[min(90vw,620px)] h-[min(90vw,620px)]"
+        className="relative w-[min(94vw,700px)] h-[min(94vw,700px)]"
         style={{ transformStyle: "preserve-3d" }}
       >
-        <div className="absolute inset-0 rounded-full border border-transparent" />
+        {/* SWANKY ORBIT RINGS */}
+        <motion.div
+          className="absolute inset-[6%] rounded-full border border-[rgba(0,255,156,0.42)]"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
+          style={{ boxShadow: "0 0 22px rgba(0,255,156,0.22), inset 0 0 26px rgba(0,255,156,0.08)" }}
+        />
+        <motion.div
+          className="absolute inset-[6%]"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+        >
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-[#aaffea] shadow-[0_0_12px_rgba(170,255,234,0.95),0_0_22px_rgba(0,255,156,0.55)]" />
+        </motion.div>
+        <motion.div
+          className="absolute inset-[14%] rounded-full border border-dashed border-[rgba(110,255,205,0.36)]"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+          style={{ boxShadow: "0 0 18px rgba(110,255,205,0.2)" }}
+        />
+        <motion.div
+          className="absolute inset-[14%]"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 11, repeat: Infinity, ease: "linear" }}
+        >
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2 h-2 rounded-full bg-[#cffff3] shadow-[0_0_10px_rgba(207,255,243,0.9),0_0_18px_rgba(0,255,156,0.45)]" />
+        </motion.div>
+        <motion.div
+          className="absolute inset-[23%] rounded-full border border-[rgba(170,255,228,0.28)]"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
+          style={{ boxShadow: "0 0 14px rgba(120,255,204,0.16)" }}
+        />
+        <motion.div
+          className="absolute inset-[23%]"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 13, repeat: Infinity, ease: "linear" }}
+        >
+          <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#e7fff8] shadow-[0_0_8px_rgba(231,255,248,0.9),0_0_14px_rgba(0,255,156,0.38)]" />
+        </motion.div>
+
+        <div className="absolute inset-[33%] rounded-full border border-[rgba(200,255,236,0.2)] bg-[radial-gradient(circle,rgba(0,255,156,0.12),transparent_72%)] shadow-[0_0_24px_rgba(0,255,156,0.22)]" />
 
         <motion.div
           animate={{ rotateY: currentRotation }}
@@ -141,7 +187,10 @@ export default function TeamOrbit() {
             }
 
             const isFrontMost = i === frontIndex && isFacingForward;
-            const scale = isFrontMost ? 1.18 : 0.75 + depth * 0.25;
+            const forwardDepth = Math.max(depth, 0);
+            const orbitDistance = 280 + (isFrontMost ? 18 : forwardDepth * 8);
+            const scale = 0.92 + forwardDepth * 0.12;
+            const lift = isFrontMost ? -4 : 0;
 
             return (
               <div
@@ -149,7 +198,7 @@ export default function TeamOrbit() {
                 className="absolute top-1/2 left-1/2"
                 style={{
                   transformStyle: "preserve-3d",
-                  transform: `rotateY(${angle}deg) translateZ(250px) rotateY(-${angle}deg) translate(-50%, -50%)`,
+                  transform: `rotateY(${angle}deg) translateZ(${orbitDistance}px) rotateY(-${angle}deg) translate(-50%, -50%)`,
                 }}
               >
                 <motion.div
@@ -157,16 +206,17 @@ export default function TeamOrbit() {
                     rotateY: -currentRotation,
                     opacity,
                     scale,
-                    y: isFrontMost ? -6 : 0,
+                    y: lift,
                   }}
                   transition={{
                     rotateY: { duration: 0 },
                     opacity: { duration: 0.15 },
-                    scale: { duration: 0.15 },
-                    y: { duration: 0.15 },
+                    scale: { duration: 0.2 },
+                    y: { duration: 0.2 },
                   }}
                   style={{
                     transformStyle: "preserve-3d",
+                    zIndex: Math.round((forwardDepth + 1) * 100),
                   }}
                 >
                   <motion.button
@@ -175,6 +225,8 @@ export default function TeamOrbit() {
                     onMouseLeave={() => setHoveredIndex(null)}
                     className="dashboard-card-soft w-36 sm:w-44 md:w-52 rounded-2xl backdrop-blur-md p-3 sm:p-4 text-center flex flex-col items-center justify-center pointer-events-auto"
                     style={{
+                      backfaceVisibility: "hidden",
+                      transformOrigin: "center center",
                       borderColor:
                         (hoveredIndex === i || isFrontMost) && isFacingForward
                           ? `rgba(${member.color},0.72)`

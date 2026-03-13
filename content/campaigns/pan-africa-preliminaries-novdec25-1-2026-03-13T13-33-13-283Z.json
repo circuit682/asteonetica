@@ -1,0 +1,478 @@
+{
+  "campaign": "Pan-Africa Preliminaries NovDec25 (1)",
+  "start": "2025-11-15",
+  "end": "2025-11-28",
+  "totalObservations": 35,
+  "observations": [
+    {
+      "id": "Total:44",
+      "observers": [],
+      "team": "",
+      "country": "",
+      "region": "global",
+      "status": "",
+      "date": "",
+      "imageSet": ""
+    },
+    {
+      "id": "P22hlwm",
+      "observers": [
+        "M. Elsayed",
+        "B. Ismail",
+        "D. Akram"
+      ],
+      "team": "Team Cassiopeia",
+      "country": "Egypt",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-15",
+      "imageSet": "AIC186"
+    },
+    {
+      "id": "P22hlyY",
+      "observers": [
+        "N. Assala"
+      ],
+      "team": "Philippe Achilleas Astronomy Club",
+      "country": "Ivory Coast",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-15",
+      "imageSet": "PAC0002"
+    },
+    {
+      "id": "P22hlqJ",
+      "observers": [
+        "N. Assala"
+      ],
+      "team": "Philippe Achilleas Astronomy Club",
+      "country": "Ivory Coast",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-15",
+      "imageSet": "PAC0003"
+    },
+    {
+      "id": "P22hlw1",
+      "observers": [
+        "V. Kihagi",
+        "L. Mwai"
+      ],
+      "team": "Asteroid Afronauts",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-11-15",
+      "imageSet": "AAK0002"
+    },
+    {
+      "id": "P22hlz2",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-15",
+      "imageSet": "AQW0002"
+    },
+    {
+      "id": "P22hlwC",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-15",
+      "imageSet": "AQW0004"
+    },
+    {
+      "id": "P22hlsT",
+      "observers": [
+        "M. Diop",
+        "M. Delattre",
+        "A. Diedhiou",
+        "M. Savaré",
+        "V. Diouf",
+        "M. Niang"
+      ],
+      "team": "Mbour Astronomie Club",
+      "country": "Senegal",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-15",
+      "imageSet": "MAC2016"
+    },
+    {
+      "id": "P22hlwL",
+      "observers": [
+        "P. Pius",
+        "L.Kahinga",
+        "D.Mazengo",
+        "Y.Idala"
+      ],
+      "team": "Dept. of Physics - University of Dodoma",
+      "country": "Tanzania",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-11-15",
+      "imageSet": "UDOM001"
+    },
+    {
+      "id": "P12i4cF",
+      "observers": [
+        "A. Idris"
+      ],
+      "team": "Team Nigeria",
+      "country": "Nigeria",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-28",
+      "imageSet": "TNG0001"
+    },
+    {
+      "id": "P12i4ht",
+      "observers": [
+        "A. Idris"
+      ],
+      "team": "Team Nigeria",
+      "country": "Nigeria",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-28",
+      "imageSet": "TNG0004"
+    },
+    {
+      "id": "P12i4cp",
+      "observers": [
+        "L. Ali"
+      ],
+      "team": "Andromeda",
+      "country": "Palestine",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-28",
+      "imageSet": "LAM1001"
+    },
+    {
+      "id": "P12i4xd",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-28",
+      "imageSet": "MPI0001"
+    },
+    {
+      "id": "P12i4cV",
+      "observers": [
+        "P. Pius",
+        "L.Kahinga",
+        "D.Mazengo",
+        "Y.Idala"
+      ],
+      "team": "Dept. of Physics - University of Dodoma",
+      "country": "Tanzania",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-11-28",
+      "imageSet": "UDOM010"
+    },
+    {
+      "id": "P22hLBe",
+      "observers": [
+        "G. Justpa",
+        "W. Sewavi",
+        "A. Mutalabi"
+      ],
+      "team": "Ghana Astronomical Science",
+      "country": "Ghana",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-25",
+      "imageSet": "GHA2008"
+    },
+    {
+      "id": "P22hLzA",
+      "observers": [
+        "A. Rhandour"
+      ],
+      "team": "Atlas Asteroid Hunters",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-25",
+      "imageSet": "AAH0361"
+    },
+    {
+      "id": "P22hLB3",
+      "observers": [
+        "A. Rhandour"
+      ],
+      "team": "Atlas Asteroid Hunters",
+      "country": "Morocco",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-25",
+      "imageSet": "AAH0362"
+    },
+    {
+      "id": "P22hM16",
+      "observers": [
+        "D. Yahaya",
+        "D. Ngounou",
+        "S. Yahaya",
+        "W. Yahaya",
+        "S. Salha",
+        "Y. Yahaya",
+        "N. Ngoulou"
+      ],
+      "team": "Niger Sky Surfers",
+      "country": "Niger",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-25",
+      "imageSet": "NSS2002"
+    },
+    {
+      "id": "P22hLAf",
+      "observers": [
+        "L. Baradeiya"
+      ],
+      "team": "Andromeda",
+      "country": "Palestine",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-25",
+      "imageSet": "PLS3333"
+    },
+    {
+      "id": "P22hLxI",
+      "observers": [
+        "P. Pius",
+        "L.Kahinga",
+        "D.Mazengo",
+        "Y.Idala"
+      ],
+      "team": "Dept. of Physics - University of Dodoma",
+      "country": "Tanzania",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-11-25",
+      "imageSet": "UDOM012"
+    },
+    {
+      "id": "P12hzqK",
+      "observers": [
+        "R. Simbizi"
+      ],
+      "team": "IASC-Burundi",
+      "country": "Burundi",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-23",
+      "imageSet": "TUB0150"
+    },
+    {
+      "id": "P12hzvq",
+      "observers": [
+        "A. Diaby",
+        "K. Kouadio",
+        "R. Sylla",
+        "A. Traoré",
+        "J. Bayard",
+        "D. Okou"
+      ],
+      "team": "Jules Verne AstroClub",
+      "country": "Ivory Coast",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-23",
+      "imageSet": "EJV1003"
+    },
+    {
+      "id": "P12hzqF",
+      "observers": [
+        "N. Assala",
+        "J. N'gouan"
+      ],
+      "team": "Philippe Achilleas Astronomy Club",
+      "country": "Ivory Coast",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-23",
+      "imageSet": "PAC0009"
+    },
+    {
+      "id": "P12hzwu",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-23",
+      "imageSet": "AZE0005"
+    },
+    {
+      "id": "P12hzqB",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-23",
+      "imageSet": "AZE0006"
+    },
+    {
+      "id": "P12hxNH",
+      "observers": [
+        "M. Diop"
+      ],
+      "team": "Mbour Astronomie Club",
+      "country": "Senegal",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-23",
+      "imageSet": "MAC0086"
+    },
+    {
+      "id": "P12hmAt",
+      "observers": [
+        "E. Tesfaye",
+        "B. Kibret"
+      ],
+      "team": "HammerSpaceCraft",
+      "country": "Ethiopia",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "HSC129M"
+    },
+    {
+      "id": "P12hmtI",
+      "observers": [
+        "A. Diaby",
+        "K. Kouadio",
+        "R. Sylla",
+        "A. Traoré",
+        "J. Bayard",
+        "D. Okou"
+      ],
+      "team": "Jules Verne AstroClub",
+      "country": "Ivory Coast",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "EJV0912"
+    },
+    {
+      "id": "P12hmyJ",
+      "observers": [
+        "J. Ngouan",
+        "L. Martin",
+        "N. Assala"
+      ],
+      "team": "Philippe Achilleas Astronomy Club",
+      "country": "Ivory Coast",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "PAC0005"
+    },
+    {
+      "id": "P12hmLQ",
+      "observers": [
+        "V. Kihagi",
+        "L. Mwai"
+      ],
+      "team": "Asteroid Afronauts",
+      "country": "Kenya",
+      "region": "east_africa",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "AAK0001"
+    },
+    {
+      "id": "P12hmwc",
+      "observers": [
+        "D. Yahaya",
+        "D. Ngounou",
+        "S. Yahaya",
+        "W. Yahaya",
+        "S. Salha",
+        "Y. Yahaya",
+        "N. Ngoulou"
+      ],
+      "team": "Niger Sky Surfers",
+      "country": "Niger",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "NSS2001"
+    },
+    {
+      "id": "P12hmAB",
+      "observers": [
+        "F. Ngozika"
+      ],
+      "team": "COOU Asteroid Group",
+      "country": "Nigeria",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "COOU001"
+    },
+    {
+      "id": "P12hmwf",
+      "observers": [
+        "J. Poaty",
+        "J. Dinga"
+      ],
+      "team": "University Marien Ngouabi",
+      "country": "Republic of the Congo",
+      "region": "global",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "AZE0003"
+    },
+    {
+      "id": "P12hmvG",
+      "observers": [
+        "M. Diop"
+      ],
+      "team": "Mbour Astronomie Club",
+      "country": "Senegal",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "MAC0082"
+    },
+    {
+      "id": "P12hmzP",
+      "observers": [
+        "M. Diop"
+      ],
+      "team": "Mbour Astronomie Club",
+      "country": "Senegal",
+      "region": "africa",
+      "status": "Preliminary",
+      "date": "2025-11-16",
+      "imageSet": "MAC0084"
+    }
+  ]
+}

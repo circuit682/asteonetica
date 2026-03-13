@@ -28,6 +28,126 @@ const AFRICA = [
   "Senegal"
 ]
 
+type HeaderMap = {
+  rowIndex: number
+  provisional?: number
+  object?: number
+  observers?: number
+  team?: number
+  country?: number
+  status?: number
+  date?: number
+  imageSet?: number
+}
+
+function normalizeHeader(value: unknown): string {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "")
+    .trim()
+}
+
+function parseExcelDate(value: unknown): string {
+  if (typeof value === "number" && !Number.isNaN(value)) {
+    const jsDate = new Date((value - 25569) * 86400 * 1000)
+    if (!Number.isNaN(jsDate.getTime())) {
+      return jsDate.toISOString().slice(0, 10)
+    }
+  }
+
+  const text = String(value ?? "").trim()
+  if (!text) return ""
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    return text
+  }
+
+  const ddmmyyyy = text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/)
+  if (ddmmyyyy) {
+    const [, dd, mm, yyyy] = ddmmyyyy
+    return `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`
+  }
+
+  const parsed = new Date(text)
+  if (!Number.isNaN(parsed.getTime())) {
+    return parsed.toISOString().slice(0, 10)
+  }
+
+  return ""
+}
+
+function splitObservers(raw: string): string[] {
+  return raw
+    .split(/,|;|\||\band\b/i)
+    .map((o) => o.trim())
+    .filter(Boolean)
+}
+
+function detectHeaderMap(rawRows: (string | number | null)[][]): HeaderMap | null {
+  for (let rowIndex = 0; rowIndex < rawRows.length; rowIndex += 1) {
+    const cells = rawRows[rowIndex]
+    const normalizedCells = cells.map(normalizeHeader)
+
+    const lookup = (candidates: string[]): number | undefined => {
+      const idx = normalizedCells.findIndex((cell) => candidates.includes(cell))
+      return idx >= 0 ? idx : undefined
+    }
+
+    const map: HeaderMap = {
+      rowIndex,
+      provisional: lookup(["provisional", "provisionaldesignation", "designation"]),
+      object: lookup(["object", "objectid", "number", "#object", "id"]),
+      observers: lookup(["students", "observers", "observer", "student"]),
+      team: lookup(["school", "team", "group"]),
+      country: lookup(["location", "country"]),
+      status: lookup(["status"]),
+      date: lookup(["dateofimage", "date", "imagedate"]),
+      imageSet: lookup(["linked", "imageset", "image", "frameset"])
+    }
+
+    const hasRequiredShape =
+      map.status !== undefined &&
+      map.date !== undefined &&
+      (map.provisional !== undefined || map.object !== undefined) &&
+      (map.team !== undefined || map.country !== undefined)
+
+    if (hasRequiredShape) {
+      return map
+    }
+  }
+
+  return null
+}
+
+function inferId(rowText: string, provisionalCell: string, objectCell: string): string {
+  const fromCells = provisionalCell || objectCell
+  if (fromCells) return fromCells.trim()
+
+  const idMatch = rowText.match(/\bIU[a-zA-Z0-9]+\b/i)
+  if (idMatch) return idMatch[0]
+
+  const designationMatch = rowText.match(/\b\d{4}\s?[A-Z]{1,2}\d{0,3}\b/i)
+  if (designationMatch) return designationMatch[0].replace(/\s+/g, " ").trim()
+
+  return ""
+}
+
+function inferImageSet(rowText: string, imageCell: string): string {
+  if (imageCell) return imageCell.trim()
+
+  const imageMatch = rowText.match(/\b[A-Z]{3}[0-9]{4}\b/)
+  if (imageMatch) return imageMatch[0]
+
+  return ""
+}
+
+function deriveRegion(country: string): string {
+  let region = "global"
+  if (AFRICA.includes(country)) region = "africa"
+  if (EAST_AFRICA.includes(country)) region = "east_africa"
+  return region
+}
+
 export async function parseSpreadsheetFile(file: File): Promise<ParsedObservation[]> {
   const buffer = Buffer.from(await file.arrayBuffer())
   const workbook = XLSX.read(buffer)
@@ -39,15 +159,52 @@ export async function parseSpreadsheetFile(file: File): Promise<ParsedObservatio
   })
 
   const observations: ParsedObservation[] = []
+  const headerMap = detectHeaderMap(rawRows)
+
+  if (headerMap) {
+    for (let rowIndex = headerMap.rowIndex + 1; rowIndex < rawRows.length; rowIndex += 1) {
+      const cells = rawRows[rowIndex]
+      const rowText = cells.join(" ").trim()
+
+      if (!rowText) continue
+
+      const provisionalCell = String(cells[headerMap.provisional ?? -1] ?? "").trim()
+      const objectCell = String(cells[headerMap.object ?? -1] ?? "").trim()
+      const observersCell = String(cells[headerMap.observers ?? -1] ?? "").trim()
+      const team = String(cells[headerMap.team ?? -1] ?? "").trim()
+      const country = String(cells[headerMap.country ?? -1] ?? "").trim()
+      const status = String(cells[headerMap.status ?? -1] ?? "").trim()
+      const date = parseExcelDate(cells[headerMap.date ?? -1])
+      const imageSetCell = String(cells[headerMap.imageSet ?? -1] ?? "").trim()
+
+      const id = inferId(rowText, provisionalCell, objectCell)
+      const imageSet = inferImageSet(rowText, imageSetCell)
+      const observers = splitObservers(observersCell)
+
+      if (!id) continue
+
+      observations.push({
+        id,
+        observers,
+        team,
+        country,
+        region: deriveRegion(country),
+        status: status.replace(/^F/, "").trim(),
+        date,
+        imageSet
+      })
+    }
+
+    return observations
+  }
 
   for (const cells of rawRows) {
     const rowText = cells.join(" ")
-    const idMatch = rowText.match(/IU[a-zA-Z0-9]+/)
-    const imageMatch = rowText.match(/[A-Z]{3}[0-9]{4}/)
+    const id = inferId(rowText, "", "")
+    const imageSet = inferImageSet(rowText, "")
 
-    if (!idMatch || !imageMatch) continue
+    if (!id || !imageSet) continue
 
-    const id = idMatch[0]
     const remainder = rowText.replace(id, "").trim()
     const observerMatch = remainder.match(/^([A-Z]\.\s?[A-Za-z]+(?:,\s*[A-Z]\.\s?[A-Za-z]+)*)/)
 
@@ -65,18 +222,8 @@ export async function parseSpreadsheetFile(file: File): Promise<ParsedObservatio
       .replace(/^F/, "")
       .trim()
 
-    const excelDate = Number(cells[6])
-    let date = ""
-    if (!isNaN(excelDate)) {
-      const jsDate = new Date((excelDate - 25569) * 86400 * 1000)
-      date = jsDate.toISOString().slice(0, 10)
-    }
-
-    const imageSet = String(cells[7] ?? "").trim()
-
-    let region = "global"
-    if (AFRICA.includes(country)) region = "africa"
-    if (EAST_AFRICA.includes(country)) region = "east_africa"
+    const date = parseExcelDate(cells[6])
+    const region = deriveRegion(country)
 
     observations.push({
       id,
