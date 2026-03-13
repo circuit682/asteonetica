@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { isMissionControlSessionActive } from "@/lib/mission-auth";
 
 export async function POST(request: Request) {
+  if (!(await isMissionControlSessionActive())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const data = await request.json();
 

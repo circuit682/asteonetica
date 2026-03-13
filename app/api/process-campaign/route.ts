@@ -3,6 +3,7 @@ import fs from "fs"
 import path from "path"
 import { parseSpreadsheetFile } from "@/lib/campaign-parser"
 import { loadOrRebuildCampaignSummary } from "@/lib/campaign-store"
+import { isMissionControlSessionActive } from "@/lib/mission-auth"
 
 export const dynamic = "force-dynamic"
 
@@ -21,6 +22,12 @@ function sanitizeCampaignName(value: string): string {
 }
 
 export async function POST(req: Request) {
+  if (!(await isMissionControlSessionActive())) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    )
+  }
 
   const formData = await req.formData()
   const file = formData.get("file") as File

@@ -1,0 +1,9 @@
+{
+  "title": "Inside The Kenya Asteroid Search Process",
+  "date": "2026-03-05",
+  "summary": "A narrative observatory log on how Afronauts in Kenya inspect survey frames, test motion consistency, and decide whether an asteroid signature deserves escalation.",
+  "content": "Asteroid search work is often imagined as a moment of instant recognition, but the actual process is slower and more forensic. Volunteers begin with image blinking, then move into careful comparison of suspected motion against the wider field.\n\nWhat matters most is consistency. A candidate should maintain a believable path, a coherent brightness profile, and a motion pattern that survives repeated inspection. Many false leads in asteroid review come from saturation, noise, flickering grids, or misread background objects.\n\nIn the Kenya observatory context, training this discipline is as important as any single result. Dispatch exists partly to describe that practice, so the public record reflects how asteroid research is actually carried out on the ground.",
+  "tags": ["log", "methodology", "kenya", "asteroid research"],
+  "type": "observatory-log",
+  "location": "Nairobi, Kenya"
+}

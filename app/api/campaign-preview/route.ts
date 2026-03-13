@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { parseSpreadsheetFile } from "@/lib/campaign-parser"
 import { isAfronautTeam } from "@/lib/analytics"
+import { isMissionControlSessionActive } from "@/lib/mission-auth"
 
 export const dynamic = "force-dynamic"
 
@@ -14,6 +15,13 @@ export type CampaignPreviewResponse = {
 }
 
 export async function POST(req: Request) {
+  if (!(await isMissionControlSessionActive())) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    )
+  }
+
   const formData = await req.formData()
   const file = formData.get("file") as File
 
