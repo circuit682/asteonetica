@@ -1,6 +1,9 @@
+"use client"
+
 import DetectionGuide from "@/components/DetectionGuide"
 import TrainingFrames from "@/components/TrainingFrames"
 import FooterSection from "@/components/FooterSection"
+import { motion } from "framer-motion"
 
 export default function VaultPage() {
 
@@ -12,22 +15,43 @@ export default function VaultPage() {
 
       {/* INTRO */}
       <section className="mb-14 text-center">
-        <h1 className="text-4xl font-light tracking-wide text-white/95 md:text-5xl">
+        <motion.h1
+          className="text-[var(--radar-green)] text-2xl md:text-4xl font-light uppercase tracking-[0.14em] mb-4 drop-shadow-[0_0_14px_rgba(0,255,156,0.38)]"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          animate={{ opacity: [0.9, 1, 0.9], textShadow: ["0 0 0 rgba(0,255,156,0)", "0 0 16px rgba(0,255,156,0.38)", "0 0 0 rgba(0,255,156,0)"] }}
+          transition={{ duration: 1.8, ease: "easeInOut" }}
+        >
           Afronaut Initiation
-        </h1>
-        <p className="mx-auto mt-5 max-w-2xl leading-relaxed text-white/70">
+        </motion.h1>
+        <motion.p
+          className="mx-auto mt-5 max-w-2xl leading-relaxed text-white/70"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          animate={{ opacity: [0.62, 0.74, 0.62], textShadow: ["0 0 0 rgba(0,255,156,0)", "0 0 10px rgba(0,255,156,0.14)", "0 0 0 rgba(0,255,156,0)"] }}
+          transition={{ duration: 1.8, ease: "easeInOut", delay: 0.15 }}
+        >
           The Vault contains training material for new Afronauts learning
           how to analyze astronomical survey images and detect potential
           asteroid candidates during IASC search campaigns.
-        </p>
+        </motion.p>
       </section>
 
       {/* TRAINING FRAMES */}
       <section className="mb-28">
 
-        <h2 className="text-3xl font-light text-center mb-10">
+        <motion.h2
+          className="text-3xl font-light text-center mb-10"
+          initial={{ opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.0, ease: "easeInOut" }}
+          animate={{ textShadow: ["0 0 0 rgba(0,255,156,0)", "0 0 18px rgba(0,255,156,0.2)", "0 0 0 rgba(0,255,156,0)"] }}
+        >
           Survey Training Frames
-        </h2>
+        </motion.h2>
 
         <TrainingFrames />
 

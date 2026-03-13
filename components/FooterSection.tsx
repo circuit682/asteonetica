@@ -14,6 +14,25 @@ export default function FooterSection({ tone = "default" }: FooterSectionProps) 
       ? "absolute inset-0 bg-gradient-to-b from-transparent via-[#081018]/24 to-[#081018]/48"
       : "absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black/90";
 
+  const volunteerEmail = "veronicakihagi@gmail.com";
+  const volunteerSubject = "Volunteer Application - Asteroid Afronauts Kenya";
+  const volunteerBody = [
+    "Hello Veronica,",
+    "",
+    "I would like to volunteer with Asteroid Afronauts Kenya.",
+    "",
+    "Name:",
+    "Location:",
+    "Background/Skills:",
+    "Availability:",
+    "Why I want to join:",
+    "",
+    "Thank you."
+  ].join("\r\n");
+
+  const volunteerGmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(volunteerEmail)}&su=${encodeURIComponent(volunteerSubject)}&body=${encodeURIComponent(volunteerBody)}`;
+  const volunteerMailto = `mailto:${volunteerEmail}?subject=${encodeURIComponent(volunteerSubject)}&body=${encodeURIComponent(volunteerBody)}`;
+
   return (
     <footer className="relative mt-40 overflow-hidden">
 
@@ -91,10 +110,23 @@ export default function FooterSection({ tone = "default" }: FooterSectionProps) 
             <span>Team Leaders</span>
           </div>
 
-          <div className="flex items-start gap-3 text-white/60 hover:text-[var(--radar-green)] transition-colors cursor-pointer">
+          <a
+            href={volunteerGmailCompose}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={volunteerMailto}
+            className="flex items-start gap-3 text-white/60 hover:text-[var(--radar-green)] transition-colors"
+          >
             <Mail size={18} className="mt-1" />
             <span>Volunteer With Us</span>
-          </div>
+          </a>
+
+          <a
+            href={volunteerMailto}
+            className="block pl-8 text-[11px] text-white/45 hover:text-[var(--radar-green)] transition-colors"
+          >
+            Not using Gmail? Open in mail app
+          </a>
 
           <div className="pt-2">
             <a
