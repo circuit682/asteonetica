@@ -62,7 +62,7 @@ export default function TeamOrbit() {
 
   useEffect(() => {
     const startTime = Date.now();
-    const duration = 30000;
+    const duration = 60000;
 
     const updateRotation = () => {
       const elapsed = Date.now() - startTime;

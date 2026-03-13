@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import NavLink from "@/components/NavLink";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,6 +10,11 @@ import { motionTimings, motionEase } from "@/lib/motion";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {

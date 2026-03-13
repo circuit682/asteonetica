@@ -78,7 +78,7 @@ export default function FooterSection({ tone = "default" }: FooterSectionProps) 
           <ul className="space-y-3 text-white/60">
             <li>
               <Link href="/afronauts" className="hover:text-[var(--radar-green)] transition-colors">
-                Afronauts
+                The Team
               </Link>
             </li>
             <li>
