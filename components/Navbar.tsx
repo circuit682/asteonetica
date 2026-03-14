@@ -18,7 +18,6 @@ export default function Navbar() {
     { href: "/vault", label: "Vault" },
     { href: "/dispatch", label: "Dispatch" },
   ];
-  const visibleNavItems = navItems.filter((item) => item.href !== pathname);
 
   useEffect(() => {
     const closeTimer = window.setTimeout(() => {
@@ -62,7 +61,7 @@ export default function Navbar() {
 
         {/* Desktop Links */}
         <nav className="hidden md:flex gap-8">
-          {visibleNavItems.map((item) => (
+          {navItems.map((item) => (
             <NavLink key={item.href} href={item.href}>
               {item.label}
             </NavLink>
@@ -88,7 +87,7 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="md:hidden px-6 pb-4 flex flex-col gap-4 text-sm tracking-wide dashboard-nav-panel"
           >
-            {visibleNavItems.map((item) => (
+            {navItems.map((item) => (
               <NavLink key={item.href} href={item.href}>
                 {item.label}
               </NavLink>
