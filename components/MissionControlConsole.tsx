@@ -98,6 +98,59 @@ function formatDispatchPreviewDate(date: string) {
   }).format(parsed);
 }
 
+function formatDispatchTypeLabel(type: DispatchEntryType) {
+  switch (type) {
+    case "campaign-update":
+      return "Campaign Update";
+    case "discovery-announcement":
+      return "Discovery Announcement";
+    case "observatory-log":
+      return "Observatory Log";
+    case "team-highlight":
+      return "Team Highlight";
+    default:
+      return "Dispatch Entry";
+  }
+}
+
+const dispatchSectionConfig: Record<
+  DispatchEntryType,
+  {
+    summaryPlaceholder: string;
+    contentPlaceholder: string;
+    previewPrompt: string;
+  }
+> = {
+  "campaign-update": {
+    summaryPlaceholder:
+      "Summarize the campaign cycle, review window, and core operational update for this campaign section.",
+    contentPlaceholder:
+      "Campaign section preview. Document search phases, review cadence, and team coordination milestones.",
+    previewPrompt: "Campaign section preview"
+  },
+  "discovery-announcement": {
+    summaryPlaceholder:
+      "Summarize the preliminary detection or confirmation and why this finding matters now.",
+    contentPlaceholder:
+      "Discovery section preview. Include object context, validation trail, and next verification actions.",
+    previewPrompt: "Discovery section preview"
+  },
+  "observatory-log": {
+    summaryPlaceholder:
+      "Summarize the observatory work session, methods used, and what changed in this log entry.",
+    contentPlaceholder:
+      "Observatory section preview. Capture the workflow narrative, frame analysis notes, and key decisions.",
+    previewPrompt: "Observatory section preview"
+  },
+  "team-highlight": {
+    summaryPlaceholder:
+      "Summarize the contributor focus and the specific work or discipline being highlighted.",
+    contentPlaceholder:
+      "Team section preview. Describe the person, practice, and measurable contribution to the mission.",
+    previewPrompt: "Team section preview"
+  }
+};
+
 export default function MissionControlConsole() {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
@@ -147,6 +200,16 @@ export default function MissionControlConsole() {
   const hasUnsavedDispatchChanges = useMemo(
     () => serializeDispatchForm(dispatchForm) !== dispatchBaseline,
     [dispatchBaseline, dispatchForm]
+  );
+
+  const activeDispatchSection = useMemo(
+    () => dispatchSectionConfig[dispatchForm.type],
+    [dispatchForm.type]
+  );
+
+  const dispatchTypeLabel = useMemo(
+    () => formatDispatchTypeLabel(dispatchForm.type),
+    [dispatchForm.type]
   );
 
   useEffect(() => {
@@ -511,8 +574,8 @@ export default function MissionControlConsole() {
       setNotice({
         type: "success",
         message: isEditing
-          ? `Dispatch entry updated in ${result.file}.`
-          : `Dispatch entry saved as ${result.file}.`
+          ? `${dispatchTypeLabel} updated in ${result.file}.`
+          : `${dispatchTypeLabel} published as ${result.file}.`
       });
 
       setLastDispatchImport({
@@ -901,23 +964,26 @@ export default function MissionControlConsole() {
           <p className="uppercase tracking-widest text-white/45">Publishing Notes</p>
           <p>Tags should be comma-separated, for example: campaign, kenya, asteroids.</p>
           <p>Use blank lines in the long-form content to create readable paragraphs on the Dispatch page.</p>
+          <p>Preview and publish are automatically synced to the selected section: {dispatchTypeLabel}.</p>
         </div>
 
         <div className="rounded-lg border border-[rgba(0,255,156,0.14)] bg-[rgba(0,255,156,0.04)] p-5 space-y-4">
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="text-xs uppercase tracking-widest text-[var(--radar-green)]">Live Preview</p>
-              <p className="mt-1 text-xs text-white/45">Preview how the entry reads before you publish or update it.</p>
+              <p className="mt-1 text-xs text-white/45">
+                {activeDispatchSection.previewPrompt} - adapts automatically while you edit.
+              </p>
             </div>
             <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[11px] uppercase tracking-[0.2em] text-white/50">
-              {selectedDispatchSlug ? "Editing" : "Draft"}
+              {selectedDispatchSlug ? `Editing ${dispatchTypeLabel}` : `Draft ${dispatchTypeLabel}`}
             </div>
           </div>
 
           <div className="vault-emerald-tablet rounded-2xl p-6 md:p-7">
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.22em] text-white/44">
-                <span className="text-[var(--radar-green)]">{dispatchForm.type.replace(/-/g, " ")}</span>
+                <span className="text-[var(--radar-green)]">{dispatchTypeLabel}</span>
                 <span>{formatDispatchPreviewDate(dispatchForm.date)}</span>
                 <span>{dispatchForm.location || "Location not set"}</span>
                 <span>{dispatchForm.featured ? "Featured entry" : "Standard entry"}</span>
@@ -928,11 +994,11 @@ export default function MissionControlConsole() {
               </h3>
 
               <p className="text-sm md:text-base leading-7 text-white/68">
-                {dispatchForm.summary || "A short summary will appear here so you can judge readability before publishing."}
+                {dispatchForm.summary || activeDispatchSection.summaryPlaceholder}
               </p>
 
               <div className="border-t border-white/10 pt-5 space-y-4 text-sm md:text-[15px] leading-7 text-white/68">
-                {(dispatchForm.content || "Long-form dispatch content preview. Add paragraphs separated by blank lines to shape the journal layout.")
+                {(dispatchForm.content || activeDispatchSection.contentPlaceholder)
                   .split("\n\n")
                   .filter(Boolean)
                   .slice(0, 3)
@@ -965,8 +1031,8 @@ export default function MissionControlConsole() {
           className="px-6 py-3 bg-[var(--radar-green)]/20 border border-[var(--radar-green)] text-[var(--radar-green)] hover:bg-[var(--radar-green)]/30 rounded disabled:opacity-50"
         >
           {dispatchSaving
-            ? (selectedDispatchSlug ? "Updating Dispatch Entry..." : "Saving Dispatch Entry...")
-            : (selectedDispatchSlug ? "Update Dispatch Entry" : "Publish Dispatch Entry")}
+            ? (selectedDispatchSlug ? `Updating ${dispatchTypeLabel}...` : `Publishing ${dispatchTypeLabel}...`)
+            : (selectedDispatchSlug ? `Update ${dispatchTypeLabel}` : `Publish ${dispatchTypeLabel}`)}
         </button>
 
         {selectedDispatchSlug && (

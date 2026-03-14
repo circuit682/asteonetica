@@ -11,6 +11,14 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const brandLabel = pathname === "/" ? "Asteroid Afronauts Kenya" : "Home";
+  const navItems = [
+    { href: "/afronauts", label: "The Team" },
+    { href: "/observatory", label: "Observatory" },
+    { href: "/vault", label: "Vault" },
+    { href: "/dispatch", label: "Dispatch" },
+  ];
+  const visibleNavItems = navItems.filter((item) => item.href !== pathname);
 
   useEffect(() => {
     setOpen(false);
@@ -44,16 +52,17 @@ export default function Navbar() {
             href="/"
             className="text-lg tracking-wide font-light text-white/80 hover:text-[var(--radar-green)] transition duration-300"
           >
-            Asteroid Afronauts Kenya
+            {brandLabel}
           </Link>
         </motion.div>
 
         {/* Desktop Links */}
         <nav className="hidden md:flex gap-8">
-          <NavLink href="/afronauts">The Team</NavLink>
-          <NavLink href="/observatory">Observatory</NavLink>
-          <NavLink href="/vault">Vault</NavLink>
-          <NavLink href="/dispatch">Dispatch</NavLink>
+          {visibleNavItems.map((item) => (
+            <NavLink key={item.href} href={item.href}>
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
 
         {/* Mobile Toggle */}
@@ -75,10 +84,11 @@ export default function Navbar() {
             transition={{ duration: 0.3 }}
             className="md:hidden px-6 pb-4 flex flex-col gap-4 text-sm tracking-wide dashboard-nav-panel"
           >
-            <NavLink href="/afronauts">The Team</NavLink>
-            <NavLink href="/observatory">Observatory</NavLink>
-            <NavLink href="/vault">Vault</NavLink>
-            <NavLink href="/dispatch">Dispatch</NavLink>
+            {visibleNavItems.map((item) => (
+              <NavLink key={item.href} href={item.href}>
+                {item.label}
+              </NavLink>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
