@@ -3,6 +3,25 @@ import fs from "fs";
 import path from "path";
 import { isMissionControlSessionActive } from "@/lib/mission-auth";
 
+type ObservationRecord = {
+  id: string;
+  observers: string[];
+  team: string;
+  country: string;
+  region: string;
+  status: string;
+  imageSet: string;
+  date: string;
+};
+
+type CampaignDataset = {
+  campaign: string;
+  start: string;
+  end: string;
+  totalObservations: number;
+  observations: ObservationRecord[];
+};
+
 export async function POST(request: Request) {
   if (!(await isMissionControlSessionActive())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -38,7 +57,7 @@ export async function POST(request: Request) {
   const campaignFileName = `${campaign.toLowerCase()}.json`;
   const datasetPath = path.join(campaignsDir, campaignFileName);
 
-  const observation = {
+  const observation: ObservationRecord = {
     id: data.id,
     observers: data.observers.split(",").map((o: string) => o.trim()),
     team: data.team,
@@ -49,8 +68,8 @@ export async function POST(request: Request) {
     date: data.date
   };
 
-  const existingDataset = fs.existsSync(datasetPath)
-    ? JSON.parse(fs.readFileSync(datasetPath, "utf8"))
+  const existingDataset: CampaignDataset = fs.existsSync(datasetPath)
+    ? JSON.parse(fs.readFileSync(datasetPath, "utf8")) as CampaignDataset
     : {
       campaign,
       start: data.date || "",
@@ -60,13 +79,13 @@ export async function POST(request: Request) {
     };
 
   const observations = Array.isArray(existingDataset.observations)
-    ? existingDataset.observations.filter((item: any) => item?.id !== observation.id)
+    ? existingDataset.observations.filter((item) => item?.id !== observation.id)
     : [];
 
   observations.push(observation);
 
   const dates = observations
-    .map((item: any) => item.date)
+    .map((item) => item.date)
     .filter((value: string) => /^\d{4}-\d{2}-\d{2}$/.test(value))
     .sort();
 

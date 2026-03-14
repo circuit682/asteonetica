@@ -32,9 +32,13 @@ export default function OrbitalMark() {
 
   useEffect(() => {
     if (sparkleSignal === 0) return;
-    setReact(true);
-    const timeout = setTimeout(() => setReact(false), 800);
-    return () => clearTimeout(timeout);
+    const startTimeout = window.setTimeout(() => setReact(true), 0);
+    const endTimeout = window.setTimeout(() => setReact(false), 800);
+
+    return () => {
+      window.clearTimeout(startTimeout);
+      window.clearTimeout(endTimeout);
+    };
   }, [sparkleSignal]);
 
   return (

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { useEffect, useMemo, useState } from "react"
 import FooterSection from "@/components/FooterSection"
+import UnderConstructionFallback from "@/components/UnderConstructionFallback"
 import {
   afronautDetections,
   africanOnlyObservations,
@@ -13,6 +14,7 @@ import {
   detectionsByDate,
   type CampaignDataset
 } from "@/lib/analytics"
+import { useUnderConstruction } from "@/lib/use-under-construction"
 
 type LatestCampaignResponse = {
   success: boolean
@@ -138,6 +140,8 @@ function LeaderRow({
 }
 
 export default function ObservatoryPage() {
+  const observatoryUnderConstruction = useUnderConstruction("observatory")
+
   const [campaign, setCampaign] = useState<CampaignDataset | null>(null)
   const [milestones, setMilestones] = useState<TeamMilestonesResponse | null>(null)
   const [history, setHistory] = useState<CampaignHistoryItem[]>([])
@@ -295,6 +299,10 @@ export default function ObservatoryPage() {
   }
   const teamDataReady = Boolean(teamSummary && teamSummary.totalDetections > 0)
   const latestHistoryCampaign = history.find((item) => item.isLatest) ?? null
+
+  if (observatoryUnderConstruction) {
+    return <UnderConstructionFallback sectionName="Observatory" />
+  }
 
   return (
     <main className="min-h-screen">

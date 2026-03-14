@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { allowedUnderConstructionRoutes } from "@/lib/under-construction";
 
 type Notice = {
   type: "success" | "error";
@@ -45,6 +46,12 @@ type CampaignPreview = {
   afronautDetections: number;
   panAfricanDetections: number;
   uniqueTeams: number;
+};
+
+type SiteFlagsResponse = {
+  success: boolean;
+  underConstructionRoutes?: string[];
+  error?: string;
 };
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -170,6 +177,9 @@ export default function MissionControlConsole() {
   const [preview, setPreview] = useState<CampaignPreview | null>(null);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [siteFlagsLoading, setSiteFlagsLoading] = useState(false);
+  const [siteFlagsSaving, setSiteFlagsSaving] = useState(false);
+  const [underConstructionRoutes, setUnderConstructionRoutes] = useState<string[]>([]);
 
   const [form, setForm] = useState({
     id: "",
@@ -212,8 +222,14 @@ export default function MissionControlConsole() {
     [dispatchForm.type]
   );
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     void loadDispatchEntries();
+  }, []);
+  /* eslint-enable react-hooks/exhaustive-deps */
+
+  useEffect(() => {
+    void loadSiteFlags();
   }, []);
 
   useEffect(() => {
@@ -334,6 +350,77 @@ export default function MissionControlConsole() {
       });
     } finally {
       setDispatchLoading(false);
+    }
+  }
+
+  async function loadSiteFlags() {
+    try {
+      setSiteFlagsLoading(true);
+
+      const res = await fetch("/api/site-flags", {
+        cache: "no-store"
+      });
+
+      const result = (await res.json()) as SiteFlagsResponse;
+
+      if (!res.ok) {
+        setNotice({
+          type: "error",
+          message: result.error || "Failed to load site flags."
+        });
+        return;
+      }
+
+      setUnderConstructionRoutes(result.underConstructionRoutes ?? []);
+    } catch {
+      setNotice({
+        type: "error",
+        message: "Failed to load site flags due to a network error."
+      });
+    } finally {
+      setSiteFlagsLoading(false);
+    }
+  }
+
+  async function saveSiteFlags() {
+    try {
+      setSiteFlagsSaving(true);
+      setNotice(null);
+
+      const res = await fetch("/api/site-flags", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ underConstructionRoutes })
+      });
+
+      if (handleUnauthorized(res)) {
+        return;
+      }
+
+      const result = (await res.json()) as SiteFlagsResponse;
+
+      if (!res.ok) {
+        setNotice({
+          type: "error",
+          message: result.error || "Failed to save site flags."
+        });
+        return;
+      }
+
+      setUnderConstructionRoutes(result.underConstructionRoutes ?? []);
+      setNotice({
+        type: "success",
+        message: "Under-construction route flags updated."
+      });
+    } catch {
+      setNotice({
+        type: "error",
+        message: "Failed to save site flags due to a network error."
+      });
+    } finally {
+      setSiteFlagsSaving(false);
     }
   }
 
@@ -1076,6 +1163,68 @@ export default function MissionControlConsole() {
           <p>3. To remove an entry from the live Dispatch page, type DELETE and archive it instead of permanently deleting it.</p>
           <p>4. If you try to switch entries or leave the page with unsaved Dispatch changes, you will get a warning first.</p>
         </div>
+      </div>
+
+      <div className="dashboard-card p-6 space-y-4">
+        <h2 className="text-xl">Site Visibility Controls</h2>
+
+        <p className="text-sm text-white/60 leading-relaxed">
+          Toggle temporary under-construction fallback per public route without environment variable edits.
+        </p>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          {allowedUnderConstructionRoutes.map((routeKey) => {
+            const active = underConstructionRoutes.includes(routeKey);
+
+            return (
+              <label
+                key={routeKey}
+                className="flex items-center justify-between rounded border border-white/15 bg-black/25 px-4 py-3 text-sm"
+              >
+                <span className="uppercase tracking-[0.18em] text-white/70">/{routeKey}</span>
+                <input
+                  type="checkbox"
+                  checked={active}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setUnderConstructionRoutes((prev) => {
+                      if (checked) {
+                        return Array.from(new Set([...prev, routeKey]));
+                      }
+
+                      return prev.filter((item) => item !== routeKey);
+                    });
+                  }}
+                  className="accent-[var(--radar-green)]"
+                />
+              </label>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={saveSiteFlags}
+            disabled={siteFlagsSaving || siteFlagsLoading}
+            className="rounded border border-[var(--radar-green)] bg-[var(--radar-green)]/15 px-4 py-2 text-sm text-[var(--radar-green)] hover:bg-[var(--radar-green)]/25 disabled:opacity-50"
+          >
+            {siteFlagsSaving ? "Saving Controls..." : "Save Visibility Controls"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => void loadSiteFlags()}
+            disabled={siteFlagsSaving || siteFlagsLoading}
+            className="rounded border border-white/15 bg-white/5 px-4 py-2 text-sm text-white/70 hover:bg-white/10 disabled:opacity-50"
+          >
+            {siteFlagsLoading ? "Refreshing..." : "Refresh"}
+          </button>
+        </div>
+
+        <p className="text-xs text-white/45">
+          Active fallback routes: {underConstructionRoutes.length > 0 ? underConstructionRoutes.join(", ") : "none"}
+        </p>
       </div>
 
       <div className="dashboard-card p-6 space-y-4">

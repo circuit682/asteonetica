@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       panAfricanDetections,
       uniqueTeams
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { success: false, error: "Failed to parse file." },
       { status: 500 }

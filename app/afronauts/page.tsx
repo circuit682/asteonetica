@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import FooterSection from "@/components/FooterSection";
 import TeamOrbit from "@/components/TeamOrbit";
+import UnderConstructionFallback from "@/components/UnderConstructionFallback";
+import { useUnderConstruction } from "@/lib/use-under-construction";
 // This page presents the Afronauts, volunteers who analyze astronomical survey data to identify potential asteroids. It includes a hero section describing the mission, followed by a grid of team roles with descriptions. The TeamOrbit component visually represents the crew members in an orbiting layout. The page emphasizes the collaborative effort of citizen scientists in planetary defense initiatives.
 const roles = [
   {
@@ -40,6 +42,12 @@ const roles = [
 ];
 
 export default function AfronautsPage() {
+  const afronautsUnderConstruction = useUnderConstruction("afronauts");
+
+  if (afronautsUnderConstruction) {
+    return <UnderConstructionFallback sectionName="Afronauts" />;
+  }
+
   return (
     <main className="min-h-screen">
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const frames = [
   "/training/frames/frame1.jpg",
@@ -26,11 +27,13 @@ export default function AsteroidBlinker() {
 
     <div className="flex flex-col items-center space-y-6">
 
-      <div className="w-[420px] h-[420px] border border-white/10 rounded-lg overflow-hidden">
-
-        <img
+      <div className="relative w-[420px] h-[420px] border border-white/10 rounded-lg overflow-hidden">
+        <Image
           src={frames[frameIndex]}
-          className="w-full h-full object-cover"
+          alt="Animated asteroid training frames"
+          fill
+          sizes="(max-width: 768px) 92vw, 420px"
+          className="object-cover"
         />
 
       </div>

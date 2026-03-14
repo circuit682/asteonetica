@@ -6,6 +6,14 @@ import { SparkleProvider } from "@/lib/SparkleContext";
 import ScrollUp from "@/components/ScrollUp";
 import CosmicEnvironment from "@/components/cosmic/CosmicEnvironment";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "https://asteonetica.vercel.app");
+
+const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -19,7 +27,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://asteonetica.org"),
+  metadataBase: new URL(siteUrl),
+
+  verification: {
+    google: googleSiteVerification,
+  },
 
   title: {
     default: "Asteroid Afronauts Kenya | Volunteer Astronomy Research – Kenya",
@@ -27,17 +39,16 @@ export const metadata: Metadata = {
   },
 
   description:
-    "A Kenyan-based volunteer research collective contributing to asteroid detection through the International Astronomical Search Collaboration (IASC). Supporting global near-Earth object research and citizen science across Africa.",
+    "Asteonetica is a Kenyan volunteer astronomy research collective participating in IASC asteroid search campaigns. Afronaut citizen scientists analyze telescope survey data to identify near-Earth asteroids and contribute to planetary defense research.",
 
   keywords: [
     "asteroid detection",
-    "volunteer astronomy",
-    "Kenya astronomy",
-    "IASC",
-    "near earth objects",
-    "citizen science Africa",
-    "astronomy research Kenya",
+    "citizen science astronomy",
+    "IASC asteroid search",
     "Afronaut astronomy initiative",
+    "near earth objects research",
+    "Kenya astronomy research",
+    "African astronomy citizen science",
   ],
 
   authors: [{ name: "Asteroid Afronauts Kenya Research Collective" }],
@@ -48,7 +59,7 @@ export const metadata: Metadata = {
     title: "Asteroid Afronauts Kenya – Volunteer Astronomy Research | Kenya",
     description:
       "Kenyan volunteer research collective participating in IASC asteroid detection campaigns.",
-    url: "https://asteonetica.org",
+    url: siteUrl,
     type: "website",
     locale: "en_KE",
     siteName: "Asteroid Afronauts Kenya",

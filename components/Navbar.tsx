@@ -21,7 +21,11 @@ export default function Navbar() {
   const visibleNavItems = navItems.filter((item) => item.href !== pathname);
 
   useEffect(() => {
-    setOpen(false);
+    const closeTimer = window.setTimeout(() => {
+      setOpen(false);
+    }, 0);
+
+    return () => window.clearTimeout(closeTimer);
   }, [pathname]);
 
   useEffect(() => {

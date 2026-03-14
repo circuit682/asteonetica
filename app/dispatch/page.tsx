@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import DispatchJournal from "@/components/DispatchJournal";
+import UnderConstructionFallback from "@/components/UnderConstructionFallback";
 import { getDispatchEntries } from "@/lib/dispatch";
+import { isUnderConstructionServer } from "@/lib/under-construction-server";
 
 export const metadata: Metadata = {
   title: "Dispatch | Kenya Asteroid Research Journal",
@@ -31,6 +33,10 @@ export const metadata: Metadata = {
 };
 
 export default async function DispatchPage() {
+  if (isUnderConstructionServer("dispatch")) {
+    return <UnderConstructionFallback sectionName="Dispatch" />;
+  }
+
   const entries = await getDispatchEntries();
 
   const jsonLd = {

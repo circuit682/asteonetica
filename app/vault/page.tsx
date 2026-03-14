@@ -3,9 +3,16 @@
 import DetectionGuide from "@/components/DetectionGuide"
 import TrainingFrames from "@/components/TrainingFrames"
 import FooterSection from "@/components/FooterSection"
+import UnderConstructionFallback from "@/components/UnderConstructionFallback"
+import { useUnderConstruction } from "@/lib/use-under-construction"
 import { motion } from "framer-motion"
 
 export default function VaultPage() {
+  const vaultUnderConstruction = useUnderConstruction("vault")
+
+  if (vaultUnderConstruction) {
+    return <UnderConstructionFallback sectionName="Vault" />
+  }
 
   return (
 

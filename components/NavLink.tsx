@@ -32,7 +32,7 @@ export default function NavLink({
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [hovering]);
+  }, [hovering, triggerSparkle]);
 
   return (
     <Link

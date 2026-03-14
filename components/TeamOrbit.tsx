@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const crew = [
   {
@@ -237,9 +238,12 @@ export default function TeamOrbit() {
                           : "0 7px 20px rgba(0,0,0,0.26)",
                     }}
                   >
-                    <img
+                    <Image
                       src={member.avatar}
                       alt={member.name}
+                      width={144}
+                      height={144}
+                      sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, 144px"
                       className="mx-auto mb-2 h-24 w-24 sm:h-32 sm:w-32 md:h-36 md:w-36 rounded-full object-cover"
                     />
 
