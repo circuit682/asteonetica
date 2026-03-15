@@ -33,6 +33,7 @@ export default function AsteroidBlinker() {
           alt="Animated asteroid training frames"
           fill
           sizes="(max-width: 768px) 92vw, 420px"
+          quality={70}
           className="object-cover"
         />
 

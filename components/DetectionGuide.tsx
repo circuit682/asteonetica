@@ -102,7 +102,7 @@ alt={`${rule.title} reference image`}
 fill
 sizes="(min-width: 1280px) 24vw, (min-width: 768px) 46vw, 92vw"
 className="object-cover"
-unoptimized
+quality={65}
 />
 <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-transparent to-[rgba(5,12,20,0.22)]" />
 </div>
@@ -148,7 +148,7 @@ alt={`${rule.title} reference image`}
 fill
 sizes="(min-width: 1280px) 32vw, (min-width: 768px) 46vw, 92vw"
 className="object-cover"
-unoptimized
+quality={65}
 />
 <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-b from-transparent to-[rgba(5,12,20,0.22)]" />
 </div>

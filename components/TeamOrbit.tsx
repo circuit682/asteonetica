@@ -244,6 +244,7 @@ export default function TeamOrbit() {
                       width={144}
                       height={144}
                       sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, 144px"
+                      quality={70}
                       className="mx-auto mb-2 h-24 w-24 sm:h-32 sm:w-32 md:h-36 md:w-36 rounded-full object-cover"
                     />
 

@@ -46,6 +46,7 @@ export default function VaultHeader() {
             width={80}
             height={80}
             alt="International Astronomical Search Collaboration logo"
+            quality={70}
             onError={() => setLogoFailed(true)}
             className="opacity-80 object-contain"
           />
