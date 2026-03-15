@@ -3,6 +3,9 @@ import DispatchJournal from "@/components/DispatchJournal";
 import UnderConstructionFallback from "@/components/UnderConstructionFallback";
 import { getDispatchEntries } from "@/lib/dispatch";
 import { isUnderConstructionServer } from "@/lib/under-construction-server";
+import { getSiteUrl } from "@/lib/site-url";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "Dispatch | Kenya Asteroid Research Journal",
@@ -27,7 +30,7 @@ export const metadata: Metadata = {
     title: "Dispatch | Kenya Asteroid Research Journal",
     description:
       "Narrative campaign updates, asteroid discovery notes, and observatory logs from Asteonetica's Kenya asteroid research archive.",
-    url: "https://asteonetica.org/dispatch",
+    url: `${siteUrl}/dispatch`,
     type: "website",
   },
 };
@@ -45,12 +48,12 @@ export default async function DispatchPage() {
     name: "Asteonetica Dispatch",
     description:
       "Kenya asteroid research journal documenting asteroid campaigns, observatory logs, and dispatch updates from Asteonetica.",
-    url: "https://asteonetica.org/dispatch",
+    url: `${siteUrl}/dispatch`,
     inLanguage: "en-KE",
     publisher: {
       "@type": "Organization",
       name: "Asteroid Afronauts Kenya",
-      url: "https://asteonetica.org",
+      url: siteUrl,
     },
     blogPost: entries.map((entry) => ({
       "@type": "BlogPosting",
@@ -60,7 +63,7 @@ export default async function DispatchPage() {
       keywords: entry.tags.join(", "),
       description: entry.summary,
       articleBody: entry.content,
-      url: `https://asteonetica.org/dispatch#${entry.slug}`,
+      url: `${siteUrl}/dispatch#${entry.slug}`,
       about: ["Kenya asteroids", "asteroid research", "observatory dispatch"],
     })),
   };

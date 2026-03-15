@@ -5,12 +5,9 @@ import Navbar from "@/components/Navbar";
 import { SparkleProvider } from "@/lib/SparkleContext";
 import ScrollUp from "@/components/ScrollUp";
 import CosmicEnvironment from "@/components/cosmic/CosmicEnvironment";
+import { getSiteUrl } from "@/lib/site-url";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "https://iascasteroidafronautskenya.vercel.app");
+const siteUrl = getSiteUrl();
 
 const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION;
 
@@ -90,7 +87,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
       >
         <SparkleProvider>
-
           {/* Global Space Background */}
           <CosmicEnvironment />
 
@@ -101,7 +97,6 @@ export default function RootLayout({
           </main>
 
           <ScrollUp />
-
         </SparkleProvider>
       </body>
     </html>

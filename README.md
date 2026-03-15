@@ -33,12 +33,8 @@ Use this checklist before every production release.
 
 Set these in Vercel Production:
 
-- `NEXT_PUBLIC_SITE_URL=https://asteonetica.vercel.app` (or your custom domain later)
+- `NEXT_PUBLIC_SITE_URL=https://iascasteroidafronautskenya.vercel.app`
 - `GOOGLE_SITE_VERIFICATION=<your-search-console-token>`
-
-When custom domain is live, change `NEXT_PUBLIC_SITE_URL` to:
-
-- `https://asteonetica.org`
 
 ### 2) Confirm Crawl Surfaces
 
@@ -56,7 +52,7 @@ These are generated from:
 
 1. Add property for your production URL.
 2. Verify ownership using the meta tag method.
-3. Submit sitemap URL: `https://<your-domain>/sitemap.xml`.
+3. Submit sitemap URL: `https://iascasteroidafronautskenya.vercel.app/sitemap.xml`.
 4. Request indexing for key pages.
 
 ### 4) Initial Pages to Request Indexing
