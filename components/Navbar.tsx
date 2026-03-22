@@ -14,6 +14,7 @@ export default function Navbar() {
   const brandLabel = pathname === "/" ? "Asteroid Afronauts Kenya" : "Home";
   const navItems = [
     { href: "/afronauts", label: "The Team" },
+    { href: "/astrophotography", label: "Astrophotography" },
     { href: "/observatory", label: "Observatory" },
     { href: "/vault", label: "Vault" },
     { href: "/dispatch", label: "Dispatch" },
