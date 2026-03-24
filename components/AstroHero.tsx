@@ -4,13 +4,13 @@ import React from 'react';
 
 export const AstroHero: React.FC = () => {
   return (
-    <section className="relative w-full min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 flex items-center justify-center overflow-hidden">
+    <section className="relative w-full min-h-screen bg-[var(--space-black)] flex items-center justify-center overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Stellar glow orbs */}
-        <div className="absolute top-20 right-10 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl opacity-50 animate-pulse" />
-        <div className="absolute bottom-32 left-10 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl opacity-40" />
-        <div className="absolute top-1/2 left-1/3 w-52 h-52 bg-cyan-600/10 rounded-full blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-20 right-10 w-72 h-72 rounded-full blur-3xl opacity-50 animate-pulse" style={{ backgroundColor: 'rgba(0, 255, 156, 0.22)' }} />
+        <div className="absolute bottom-32 left-10 w-96 h-96 rounded-full blur-3xl opacity-40" style={{ backgroundColor: 'rgba(187, 30, 16, 0.18)' }} />
+        <div className="absolute top-1/2 left-1/3 w-52 h-52 rounded-full blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s', backgroundColor: 'rgba(0, 255, 156, 0.12)' }} />
 
         {/* Twinkling stars */}
         <div className="absolute w-1 h-1 bg-white rounded-full opacity-60 top-10 left-20 animate-pulse" />
@@ -22,16 +22,16 @@ export const AstroHero: React.FC = () => {
       <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
         {/* Decorative line */}
         <div className="flex items-center justify-center gap-4 mb-8">
-          <div className="h-px w-12 bg-gradient-to-r from-transparent to-blue-500" />
-          <span className="text-xs font-mono text-blue-400 uppercase tracking-widest">
+          <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--radar-green)]" />
+          <span className="text-xs font-mono text-[var(--radar-green)] uppercase tracking-widest">
             Deep Space Heritage
           </span>
-          <div className="h-px w-12 bg-gradient-to-l from-transparent to-blue-500" />
+          <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--radar-green)]" />
         </div>
 
         {/* Main title */}
         <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-          <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-[var(--radar-green)] via-white to-[var(--kenyan-red)] bg-clip-text text-transparent">
             Astrophotography
           </span>
         </h1>
@@ -67,8 +67,8 @@ export const AstroHero: React.FC = () => {
       </div>
 
       {/* Scroll indicator glow */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-6 h-10 border border-white/30 rounded-full flex items-start justify-center p-2 z-20">
-        <div className="w-1 h-2 bg-white rounded-full animate-bounce" />
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-6 h-10 border rounded-full flex items-start justify-center p-2 z-20" style={{ borderColor: 'rgba(0, 255, 156, 0.45)' }}>
+        <div className="w-1 h-2 rounded-full animate-bounce bg-[var(--radar-green)]" />
       </div>
     </section>
   );

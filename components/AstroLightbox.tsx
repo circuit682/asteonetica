@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import Lightbox from 'yet-another-react-lightbox';
 import Zoom from 'yet-another-react-lightbox/plugins/zoom';
 import 'yet-another-react-lightbox/styles.css';
@@ -19,19 +19,19 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const safeIndex = Math.max(0, Math.min(initialIndex, Math.max(images.length - 1, 0)));
 
   // Transform data for lightbox library
-  const slides = images.map((img) => ({
-    src: img.highRes,
-    alt: img.title,
-    title: img.title,
-    description: img.description,
-  }));
-
-  const handleIndexChange = useCallback((index: number) => {
-    setCurrentIndex(index);
-  }, []);
+  const slides = useMemo(
+    () =>
+      images.map((img) => ({
+        src: img.highRes,
+        alt: img.title,
+        title: img.title,
+        description: img.description,
+      })),
+    [images],
+  );
 
   if (!isOpen) return null;
 
@@ -40,10 +40,7 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
       slides={slides}
       open={isOpen}
       close={onClose}
-      index={currentIndex}
-      on={{
-        view: ({ index }) => handleIndexChange(index),
-      }}
+      index={safeIndex}
       plugins={[Zoom]}
       carousel={{
         finite: false,
@@ -53,7 +50,8 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
       }}
       render={{
         slide: ({ slide }) => {
-          const currentImage = images[currentIndex];
+          const currentImage =
+            images.find((img) => img.highRes === slide.src) ?? images[0];
           return (
             <div className="relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -75,6 +73,11 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
                   }}
                 >
                   <h3 className="text-2xl font-bold mb-2">{currentImage.title}</h3>
+                  {currentImage.versionLabel && (
+                    <p className="text-xs uppercase tracking-widest text-[var(--radar-green)] mb-2">
+                      {currentImage.versionLabel}
+                    </p>
+                  )}
                   {currentImage.subtitle && (
                     <p className="text-sm text-gray-300 mb-3">
                       {currentImage.subtitle}
@@ -85,7 +88,7 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
                   <div className="grid grid-cols-2 gap-3 text-xs mt-4 font-mono">
                     {currentImage.metadata.cod && (
                       <div>
-                        <span className="text-blue-400">COD:</span>
+                        <span className="text-[var(--radar-green)]">COD:</span>
                         <p className="text-gray-200 truncate">
                           {currentImage.metadata.cod}
                         </p>
@@ -93,7 +96,7 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
                     )}
                     {currentImage.metadata.tel && (
                       <div>
-                        <span className="text-blue-400">TEL:</span>
+                        <span className="text-[var(--radar-green)]">TEL:</span>
                         <p className="text-gray-200 truncate">
                           {currentImage.metadata.tel}
                         </p>
@@ -101,7 +104,7 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
                     )}
                     {currentImage.metadata.obs && (
                       <div>
-                        <span className="text-blue-400">OBS:</span>
+                        <span className="text-[var(--radar-green)]">OBS:</span>
                         <p className="text-gray-200 truncate">
                           {currentImage.metadata.obs}
                         </p>
@@ -109,7 +112,7 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
                     )}
                     {currentImage.metadata.mea && (
                       <div>
-                        <span className="text-blue-400">MEA:</span>
+                        <span className="text-[var(--radar-green)]">MEA:</span>
                         <p className="text-gray-200 truncate">
                           {currentImage.metadata.mea}
                         </p>
@@ -130,7 +133,7 @@ export const AstroLightbox: React.FC<AstroLightboxProps> = ({
       }}
       styles={{
         container: {
-          backgroundColor: 'rgba(15, 23, 42, 0.95)',
+          backgroundColor: 'rgba(11, 13, 23, 0.95)',
           backdropFilter: 'blur(8px)',
         },
       }}

@@ -1,36 +1,87 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AstroCarousel } from '@/components/AstroCarousel';
 import { AstroLightbox } from '@/components/AstroLightbox';
-import { ASTROPHOTOGRAPHY_IMAGES, AstrophysicsImage } from '@/lib/astrophotography-data';
+import {
+  ASTROPHOTOGRAPHY_OBJECTS,
+  AstrophotographyObject,
+  AstrophysicsImage,
+} from '@/lib/astrophotography-data';
 
 export const AstroGalleryClient: React.FC = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [selectedVersionByObject, setSelectedVersionByObject] = useState<Record<string, number>>(
+    () =>
+      Object.fromEntries(
+        ASTROPHOTOGRAPHY_OBJECTS.map((objectItem) => [objectItem.id, 0]),
+      ),
+  );
 
-  const handleImageSelect = (image: AstrophysicsImage) => {
-    const index = ASTROPHOTOGRAPHY_IMAGES.findIndex((img) => img.id === image.id);
-    setSelectedImageIndex(index >= 0 ? index : 0);
+  const displayImages = useMemo(
+    () =>
+      ASTROPHOTOGRAPHY_OBJECTS.map((objectItem) => {
+        const selectedVersionIndex = selectedVersionByObject[objectItem.id] ?? 0;
+        return objectItem.versions[selectedVersionIndex] ?? objectItem.versions[0];
+      }),
+    [selectedVersionByObject],
+  );
+
+  const selectedImage = displayImages[selectedImageIndex];
+  const selectedObject = useMemo<AstrophotographyObject | null>(
+    () =>
+      ASTROPHOTOGRAPHY_OBJECTS.find(
+        (objectItem) => objectItem.id === selectedImage?.objectId,
+      ) ?? null,
+    [selectedImage],
+  );
+
+  const handleImageSelect = useCallback((image: AstrophysicsImage) => {
+    if (lightboxOpen) return;
+
+    const index = displayImages.findIndex((img) => img.id === image.id);
+    const nextIndex = index >= 0 ? index : 0;
+    setSelectedImageIndex((previous) => (previous === nextIndex ? previous : nextIndex));
+  }, [displayImages, lightboxOpen]);
+
+  const handleVersionChange = (objectId: string, versionIndex: number) => {
+    setSelectedVersionByObject((prev) => ({
+      ...prev,
+      [objectId]: versionIndex,
+    }));
   };
 
   const handleOpenLightbox = () => {
+    if (displayImages.length === 0) return;
     setLightboxOpen(true);
   };
 
+  useEffect(() => {
+    setSelectedImageIndex((previous) => {
+      if (displayImages.length === 0) return 0;
+      const clamped = Math.min(previous, displayImages.length - 1);
+      return clamped === previous ? previous : clamped;
+    });
+  }, [displayImages.length]);
+
   return (
     <>
-      {/* Carousel section */}
-      <section className="relative w-full">
+      {/* Unified gallery narrative section */}
+      <section className="relative w-full -mt-8 md:-mt-12 pb-12 md:pb-20">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0),rgba(2,10,18,0.72)_24%,rgba(2,10,18,0.94)_100%)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-[linear-gradient(to_bottom,rgba(2,10,18,0),rgba(7,17,24,0.62)_56%,rgba(8,16,24,0.92))]" />
+
+        <div className="relative">
         <AstroCarousel
-          images={ASTROPHOTOGRAPHY_IMAGES}
+          images={displayImages}
           onImageSelect={handleImageSelect}
         />
 
         {/* Zoom button overlay */}
         <button
           onClick={handleOpenLightbox}
-          className="absolute bottom-8 right-8 z-20 px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-lg text-white text-sm font-mono uppercase tracking-wider border border-white/20 hover:border-white/40 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/20"
+          className="absolute bottom-8 right-8 z-20 px-6 py-3 dashboard-card-soft rounded-lg text-white text-sm font-mono uppercase tracking-wider border border-[rgba(0,255,156,0.2)] hover:border-[rgba(0,255,156,0.45)] transition-all duration-300 hover:shadow-xl"
           aria-label="Open lightbox zoom view"
         >
           <span className="flex items-center gap-2">
@@ -45,74 +96,99 @@ export const AstroGalleryClient: React.FC = () => {
             Zoom
           </span>
         </button>
-      </section>
+        </div>
 
       {/* Image metadata panel */}
-      <section className="relative bg-gradient-to-b from-slate-900 to-slate-950 text-white py-16 px-6">
-        <div className="max-w-7xl mx-auto">
+        <div className="relative z-10 px-4 md:px-6">
+          <div className="max-w-7xl mx-auto rounded-2xl border border-[rgba(0,255,156,0.14)] bg-[rgba(4,14,22,0.74)] backdrop-blur-md p-6 md:p-10 shadow-[0_20px_70px_rgba(0,0,0,0.34)]">
           {/* Current image info */}
-          {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex] && (
+          {selectedImage && (
             <div className="space-y-8">
               <div>
                 <h2 className="text-4xl font-bold mb-2">
-                  {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].title}
+                  {selectedImage.title}
                 </h2>
-                {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].subtitle && (
+                {selectedImage.subtitle && (
                   <p className="text-gray-400 text-lg mb-4">
-                    {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].subtitle}
+                    {selectedImage.subtitle}
                   </p>
                 )}
                 <p className="text-gray-300 leading-relaxed max-w-2xl">
-                  {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].description}
+                  {selectedImage.description}
                 </p>
               </div>
 
+              {selectedObject && selectedObject.versions.length > 1 && (
+                <div className="flex flex-wrap gap-2 pb-2 border-b border-[rgba(0,255,156,0.14)]">
+                  {selectedObject.versions.map((version, index) => {
+                    const isActive =
+                      (selectedVersionByObject[selectedObject.id] ?? 0) === index;
+
+                    return (
+                      <button
+                        key={version.id}
+                        type="button"
+                        onClick={() => handleVersionChange(selectedObject.id, index)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-mono tracking-wide border transition-all duration-200 ${
+                          isActive
+                            ? 'border-[var(--radar-green)] text-[var(--radar-green)] bg-[rgba(0,255,156,0.1)]'
+                            : 'border-[rgba(0,255,156,0.2)] text-white/70 hover:text-white hover:border-[rgba(0,255,156,0.45)]'
+                        }`}
+                      >
+                        {version.versionLabel ?? `Version ${index + 1}`}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
               {/* Metadata table */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 pt-8 border-t border-gray-700">
-                {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.cod && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 pt-8 border-t border-[rgba(0,255,156,0.22)]">
+                {selectedImage.metadata.cod && (
                   <MetadataBlock
                     label="COD"
-                    value={ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.cod}
-                    color="blue"
+                    value={selectedImage.metadata.cod}
+                    color="radar"
                   />
                 )}
-                {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.obs && (
+                {selectedImage.metadata.obs && (
                   <MetadataBlock
                     label="OBS"
-                    value={ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.obs}
-                    color="cyan"
+                    value={selectedImage.metadata.obs}
+                    color="radarSoft"
                   />
                 )}
-                {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.mea && (
+                {selectedImage.metadata.mea && (
                   <MetadataBlock
                     label="MEA"
-                    value={ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.mea}
-                    color="green"
+                    value={selectedImage.metadata.mea}
+                    color="radar"
                   />
                 )}
-                {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.tel && (
+                {selectedImage.metadata.tel && (
                   <MetadataBlock
                     label="TEL"
-                    value={ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.tel}
-                    color="purple"
+                    value={selectedImage.metadata.tel}
+                    color="radarSoft"
                   />
                 )}
-                {ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.ack && (
+                {selectedImage.metadata.ack && (
                   <MetadataBlock
                     label="ACK"
-                    value={ASTROPHOTOGRAPHY_IMAGES[selectedImageIndex].metadata.ack}
-                    color="yellow"
+                    value={selectedImage.metadata.ack}
+                    color="kenyanRed"
                   />
                 )}
               </div>
             </div>
           )}
+          </div>
         </div>
       </section>
 
       {/* Lightbox */}
       <AstroLightbox
-        images={ASTROPHOTOGRAPHY_IMAGES}
+        images={displayImages}
         initialIndex={selectedImageIndex}
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
@@ -124,16 +200,14 @@ export const AstroGalleryClient: React.FC = () => {
 interface MetadataBlockProps {
   label: string;
   value: string;
-  color?: 'blue' | 'cyan' | 'green' | 'purple' | 'yellow';
+  color?: 'radar' | 'radarSoft' | 'kenyanRed';
 }
 
-const MetadataBlock: React.FC<MetadataBlockProps> = ({ label, value, color = 'blue' }) => {
+const MetadataBlock: React.FC<MetadataBlockProps> = ({ label, value, color = 'radar' }) => {
   const colorMap = {
-    blue: 'text-blue-400',
-    cyan: 'text-cyan-400',
-    green: 'text-green-400',
-    purple: 'text-purple-400',
-    yellow: 'text-yellow-400',
+    radar: 'text-[var(--radar-green)]',
+    radarSoft: 'text-[rgba(0,255,156,0.72)]',
+    kenyanRed: 'text-[var(--kenyan-red)]',
   };
 
   return (

@@ -1,14 +1,8 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
-import { Swiper as SwiperType } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCube, Pagination, Navigation, Autoplay } from 'swiper/modules';
-import Image from 'next/image';
-import 'swiper/css';
-import 'swiper/css/effect-cube';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import { AstroOrbitCard } from '@/components/AstroOrbitCard';
 import { AstrophysicsImage } from '@/lib/astrophotography-data';
 
 interface AstroCarouselProps {
@@ -20,149 +14,185 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
   images,
   onImageSelect,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const swiperRef = useRef<SwiperType | null>(null);
+  const [viewportWidth, setViewportWidth] = useState(1280);
+  const [autoRotation, setAutoRotation] = useState(0);
+  const [manualOffset, setManualOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragXRef = useRef<number | null>(null);
+  const lastFrontIndexRef = useRef<number>(-1);
 
-  const handleSlideChange = (swiper: SwiperType) => {
-    setActiveIndex(swiper.activeIndex);
-    onImageSelect(images[swiper.activeIndex]);
+  const degreePerImage = 360 / images.length;
+  const imageCount = Math.max(images.length, 1);
+  const orbitRotation = autoRotation + manualOffset;
+  const isMobile = viewportWidth < 768;
+  const isTablet = viewportWidth >= 768 && viewportWidth < 1200;
+
+  const normalizeAngle = (angle: number) => {
+    let normalized = angle % 360;
+    if (normalized > 180) normalized -= 360;
+    if (normalized < -180) normalized += 360;
+    return normalized;
   };
 
+  useEffect(() => {
+    const updateViewport = () => setViewportWidth(window.innerWidth);
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+    return () => window.removeEventListener('resize', updateViewport);
+  }, []);
+
+  useEffect(() => {
+    // Auto-scale orbit time from current card count so no manual retuning is needed.
+    const imageCount = Math.max(images.length, 1);
+    // Match TeamOrbit pacing: 60s over 8 cards => 7.5s per card.
+    const msPerCard = 7500;
+    const minOrbitDuration = 14000;
+    const maxOrbitDuration = 90000;
+    const duration = Math.min(
+      maxOrbitDuration,
+      Math.max(minOrbitDuration, imageCount * msPerCard),
+    );
+    const startTime = performance.now();
+    let animationFrame = 0;
+
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      setAutoRotation((elapsed / duration) * 360);
+      animationFrame = window.requestAnimationFrame(tick);
+    };
+
+    animationFrame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [images.length]);
+
+  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setManualOffset((previous) => previous - event.deltaY * 0.1);
+  };
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    dragXRef.current = event.clientX;
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging || dragXRef.current === null) return;
+
+    const deltaX = event.clientX - dragXRef.current;
+    dragXRef.current = event.clientX;
+    setManualOffset((previous) => previous + deltaX * 0.28);
+  };
+
+  const handlePointerUp = () => {
+    setIsDragging(false);
+    dragXRef.current = null;
+  };
+
+  const snapToImage = (index: number) => {
+    const angle = degreePerImage * index;
+    const delta = normalizeAngle(-(angle + orbitRotation));
+    setManualOffset((previous) => previous + delta);
+    if (images[index]) {
+      onImageSelect(images[index]);
+    }
+  };
+
+  const depths = useMemo(
+    () =>
+      images.map((_, index) => {
+        const angle = degreePerImage * index;
+        const relativeAngle = (angle + orbitRotation) % 360;
+        const normalizedAngle = relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
+
+        return Math.cos((normalizedAngle * Math.PI) / 180);
+      }),
+    [images, degreePerImage, orbitRotation],
+  );
+
+  const frontIndex = depths.indexOf(Math.max(...depths));
+
+  useEffect(() => {
+    if (
+      frontIndex >= 0 &&
+      images[frontIndex] &&
+      lastFrontIndexRef.current !== frontIndex
+    ) {
+      lastFrontIndexRef.current = frontIndex;
+      onImageSelect(images[frontIndex]);
+    }
+  }, [frontIndex, images, onImageSelect]);
+
   return (
-    <div className="relative w-full h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl opacity-40" />
-        <div className="absolute top-1/4 right-0 w-80 h-80 bg-purple-600/15 rounded-full blur-3xl opacity-30" />
+    <div
+      className="relative w-full min-h-[700px] md:min-h-[840px] flex items-center justify-center overflow-hidden px-2 md:px-4 touch-none"
+      style={{
+        perspective: isMobile ? '860px' : isTablet ? '1040px' : '1200px',
+        backgroundColor: 'var(--space-black)',
+      }}
+      onWheel={handleWheel}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+    >
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+        <div className="w-[760px] h-[760px] rounded-full bg-[radial-gradient(circle,rgba(0,255,156,0.2),rgba(0,255,156,0.06)_38%,transparent_72%)] blur-3xl opacity-70" />
       </div>
 
-      {/* Main Carousel */}
-      <div className="relative w-full h-full z-10">
-        <Swiper
-          modules={[EffectCube, Pagination, Navigation, Autoplay]}
-          effect="cube"
-          grabCursor={true}
-          cubeEffect={{
-            shadow: true,
-            shadowOffset: 20,
-            shadowScale: 0.94,
-          }}
-          pagination={{
-            clickable: true,
-            dynamicBullets: true,
-          }}
-          navigation={{
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-          }}
-          autoplay={{
-            delay: 5000,
-            disableOnInteraction: true,
-          }}
-          onSlideChange={handleSlideChange}
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
-          className="w-full h-full"
+      <div className="stars-layer pointer-events-none" />
+
+      <div
+        className="relative w-[min(100vw,1040px)] h-[min(100vw,860px)]"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        <motion.div
+          animate={{ rotateY: orbitRotation }}
+          transition={{ duration: 0 }}
+          className="absolute inset-0"
+          style={{ transformStyle: 'preserve-3d' }}
         >
-          {images.map((image) => (
-            <SwiperSlide key={image.id} className="flex items-center justify-center">
-              <div className="relative w-full h-full flex items-center justify-center p-8">
-                {/* Image container with cinematic framing */}
-                <div className="relative w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-2xl">
-                  {/* Glowing border effect */}
-                  <div
-                    className="absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300"
-                    style={{
-                      background: `radial-gradient(circle at center, ${image.glowColor}33 0%, transparent 70%)`,
-                      filter: 'blur(20px)',
-                      pointerEvents: 'none',
-                    }}
-                  />
+          {images.map((image, index) => {
+            const angle = degreePerImage * index;
+            const relativeAngle = (angle + orbitRotation) % 360;
+            const normalizedAngle = relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
 
-                  {/* Image */}
-                  <Image
-                    src={image.imagePath}
-                    alt={image.title}
-                    fill
-                    className="object-cover"
-                    priority={activeIndex === images.indexOf(image)}
-                    quality={85}
-                  />
+            const depth = depths[index];
+            const depthNormalized = (depth + 1) / 2;
+            const isFrontMost = index === frontIndex;
+            const opacity = 0.24 + depthNormalized * 0.76;
 
-                  {/* Vignette overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none" />
-                </div>
+            // Keep orbit tighter on mobile to avoid messy edge crowding.
+            const baseDistance = isMobile
+              ? Math.min(360, 220 + imageCount * 26)
+              : isTablet
+                ? Math.min(500, 290 + imageCount * 36)
+                : Math.min(620, 320 + imageCount * 44);
+            const orbitDistance = baseDistance;
+            const scale = 1;
+
+            return (
+              <div
+                key={image.id}
+                className="absolute top-1/2 left-1/2"
+                style={{
+                  transformStyle: 'preserve-3d',
+                  transform: `rotateY(${angle}deg) translateZ(${orbitDistance}px) rotateY(-${angle}deg) translate(-50%, -50%)`,
+                }}
+              >
+                <AstroOrbitCard
+                  image={image}
+                  orbitRotation={orbitRotation}
+                  opacity={opacity}
+                  scale={scale}
+                  depth={depth}
+                  isFrontMost={isFrontMost}
+                  onClick={() => snapToImage(index)}
+                />
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        {/* Navigation buttons */}
-        <button
-          className="swiper-button-prev absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center transition-all duration-300 border border-white/20 hover:border-white/40 hover:shadow-lg"
-          aria-label="Previous image"
-        >
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-
-        <button
-          className="swiper-button-next absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center transition-all duration-300 border border-white/20 hover:border-white/40 hover:shadow-lg"
-          aria-label="Next image"
-        >
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
+            );
+          })}
+        </motion.div>
       </div>
-
-      {/* Custom pagination styling */}
-      <style jsx>{`
-        :global(.swiper-pagination) {
-          bottom: 2rem;
-          z-index: 30;
-        }
-
-        :global(.swiper-pagination-bullet) {
-          width: 10px;
-          height: 10px;
-          background: rgba(255, 255, 255, 0.3);
-          opacity: 1;
-          border: 1px solid rgba(255, 255, 255, 0.5);
-          transition: all 0.3s ease;
-        }
-
-        :global(.swiper-pagination-bullet-active) {
-          background: rgba(255, 255, 255, 0.8);
-          transform: scale(1.3);
-          box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-        }
-
-        :global(.swiper-button-prev::after),
-        :global(.swiper-button-next::after) {
-          display: none;
-        }
-      `}</style>
     </div>
   );
 };

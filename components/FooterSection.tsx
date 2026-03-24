@@ -14,7 +14,7 @@ export default function FooterSection({ tone = "default" }: FooterSectionProps) 
 
   const atmosphereClassName =
     tone === "integrated"
-      ? "absolute inset-0 bg-gradient-to-b from-transparent via-[#081018]/24 to-[#081018]/48"
+      ? "absolute inset-0 bg-gradient-to-b from-[#081018]/22 via-[#081018]/42 to-[#081018]/72"
       : "absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black/90";
 
   const volunteerEmail = "veronicakihagi@gmail.com";
@@ -54,7 +54,7 @@ export default function FooterSection({ tone = "default" }: FooterSectionProps) 
   ];
 
   return (
-    <footer className="relative mt-40 overflow-hidden">
+    <footer className={`relative ${tone === "integrated" ? "mt-0" : "mt-40"} overflow-hidden`}>
 
       {/* Atmospheric Gradient */}
       <div className={atmosphereClassName} />
@@ -65,7 +65,7 @@ export default function FooterSection({ tone = "default" }: FooterSectionProps) 
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 py-20 grid md:grid-cols-3 gap-16 text-sm">
+      <div className={`relative z-10 max-w-6xl mx-auto px-6 md:px-12 ${tone === "integrated" ? "pt-14 pb-20" : "py-20"} grid md:grid-cols-3 gap-16 text-sm`}>
 
         {/* Identity */}
         <div className="space-y-6">

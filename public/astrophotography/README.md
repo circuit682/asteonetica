@@ -6,31 +6,32 @@ This directory contains all astrophotography gallery images and their optimized 
 
 ```
 public/astrophotography/
-├── rosette-nebula.png                    # Source image
-├── rosette-nebula-600w.webp             # Mobile variant
-├── rosette-nebula-1024w.webp            # Tablet variant
-├── rosette-nebula-1920w.webp            # Desktop variant
-├── rosette-nebula-4k.webp               # High-res for lightbox zoom
-├── leo-triplet.jpeg
-├── leo-triplet-600w.webp
-├── leo-triplet-1024w.webp
-├── leo-triplet-1920w.webp
-├── leo-triplet-4k.webp
-├── m81.jpeg
-├── m81-600w.webp
-├── m81-1024w.webp
-├── m81-1920w.webp
-└── m81-4k.webp
+├── leo-triplet/
+├── m81/
+├── rosette-nebula/
+├── orion/
+├── m8/
+├── sources/
+│   └── README.md
+├── convert.sh
+├── convert-images.mjs
+└── README.md
 ```
 
 ## Image Placement Steps
 
 ### 1. Place Source Images
 
-First, add your original high-quality images to this directory:
-- `rosette-nebula.png` (your PNG file)
-- `leo-triplet.jpeg` (your JPEG file)  
-- `m81.jpeg` (your JPEG file)
+Preferred structure is object folders directly under `public/astrophotography/`:
+
+- `m8/`
+- `leo-triplet/`
+- `rosette-nebula/`
+- `orion/`
+
+You can add new object folders any time. The scripts auto-detect them.
+
+Legacy support remains: source images in this folder root or under `sources/` are still processed.
 
 ### 2. Image Compression & Optimization
 
@@ -43,6 +44,26 @@ bash ./convert.sh
 ```
 
 The script generates 4 responsive WebP variants (`600w`, `1024w`, `1920w`, `4k`) for each source image.
+
+### Automated Naming Behavior
+
+If a source filename is `primary`, `main`, `source`, or `raw`, output names use only the object key:
+
+- `orion/primary.png` -> `orion-600w.webp`, `orion-1024w.webp`, `orion-1920w.webp`, `orion-4k.webp`
+
+If the source filename is different, a suffix is added:
+
+- `orion/ha.png` -> `orion-ha-600w.webp`, `orion-ha-1024w.webp`, `orion-ha-1920w.webp`, `orion-ha-4k.webp`
+
+To showcase multiple variations of the same target, add extra files using a suffix pattern:
+
+```text
+leo-triplet-natural.jpeg
+leo-triplet-ha.jpeg
+leo-triplet-starless.jpeg
+```
+
+Then create matching variants for each file (`-600w.webp`, `-1024w.webp`, `-1920w.webp`, `-4k.webp`) and register each variation in `ASTROPHOTOGRAPHY_OBJECTS` in `lib/astrophotography-data.ts`.
 
 Manual examples (optional):
 
@@ -91,13 +112,13 @@ The page references these filenames in `lib/astrophotography-data.ts`:
 
 ```typescript
 {
-  imagePath: '/astrophotography/leo-triplet.jpeg',
+  imagePath: '/astrophotography/leo-triplet/leo-triplet.jpeg',
   variants: {
-    mobile: '/astrophotography/leo-triplet-600w.webp',
-    tablet: '/astrophotography/leo-triplet-1024w.webp',
-    desktop: '/astrophotography/leo-triplet-1920w.webp',
+    mobile: '/astrophotography/leo-triplet/leo-triplet-600w.webp',
+    tablet: '/astrophotography/leo-triplet/leo-triplet-1024w.webp',
+    desktop: '/astrophotography/leo-triplet/leo-triplet-1920w.webp',
   },
-  highRes: '/astrophotography/leo-triplet-4k.webp',
+  highRes: '/astrophotography/leo-triplet/leo-triplet-4k.webp',
   // ...
 }
 ```
