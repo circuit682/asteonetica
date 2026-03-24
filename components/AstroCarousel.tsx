@@ -18,8 +18,11 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
   const [autoRotation, setAutoRotation] = useState(0);
   const [manualOffset, setManualOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [momentum, setMomentum] = useState(0);
   const dragXRef = useRef<number | null>(null);
+  const dragVelocityRef = useRef(0);
   const lastFrontIndexRef = useRef<number>(-1);
+  const momentumTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const degreePerImage = 360 / images.length;
   const imageCount = Math.max(images.length, 1);
@@ -67,25 +70,41 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
 
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     event.preventDefault();
-    setManualOffset((previous) => previous - event.deltaY * 0.1);
+    // Strong momentum on wheel scroll
+    const wheelDelta = event.deltaY * 0.18;
+    setManualOffset((previous) => previous - wheelDelta);
+    setMomentum(-wheelDelta * 0.8); // Carry momentum into next frame
+    
+    if (momentumTimeoutRef.current) {
+      clearTimeout(momentumTimeoutRef.current);
+    }
   };
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     setIsDragging(true);
     dragXRef.current = event.clientX;
+    dragVelocityRef.current = 0;
+    setMomentum(0); // Stop momentum on new drag
+    
+    if (momentumTimeoutRef.current) {
+      clearTimeout(momentumTimeoutRef.current);
+    }
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging || dragXRef.current === null) return;
 
     const deltaX = event.clientX - dragXRef.current;
+    dragVelocityRef.current = deltaX; // Track velocity for momentum on release
     dragXRef.current = event.clientX;
-    setManualOffset((previous) => previous + deltaX * 0.28);
+    setManualOffset((previous) => previous + deltaX * 0.42); // Increased from 0.28
   };
 
   const handlePointerUp = () => {
     setIsDragging(false);
     dragXRef.current = null;
+    // Apply momentum on release (reduced friction)
+    setMomentum(dragVelocityRef.current * 0.6);
   };
 
   const snapToImage = (index: number) => {
@@ -96,6 +115,22 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
       onImageSelect(images[index]);
     }
   };
+
+  // Apply momentum decay over time
+  useEffect(() => {
+    if (Math.abs(momentum) < 0.1 || isDragging) {
+      setMomentum(0);
+      return;
+    }
+
+    const decayTimeout = setTimeout(() => {
+      setManualOffset((previous) => previous + momentum);
+      setMomentum((prev) => prev * 0.92); // Friction coefficient
+    }, 16); // ~60fps
+
+    momentumTimeoutRef.current = decayTimeout;
+    return () => clearTimeout(decayTimeout);
+  }, [momentum, isDragging]);
 
   const depths = useMemo(
     () =>
@@ -111,6 +146,23 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
 
   const frontIndex = depths.indexOf(Math.max(...depths));
 
+  // Keyboard navigation (arrow keys for quick browsing)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        snapToImage((frontIndex + 1) % images.length);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        snapToImage((frontIndex - 1 + images.length) % images.length);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [frontIndex, images.length]);
+
+  // Only update image selection when significantly centered (threshold), not on every frame
   useEffect(() => {
     if (
       frontIndex >= 0 &&
