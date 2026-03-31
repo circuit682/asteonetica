@@ -85,6 +85,59 @@ function campaignSortDate(dataset: CampaignDataset): string {
   return dates[dates.length - 1] ?? "0000-00-00"
 }
 
+function campaignFirstDate(dataset: CampaignDataset): string {
+  if (validDate(dataset.start)) return dataset.start
+  if (validDate(dataset.end)) return dataset.end
+
+  const dates = dataset.observations
+    .map((o) => o.date)
+    .filter(validDate)
+    .sort()
+
+  return dates[0] ?? "0000-00-00"
+}
+
+function monthKey(date: string): number | null {
+  if (!validDate(date)) return null
+  const year = Number.parseInt(date.slice(0, 4), 10)
+  const month = Number.parseInt(date.slice(5, 7), 10)
+
+  if (!Number.isFinite(year) || !Number.isFinite(month) || month < 1 || month > 12) {
+    return null
+  }
+
+  return year * 12 + (month - 1)
+}
+
+function inclusiveMonthsBetween(startDate: string, endDate: Date = new Date()): number {
+  const startKey = monthKey(startDate)
+  if (startKey === null) return 0
+
+  const endKey = endDate.getUTCFullYear() * 12 + endDate.getUTCMonth()
+  if (endKey < startKey) return 0
+
+  return endKey - startKey + 1
+}
+
+function firstVolunteerDateFromSummaries(campaigns: CampaignSummaryItem[]): string | null {
+  let firstDate: string | null = null
+
+  for (const campaign of campaigns) {
+    if (campaign.afronautDetections <= 0) continue
+
+    const candidate = [campaign.start, campaign.end, campaign.sortDate]
+      .find((value) => validDate(value))
+
+    if (!candidate) continue
+
+    if (firstDate === null || candidate.localeCompare(firstDate) < 0) {
+      firstDate = candidate
+    }
+  }
+
+  return firstDate
+}
+
 function listCampaignFiles(campaignsDir: string): string[] {
   return fs
     .readdirSync(campaignsDir)
@@ -145,6 +198,11 @@ export function loadPersistedCampaignSummary(campaignsDir: string): PersistedCam
       return null
     }
 
+    const firstVolunteerDate = firstVolunteerDateFromSummaries(parsed.campaigns ?? [])
+    parsed.milestones.summary.campaignsParticipated = firstVolunteerDate
+      ? inclusiveMonthsBetween(firstVolunteerDate)
+      : 0
+
     return parsed
   } catch {
     return null
@@ -199,13 +257,18 @@ export function rebuildCampaignSummary(campaignsDir: string): PersistedCampaignS
   const observerSet = new Set<string>()
   const kenyaObserverSet = new Set<string>()
   const kenyaTeamMap = new Map<string, { detections: number; observers: Set<string> }>()
+  let firstVolunteerDate: string | null = null
   let totalDetections = 0
-  let campaignsParticipated = 0
   let kenyaTotalDetections = 0
 
   for (const { dataset } of datasets) {
     const afronautRows = afronautDetections(dataset)
     if (afronautRows.length === 0) continue
+
+    const firstDate = campaignFirstDate(dataset)
+    if (firstVolunteerDate === null || firstDate.localeCompare(firstVolunteerDate) < 0) {
+      firstVolunteerDate = firstDate
+    }
 
     const year = inferCampaignYear(dataset)
     const current = yearlyMap.get(year) ?? { detections: 0, campaigns: 0 }
@@ -214,7 +277,6 @@ export function rebuildCampaignSummary(campaignsDir: string): PersistedCampaignS
     yearlyMap.set(year, current)
 
     totalDetections += afronautRows.length
-    campaignsParticipated += 1
 
     for (const row of afronautRows) {
       for (const observer of row.observers) {
@@ -252,6 +314,10 @@ export function rebuildCampaignSummary(campaignsDir: string): PersistedCampaignS
       campaigns: value.campaigns
     }))
     .sort((a, b) => a.year.localeCompare(b.year))
+
+  const campaignsParticipated = firstVolunteerDate
+    ? inclusiveMonthsBetween(firstVolunteerDate)
+    : 0
 
   const summary: PersistedCampaignSummary = {
     generatedAt: new Date().toISOString(),
