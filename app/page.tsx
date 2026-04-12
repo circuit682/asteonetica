@@ -2,8 +2,17 @@ import OrbitalMark from "@/components/OrbitalMark";
 import MethodologyDiagram from "@/components/MethodologyDiagram";
 import FooterSection from "@/components/FooterSection";
 import CosmicHeroBackdrop from "@/components/cosmic/CosmicHeroBackdrop";
+import Link from "next/link";
 
 export default function Home() {
+  const sectionLinks = [
+    { href: "/afronauts", label: "Afronauts" },
+    { href: "/observatory", label: "Observatory" },
+    { href: "/vault", label: "Vault" },
+    { href: "/dispatch", label: "Dispatch" },
+    { href: "/astrophotography", label: "Astrophotography" },
+  ];
+
   return (
     <main className="bg-[var(--space-black)] text-white">
     
@@ -92,6 +101,30 @@ export default function Home() {
   </div>
 
 </section>
+
+      <section className="px-6 md:px-12 lg:px-24 pb-16">
+        <div className="max-w-4xl mx-auto rounded-2xl border border-[rgba(0,255,156,0.2)] bg-[rgba(4,12,20,0.65)] p-6 md:p-8">
+          <h2 className="text-xl md:text-2xl font-light tracking-wide text-white/90 mb-2">
+            Explore Every Public Section
+          </h2>
+          <p className="text-white/65 text-sm md:text-base mb-6">
+            Jump directly to each section for crawlable internal linking and faster route discovery.
+          </p>
+
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+            {sectionLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-lg border border-white/15 px-4 py-3 text-white/85 hover:text-white hover:border-[rgba(0,255,156,0.45)] transition-colors"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
 <FooterSection />
     </main>
    
