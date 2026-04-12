@@ -2,11 +2,24 @@ import { Metadata } from 'next';
 import { AstroHero } from '@/components/AstroHero';
 import { AstroGalleryClient } from '@/components/AstroGalleryClient';
 import FooterSection from '@/components/FooterSection';
+import { getSiteUrl } from '@/lib/site-url';
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: 'Astrophotography | ASTEONETICA',
   description:
     'Explore our curated collection of deep-sky astrophotography. Featuring the Rosette Nebula, Leo Triplet, and Messier 81 in stunning detail.',
+  alternates: {
+    canonical: '/astrophotography',
+  },
+  openGraph: {
+    title: 'Astrophotography | ASTEONETICA',
+    description:
+      'Explore our curated collection of deep-sky astrophotography. Featuring the Rosette Nebula, Leo Triplet, and Messier 81 in stunning detail.',
+    url: `${siteUrl}/astrophotography`,
+    type: 'website',
+  },
   keywords: [
     'astrophotography',
     'deep sky',
