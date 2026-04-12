@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { AstroCarousel } from '@/components/AstroCarousel';
 import { AstroLightbox } from '@/components/AstroLightbox';
 import {
@@ -28,7 +28,12 @@ export const AstroGalleryClient: React.FC = () => {
     [selectedVersionByObject],
   );
 
-  const selectedImage = displayImages[selectedImageIndex];
+  const clampedSelectedImageIndex = useMemo(() => {
+    if (displayImages.length === 0) return 0;
+    return Math.min(selectedImageIndex, displayImages.length - 1);
+  }, [displayImages.length, selectedImageIndex]);
+
+  const selectedImage = displayImages[clampedSelectedImageIndex];
   const selectedObject = useMemo<AstrophotographyObject | null>(
     () =>
       ASTROPHOTOGRAPHY_OBJECTS.find(
@@ -56,14 +61,6 @@ export const AstroGalleryClient: React.FC = () => {
     if (displayImages.length === 0) return;
     setLightboxOpen(true);
   };
-
-  useEffect(() => {
-    setSelectedImageIndex((previous) => {
-      if (displayImages.length === 0) return 0;
-      const clamped = Math.min(previous, displayImages.length - 1);
-      return clamped === previous ? previous : clamped;
-    });
-  }, [displayImages.length]);
 
   return (
     <>
@@ -189,7 +186,7 @@ export const AstroGalleryClient: React.FC = () => {
       {/* Lightbox */}
       <AstroLightbox
         images={displayImages}
-        initialIndex={selectedImageIndex}
+        initialIndex={clampedSelectedImageIndex}
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
       />

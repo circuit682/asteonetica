@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { AstroOrbitCard } from '@/components/AstroOrbitCard';
 import { AstrophysicsImage } from '@/lib/astrophotography-data';
@@ -9,6 +9,13 @@ interface AstroCarouselProps {
   images: AstrophysicsImage[];
   onImageSelect: (image: AstrophysicsImage) => void;
 }
+
+const normalizeAngle = (angle: number) => {
+  let normalized = angle % 360;
+  if (normalized > 180) normalized -= 360;
+  if (normalized < -180) normalized += 360;
+  return normalized;
+};
 
 export const AstroCarousel: React.FC<AstroCarouselProps> = ({
   images,
@@ -29,13 +36,6 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
   const orbitRotation = autoRotation + manualOffset;
   const isMobile = viewportWidth < 768;
   const isTablet = viewportWidth >= 768 && viewportWidth < 1200;
-
-  const normalizeAngle = (angle: number) => {
-    let normalized = angle % 360;
-    if (normalized > 180) normalized -= 360;
-    if (normalized < -180) normalized += 360;
-    return normalized;
-  };
 
   useEffect(() => {
     const updateViewport = () => setViewportWidth(window.innerWidth);
@@ -107,19 +107,21 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
     setMomentum(dragVelocityRef.current * 0.6);
   };
 
-  const snapToImage = (index: number) => {
-    const angle = degreePerImage * index;
-    const delta = normalizeAngle(-(angle + orbitRotation));
-    setManualOffset((previous) => previous + delta);
-    if (images[index]) {
-      onImageSelect(images[index]);
-    }
-  };
+  const snapToImage = useCallback(
+    (index: number) => {
+      const angle = degreePerImage * index;
+      const delta = normalizeAngle(-(angle + orbitRotation));
+      setManualOffset((previous) => previous + delta);
+      if (images[index]) {
+        onImageSelect(images[index]);
+      }
+    },
+    [degreePerImage, orbitRotation, images, onImageSelect],
+  );
 
   // Apply momentum decay over time
   useEffect(() => {
     if (Math.abs(momentum) < 0.1 || isDragging) {
-      setMomentum(0);
       return;
     }
 
@@ -160,7 +162,7 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [frontIndex, images.length]);
+  }, [frontIndex, images.length, snapToImage]);
 
   // Only update image selection when significantly centered (threshold), not on every frame
   useEffect(() => {
@@ -205,8 +207,6 @@ export const AstroCarousel: React.FC<AstroCarouselProps> = ({
         >
           {images.map((image, index) => {
             const angle = degreePerImage * index;
-            const relativeAngle = (angle + orbitRotation) % 360;
-            const normalizedAngle = relativeAngle > 180 ? relativeAngle - 360 : relativeAngle;
 
             const depth = depths[index];
             const depthNormalized = (depth + 1) / 2;
